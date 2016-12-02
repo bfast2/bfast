@@ -1,0 +1,30 @@
+import("graphics", "stats", "strucchange", "zoo", "raster", "sp", "forecast")
+
+export(
+  "bfast",
+  "bfastmonitor",
+  "bfastpp",
+  "bfastts",
+  "bfast01",
+  "bfast01classify"
+)
+
+S3method("plot", "bfast")
+S3method("print", "bfast")
+S3method("plot", "bfastmonitor")
+S3method("print", "bfastmonitor")
+S3method("breakpoints", "bfast01")
+S3method("breakdates", "bfast01")
+S3method("logLik", "bfast01")
+S3method("deviance", "bfast01")
+S3method("model.frame", "bfast01")
+S3method("model.matrix", "bfast01")
+S3method("nobs", "bfast01")
+S3method("AIC", "bfast01")
+S3method("BIC", "bfast01")
+S3method("coef", "bfast01")
+S3method("fitted", "bfast01")
+S3method("residuals", "bfast01")
+S3method("predict", "bfast01")
+S3method("as.zoo", "bfast01")
+S3method("plot", "bfast01")

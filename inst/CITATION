@@ -1,0 +1,64 @@
+citHeader("To cite bfast in publications use")
+
+citEntry(entry = "Article",
+         title = "Detecting Trend and Seasonal Changes in Satellite Image Time Series",
+         author = personList(as.person("Jan Verbesselt"), 
+	                     as.person("Rob Hyndman"),
+	                     as.person("Glenn Newnham"),
+                             as.person("Darius Culvenor")),
+         journal      = "Remote Sensing of Environment",
+         year         = "2010",
+	 volume       = "114",
+	 number       = "1",
+	 pages        = "106--115",
+	 doi          = "10.1016/j.rse.2009.08.014",
+         
+         textVersion = 
+         paste("Jan Verbesselt, Rob Hyndman, Glenn Newnham, Darius Culvenor (2010).", 
+               "Detecting Trend and Seasonal Changes in Satellite Image Time Series.",
+	       "Remote Sensing of Environment, 114(1), 106-115.",
+	       "doi:10.1016/j.rse.2009.08.014"),
+)
+
+citEntry(entry = "Article",
+         title = "Phenological Change Detection while Accounting for Abrupt and Gradual Trends in Satellite Image Time Series",
+         author = personList(as.person("Jan Verbesselt"), 
+	                     as.person("Rob Hyndman"),
+	                     as.person("Achim Zeileis"),
+                             as.person("Darius Culvenor")),
+         journal      = "Remote Sensing of Environment",
+         year         = "2010",
+	 volume       = "114",
+	 number       = "12",
+	 pages        = "2970--2980",
+	 doi          = "10.1016/j.rse.2010.08.003",
+         textVersion = 
+         paste("Jan Verbesselt, Rob Hyndman, Achim Zeileis, Darius Culvenor (2010).", 
+               "Phenological Change Detection while Accounting for Abrupt and Gradual Trends in Satellite Image Time Series.",
+	       "Remote Sensing of Environment, 114(12), 2970 - 2980.",
+	       "doi:10.1016/j.rse.2010.08.003"),
+)
+
+citEntry(entry = "TechReport",
+  title        = "Near Real-Time Disturbance Detection in Terrestrial Ecosystems Using Satellite Image Time Series: Drought Detection in {S}omalia",
+         author = personList(as.person("Jan Verbesselt"), 
+	                     as.person("Achim Zeileis"),
+                             as.person("Martin Herold")),
+  institution  = "Working Papers in Economics and Statistics, Research Platform Empirical
+  		  and Experimental Economics, Universit\\\"at Innsbruck",
+  year         = "2011",
+  type         = "Working Paper",
+  number       = "2011-18",
+  month        = "June",
+  url	       = "http://EconPapers.RePEc.org/RePEc:inn:wpaper:2011-18",
+  
+  textVersion  = 
+  paste("Jan Verbesselt, Achim Zeileis, Martin Herold (2011).", 
+	"Near Real-Time Disturbance Detection in Terrestrial Ecosystems Using Satellite Image Time Series: Drought Detection in Somalia.",
+ 	"Working Paper 2011-18.",
+ 	"Working Papers in Economics and Statistics, Research Platform Empirical and Experimental Economics, Universitaet Innsbruck.",
+	"URL http://EconPapers.RePEc.org/RePEc:inn:wpaper:2011-18"),
+	
+  header       = "If you use bfastmonitor() or bfastpp(), please cite:"
+)
+
