@@ -1,0 +1,77 @@
+---
+title: "Report: bfast test results"
+output:
+  html_document:
+    toc: false
+    self_contained: true
+---
+
+This document compares results of applying functions from `test.R` after `set_default_options()` and `set_fast_options()`. It is used as a test report to make sure that modified (faster) functions return equal results. 
+
+
+```{r, echo=FALSE, results='hide'}
+library(strucchange)
+library(bfast)
+test.env = new.env()
+source("test.R", local = test.env )
+
+# find all functions in environment
+fs = names(which(sapply(ls(test.env), function(x) {return(class(get(x, envir = test.env)))}) == "function"))
+
+results.default = list()
+results.fast = list()
+for (i in 1:length(fs))
+{
+  f = get(fs[i],envir = test.env)
+  set_default_options()
+  results.default[[fs[i]]] = f()
+  set_fast_options()
+  results.fast[[fs[i]]] = f()
+}
+
+fnames = names(results.fast)
+results = sapply(fnames, function(x) {
+  all.equal(results.default[[x]],results.fast[[x]])
+}, simplify = F)
+n_success = sum(sapply(results, isTRUE))
+n_failed = sum(!sapply(results, isTRUE))
+```
+
+
+## Summary
+
+* `r n_success` successful
+* `r n_failed` failed
+
+## Details
+
+```{r, echo=FALSE, results='asis'}
+library(knitr)
+df = data.frame(f = fnames,result=ifelse(sapply(results, isTRUE),"success","failed"),row.names = NULL,stringsAsFactors = FALSE)
+failed = which(!sapply(results, isTRUE))
+df$result[failed] = paste(df$result[failed], " [", 1:length(failed) ,"]", sep="")
+kable(df,format="markdown")
+```
+
+
+
+```{r, echo=FALSE, results='asis'}
+if (n_failed > 0) {
+  cat("## Details of failed tests\n")
+  options(max.print = 10)
+  for (i in 1:length(failed)) {
+    cat(paste("### [", i ,"] ", fnames[failed[i]], "\n", sep=""))
+    print(results[[failed[i]]])
+    cat("\n")
+  }
+}
+```
+
+
+---
+
+_This report has been generated on `r Sys.time()`._
+
+
+
+

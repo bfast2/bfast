@@ -13,7 +13,8 @@
 \usage{
 bfastpp(data, order = 3,
   lag = NULL, slag = NULL, na.action = na.omit,
-  stl = c("none", "trend", "seasonal", "both"))
+  stl = c("none", "trend", "seasonal", "both"),
+  formula = NULL)
 }
 
 \arguments{
@@ -30,6 +31,11 @@ bfastpp(data, order = 3,
     The \code{"trend"} or \code{"seasonal"} component or both from \code{\link[stats]{stl}}
     are removed from each column in \code{data}. By default (\code{"none"}), no STL
     adjustment is used.}
+  \item{formula}{regression model to be used (see \code{\link[bfast]{bfastmonitor}}). 
+    If given, only independent variables that occur in the formula will be computed and 
+    the output will be a list of the design matrix, the response vector, and the vector 
+    of times instead of a single \code{data.frame}. Providing a formula may reduce relative 
+    expensive calls of \code{model.matrix} and \code{model.frame} in following operations.}
 }
 
 \details{
@@ -45,7 +51,7 @@ bfastpp(data, order = 3,
 }
 
 \value{
-  \code{bfastpp} returns a \code{"data.frame"} with the following variables (some of which may be matrices).
+  If no formula is provided, \code{bfastpp} returns a \code{"data.frame"} with the following variables (some of which may be matrices).
   \item{time}{numeric vector of time stamps,}
   \item{response}{response vector (first column of \code{data}),}
   \item{trend}{linear time trend (running from 1 to number of observations),}
@@ -54,6 +60,8 @@ bfastpp(data, order = 3,
   \item{lag}{autoregressive terms (or orders \code{lag}, if any),}
   \item{slag}{seasonal autoregressive terms (or orders \code{slag}, if any),}
   \item{xreg}{covariate regressor (all columns of \code{data} except the first, if any).}
+  
+  If a formula is given,\code{bfastpp} returns a \code{list} with components \code{X},  \code{y}, and \code{t}, where \code{X} is the design matrix of the model, \code{y} is the response vector, and  \code{t} represents the time of observations. \code{X} will only contain variables that occur in the formula. Columns of \code{X} have  names as decribed above.
 }
 
 \references{
@@ -85,6 +93,11 @@ summary(d1lm)
 d2 <- bfastpp(ndvi, stl = "both", lag = 1:2)
 d2lm <- lm(response ~ lag, data = d2)
 summary(d2lm)
+
+## provide a formula and use the lower level lm.fit function
+d3 <- bfastpp(ndvi, stl = "both", lag = 1:2, formula = response ~ lag)
+d3lm <- lm.fit(d3$X, d3$y)
+d3lm$coefficients
 }
 
 \keyword{ts}

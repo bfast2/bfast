@@ -1,0 +1,67 @@
+---
+title: "Report: bfast benchmark results"
+output:
+  html_document:
+    toc: false
+    self_contained: true
+---
+
+This document evaluates computation times and speedup factors using `set_default_options()` and `set_fast_options()`. The same functions from `benchmark.R` are applied for both option settings. Results are summarized below.
+
+
+```{r, echo=FALSE, results='hide'}
+library(strucchange)
+library(bfast)
+
+
+test.env = new.env()
+source("benchmark.R", local = test.env )
+
+# find all functions in environment
+fs = names(which(sapply(ls(test.env), function(x) {return(class(get(x, envir = test.env)))}) == "function"))
+
+results.default = data.frame(f=NULL,time=NULL)
+results.fast = data.frame(f=NULL,time=NULL)
+for (i in 1:length(fs))
+{
+  f = get(fs[i],envir = test.env)
+  set_default_options()
+  results.default= rbind(results.default, data.frame(f=fs[i], time=system.time(f())[3], row.names = NULL))
+  set_fast_options()
+  results.fast = rbind(results.fast, data.frame(f=fs[i], time=system.time(f())[3], row.names = NULL))
+}
+```
+
+```{r, echo=FALSE, results='asis'}
+library(knitr)
+r = merge(results.default,results.fast,by="f", suffixes=c(".default",".fast"))
+r$speedup = r$time.default / r$time.fast
+kable(r,format="markdown")
+```
+
+
+```{r, echo=FALSE,fig.align='center'}
+#par(mar=c(5,4,3,2))
+par(oma=c(5,0,0,0))
+par(cex=0.8)
+barplot(horiz=F,height = t(as.matrix(r[,c("time.default","time.fast")])), beside = T, names.arg = r$f, ylab="Computation time (seconds)", legend.text=c("set_default_options()", "set_fast_options()"), las=3, args.legend=list(x="topleft"))
+```
+
+
+```{r, echo=FALSE, results='asis'}
+cat("## Function details\n")
+for (i in 1:length(fs)) {
+    cat(paste("### ", fs[i] ,"\n","```{r}", "\n", sep=""))
+    f <- get(fs[i],envir = test.env)
+    print(f)
+    cat(paste("\n", "```", "\n", sep=""))
+}
+```
+
+---
+
+
+_This report has been generated on `r Sys.time()`._
+
+
+

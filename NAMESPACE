@@ -6,7 +6,9 @@ export(
   "bfastpp",
   "bfastts",
   "bfast01",
-  "bfast01classify"
+  "bfast01classify",
+  "set_fast_options",
+  "set_default_options"
 )
 
 S3method("plot", "bfast")

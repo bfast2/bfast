@@ -14,3 +14,18 @@ history_break <- function(formula, data, h = NULL, hpc = "none") {
   y_start <- if(is.na(y_start)) 1 else y_start + 1
   data$time[y_start]
 }
+
+
+
+history_break.matrix <- function(X,y,time, h = NULL, hpc = "none") {
+  n <- nrow(X)
+  ## rule of thumb for minimal segment size
+  if(is.null(h)) h <- 6 * NCOL(X)
+  
+  ## conduct breakpoints estimation
+  bp <- breakpoints.matrix(X,y, h = h, hpc = hpc) # TODO
+  
+  y_start <- tail(breakpoints(bp)$breakpoints, 1)
+  y_start <- if(is.na(y_start)) 1 else y_start + 1
+  time[y_start]
+}

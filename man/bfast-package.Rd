@@ -30,7 +30,14 @@ for modeling the stable historical behavior. A season-trend model (with harmonic
 \item \code{\link[bfast]{harvest}}: NDVI time series of a P. radiata plantation that is harvested.
 \item \code{\link[bfast]{som}}: NDVI time series of locations in the south of Somalia to
   illustrate the near real-time disturbance approach
+}}
+
+\section{Package options}{
+bfast uses the following options to modify the default behaviour:
+\itemize{
+\item \code{bfast.prefer_matrix_methods}: logical value (default \code{FALSE}) defining whether methods should try to use the design matrix instead of the formula and a dataframe whenever possible. This can avoid expensive repeated calls of \code{model.matrix} and \code{model.frame} and make model fitting faster using  \code{lm.fit}. Setting this option to TRUE requires according functions in the \code{strucchange} package.  
 }
+
 }
 
 \author{

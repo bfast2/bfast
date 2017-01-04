@@ -1,0 +1,157 @@
+---
+title: "Report: bfast profiling results"
+output:
+  html_document:
+    toc: true
+    self_contained: true
+---
+
+```{r,results='hide',echo=FALSE}
+library(strucchange)
+library(bfast)
+
+buildProfileGraph <- function(profobj, threshold = 2.5) {
+  invisible(require(igraph))
+  edges = data.frame(from=NULL,to=NULL,weight=NULL)
+  vertices = data.frame(name=NULL,label=NULL,weight=NULL)
+  for (i in 1:length(profobj$time)) {
+    for (j in 1:nrow(profobj$ref[[i]])) {
+      # if vertex with name profobj$ref[[i]]$f[i] does not exist, create it
+      vname = paste(profobj$ref[[i]]$f[1:j],collapse="/")
+      vs = which(vertices$name == vname)
+      if (length(vs)==0) {
+        vertices = rbind(vertices,data.frame(name=vname, label=profobj$ref[[i]]$f[j], weight=profobj$time[i], stringsAsFactors = FALSE))
+      }
+      else if (length(vs)==1) {
+        vertices$weight[vs] = vertices$weight[vs] + profobj$time[i]
+      }
+      else {
+        warning("duplicate vertices")
+        next
+      }
+    }
+    if (nrow(profobj$ref[[i]]) > 1) {
+      for (j in 1:(nrow(profobj$ref[[i]])-1)) {
+        vname0 = paste(profobj$ref[[i]]$f[1:j],collapse="/")
+        vname1 = paste(profobj$ref[[i]]$f[1:(j+1)],collapse="/")
+        es = which(edges$from ==vname0 & edges$to == vname1)
+        # if edge from profobj$ref[[i]]$f[j] to profobj$ref[[i]]$f[j+1] does not exist, create it
+        if (length(es) == 0) {
+          edges = rbind(edges,data.frame(from=vname0, to=vname1, weight=profobj$time[i]),stringsAsFactors=FALSE) # TODO: add weight
+        }
+        else if (length(es) == 1) {
+          # add weight profobj$time[i]...
+          edges$weight[es] =edges$weight[es] + profobj$time[i] # TODO: add proper weight
+        }
+        else {
+          warning("duplicate edges")
+          next
+        }
+      }
+    }
+  }
+  vertices$reltime =round(100*vertices$weight / sum(profobj$time),digits = 1)
+  vertices =vertices[which(vertices$reltime >= threshold),]
+  edges = edges[which(edges$from %in% vertices$name & edges$to %in% vertices$name),]
+  df.g <- graph.data.frame(d = edges, directed = T,vertices = vertices)
+  V(df.g)$label = paste(V(df.g)$label,"\n", V(df.g)$reltime , "%", sep="")
+  return(df.g)
+}
+``` 
+
+
+This document identifies computational bottlenecks in functions from `benchmark.R`.
+
+
+## Tables of most expensive function calls
+
+Below, two tables for all test functions present profiling results with `set_default_options()` and `set_fast_options()` respectively. 
+
+```{r, echo=FALSE, results='hide'}
+library(lineprof)
+library(knitr)
+test.env = new.env()
+source("benchmark.R", local = test.env )
+
+# find all functions in environment
+fs = names(which(sapply(ls(test.env), function(x) {return(class(get(x, envir = test.env)))}) == "function"))
+
+
+results.default = list()
+results_prof.default = list()
+
+results.fast= list()
+results_prof.fast = list()
+
+ftest = c("model.frame","cumsum","computeEmpProc","extend.RSS.table","RSS","RSSi","extract.breaks", "computeEstims","root.matrix", "crossprod", "border","model.response","model.matrix","outer","as.character","factor","as.ts","ts","%*%","as.vector","as.matrix","lm","lm.fit", unique(c(ls(envir = environment(bfast::bfast)), ls(envir = environment(strucchange::monitor)))))
+
+
+for (i in 1:length(fs))
+{
+  cat(paste("Running ", fs[i], "() ...\n", sep=""))
+  f = get(fs[i],envir = test.env)
+  
+  set_default_options()
+  lprof = lineprof(f(),interval = 0.005)
+  results_prof.default[[fs[i]]] = lprof
+  res = data.frame(f=ftest, time=rep(NA,length(ftest)))
+  res$time = sapply(ftest,function(y) { sum(focus(lprof, y)$time)},simplify = "array")
+  res = res[order(res$time,decreasing = T),]
+  res = res[which(res$time > 0),]
+  res = rbind(data.frame(f="(TOTAL)",time=sum(lprof$time)), res)
+  res$rel_time = res$time / res$time[1]
+  results.default[[fs[i]]] = res
+  
+  set_fast_options()
+  lprof = lineprof(f(),interval = 0.005)
+  results_prof.fast[[fs[i]]] = lprof
+  res = data.frame(f=ftest, time=rep(NA,length(ftest)))
+  res$time = sapply(ftest,function(y) { sum(focus(lprof, y)$time)},simplify = "array")
+  res = res[order(res$time,decreasing = T),]
+  res = res[which(res$time > 0),]
+  res = rbind(data.frame(f="(TOTAL)",time=sum(lprof$time)), res)
+  res$rel_time = res$time / res$time[1]
+  results.fast[[fs[i]]] = res
+}
+```
+
+
+```{r, echo=FALSE, results='asis'}
+
+for (fname in names(results.default)) {
+  # print bottlenecks old vs new, show only functions with more than or equal to 2% of the total computation times
+  cat(paste("### Function:",fname))
+  cat("\n")
+  rownames(results.default[[fname]]) <- NULL
+  rownames(results.fast[[fname]]) <- NULL
+  print(kable(results.default[[fname]][which(results.default[[fname]]$rel_time >= 0.02),],format="markdown"))
+  cat("\n")
+  print(kable(results.fast[[fname]][which(results.fast[[fname]]$rel_time >= 0.02),],format="markdown"))
+  cat("\n")
+}
+```
+
+
+## Graphs of most expensive function calls 
+
+The following graphs present call graphs of most expensive operations. Given percentages represent the time a function needs to complete relative to the overall computation time. For all test functions,  two graphs  with `set_default_options()` and `set_fast_options()` respectively are shown. 
+
+```{r, echo=FALSE}
+
+for (fname in names(results_prof.default)) {
+ par(mar=c(0,0,1,0))
+ graph = buildProfileGraph(results_prof.default[[fname]])
+ plot(graph,main=paste("Function: ", fname, " (orig.)", sep=""),layout=layout_(graph,as_tree()), vertex.size = 6,vertex.frame.color="gray", vertex.label.cex = 0.3,vertex.label.color="black", vertex.color="gray", edge.width=0.7, edge.arrow.width=0.0)
+
+ graph = buildProfileGraph(results_prof.fast[[fname]])
+ plot(graph,main=paste("Function: ", fname, " (mod.)", sep=""),layout=layout_(graph,as_tree()), vertex.size = 6,vertex.frame.color="gray", vertex.label.cex = 0.3,vertex.label.color="black", vertex.color="gray", edge.width=0.7, edge.arrow.width=0.0)
+}
+```
+
+---
+
+_This report has been generated on `r Sys.time()`._
+
+
+
+
