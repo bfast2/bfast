@@ -5,37 +5,31 @@ NDVIa <- as.ts(zoo(som$NDVI.a, som$Time))
 
 # history = ROC
 bfastmonitor.hist.roc <- function() {
-  x <- replicate(300,bfastmonitor(NDVIa, start = c(2010, 13),history = "ROC", type="OLS-MOSUM",formula = response ~ trend + harmon,order=3,lag = NULL, slag = NULL), simplify=F)[[1]]
-  return(x)
+  replicate(300,bfastmonitor(NDVIa, start = c(2010, 13),history = "ROC", type="OLS-MOSUM",formula = response ~ trend + harmon,order=3,lag = NULL, slag = NULL))
 }
 
 
 bfastmonitor.olscusum <- function() {
-  x <- replicate(300,bfastmonitor(NDVIa, start = c(2010, 13),history = "ROC", type="OLS-CUSUM",formula = response ~ trend + harmon,order=3,lag = NULL, slag = NULL), simplify=F)[[1]]
-  return(x)
+  replicate(300,bfastmonitor(NDVIa, start = c(2010, 13),history = "ROC", type="OLS-CUSUM",formula = response ~ trend + harmon,order=3,lag = NULL, slag = NULL))
 }
 
 bfastmonitor.RE <- function() {
-  x <- replicate(50,bfastmonitor(NDVIa, start = c(2010, 13),history = "ROC", type="RE",formula = response ~ trend + harmon,order=3,lag = NULL, slag = NULL), simplify=F)[[1]]
-  return(x)
+  replicate(50,bfastmonitor(NDVIa, start = c(2010, 13),history = "ROC", type="RE",formula = response ~ trend + harmon,order=3,lag = NULL, slag = NULL))
 }
 
 bfastmonitor.ME <- function() {
-  x <- replicate(50,bfastmonitor(NDVIa, start = c(2010, 13),history = "ROC", type="ME",formula = response ~ trend + harmon,order=3,lag = NULL, slag = NULL), simplify=F)[[1]]
-  return(x)
+  replicate(50,bfastmonitor(NDVIa, start = c(2010, 13),history = "ROC", type="ME",formula = response ~ trend + harmon,order=3,lag = NULL, slag = NULL))
 }
 
 # history = BP
 bfastmonitor.hist.bp <- function() {
-  x <- replicate(5,bfastmonitor(NDVIa, start = c(2010, 13),history = "BP", type="OLS-MOSUM",formula = response ~ trend + harmon,order=3,lag = NULL, slag = NULL), simplify=F)[[1]]
-  return(x)
+  replicate(5,bfastmonitor(NDVIa, start = c(2010, 13),history = "BP", type="OLS-MOSUM",formula = response ~ trend + harmon,order=3,lag = NULL, slag = NULL))
 }
 
 
 # history = all
 bfastmonitor.hist.all <- function() {
-  x <- replicate(300,bfastmonitor(NDVIa, start = c(2010, 13),history = "all", type="OLS-MOSUM",formula = response ~ trend + harmon,order=3,lag = NULL, slag = NULL), simplify=F)[[1]]
-  return(x)
+  replicate(300,bfastmonitor(NDVIa, start = c(2010, 13),history = "all", type="OLS-MOSUM",formula = response ~ trend + harmon,order=3,lag = NULL, slag = NULL))
 }
 
 
@@ -53,8 +47,7 @@ bfastmonitor.modis <- function() {
     bfm <- bfastmonitor(data = ndvi, start=c(2010,12), history = c("ROC"))
     return(cbind(bfm$breakpoint, bfm$magnitude))
   }
-  x <-replicate(10,calc(modisbrick,function(x) {xbfastmonitor(x, dates)}), simplify=F)[[1]]
-  return(x)
+  x <-replicate(10,calc(modisbrick,function(x) {xbfastmonitor(x, dates)}))
 }
 
 
@@ -62,23 +55,19 @@ rdist <- 10/length(harvest)
 require(forecast)
 
 bfast.reccusum <- function() {
-  x <- replicate(5,bfast(harvest,h=rdist, type="Rec-CUSUM", season="harmonic", max.iter=1), simplify=F)[[1]]
-  return(x)
+  replicate(5,bfast(harvest,h=rdist, type="Rec-CUSUM", season="harmonic", max.iter=1))
 }
 
 bfast.olscusum <- function() {
-  x <- replicate(5,bfast(harvest,h=rdist, type="OLS-CUSUM", season="harmonic", max.iter = 1), simplify=F)[[1]]
-  return(x)
+  replicate(5,bfast(harvest,h=rdist, type="OLS-CUSUM", season="harmonic", max.iter = 1))
 }
 
 bfast.olsmosum <- function() {
-  x <- replicate(5,bfast(harvest,h=rdist, type="OLS-MOSUM", season="harmonic", max.iter = 1), simplify=F)[[1]]
-  return(x)
+  replicate(5,bfast(harvest,h=rdist, type="OLS-MOSUM", season="harmonic", max.iter = 1))
 }
 
 bfast.recmosum <- function() {
-  x <- replicate(5,bfast(harvest,h=rdist, type="Rec-MOSUM", season="harmonic", max.iter = 1), simplify=F)[[1]]
-  return(x)
+  replicate(5,bfast(harvest,h=rdist, type="Rec-MOSUM", season="harmonic", max.iter = 1))
 }
 
 
