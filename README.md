@@ -22,7 +22,7 @@ The example below runs the first example of the `bfastmonitor()` documentation f
 
 
 ```
-library(zoo)
+library(bfast)
 NDVIa <- as.ts(zoo(som$NDVI.a, som$Time))
 f <- function() bfastmonitor(NDVIa, start = c(2010, 13)) 
 
