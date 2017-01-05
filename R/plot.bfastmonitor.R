@@ -18,11 +18,13 @@ plot.bfastmonitor <- function(x, na.rm = TRUE, main = TRUE, ylab = "Data", ...)
   #test_pred <- predict(x$model, newdata = x$tspp[,-c(1,2,3)])
   if (is.matrix(x$tspp)) {
     test_pred <- x$tspp[,-c(1L,2L, 3L)] %*% x$model$coefficients 
+    test_pred <- zoo(test_pred, x$tspp[,2L], frequency = frequency(y))
   }
   else {
     test_pred <- predict(x$model, newdata = x$tspp)
+    test_pred <- zoo(test_pred, x$tspp$time, frequency = frequency(y))
   }
-  test_pred <- zoo(test_pred, x$tspp[,2L], frequency = frequency(y))
+ 
   lines(test_pred, col = "blue", lwd = 1.5)
 
   abline(v = x$monitor[1], lty = 2, col = "black", lwd = 1)

@@ -168,7 +168,7 @@ bfastpp<- function(data, order = 3,
     harmon <- outer(2 * pi * rval[,2], 1:order) # rval[,2] is as.numeric(time(y))
     harmon <- cbind(apply(harmon, 2, cos), apply(harmon, 2, sin))
     colnames(harmon) <- if(order == 1) {
-      c("harmon.cos", "harmon.sin")
+      c("harmoncos", "harmonsin")
     } else {
       c(paste("harmon.cos", 1:order, sep = ""), paste("harmon.sin", 1:order, sep = ""))
     }

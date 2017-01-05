@@ -24,10 +24,18 @@ The example below runs the first example of the `bfastmonitor()` documentation f
 ```
 library(zoo)
 NDVIa <- as.ts(zoo(som$NDVI.a, som$Time))
+f <- function() bfastmonitor(NDVIa, start = c(2010, 13)) 
+
 set_default_options()
-system.time(replicate(100, bfastmonitor(NDVIa, start = c(2010, 13))))
+x = f() 
+system.time(replicate(100, f()))
+
 set_fast_options()
-system.time(replicate(100, bfastmonitor(NDVIa, start = c(2010, 13))))
+y = f()
+system.time(replicate(100, f()))
+
+par(mfrow = c(1,2))
+plot(x) ; plot(y)
 ```
 
 
