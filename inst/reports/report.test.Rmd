@@ -10,8 +10,8 @@ This document compares results of applying functions from `test.R` after `set_de
 
 
 ```{r, echo=FALSE, results='hide'}
-library(strucchange)
-library(bfast)
+suppressMessages(library(strucchange))
+suppressMessages(library(bfast))
 test.env = new.env()
 source("test.R", local = test.env )
 
@@ -46,7 +46,7 @@ n_failed = sum(!sapply(results, isTRUE))
 ## Details
 
 ```{r, echo=FALSE, results='asis'}
-library(knitr)
+suppressMessages(library(knitr))
 df = data.frame(f = fnames,result=ifelse(sapply(results, isTRUE),"success","failed"),row.names = NULL,stringsAsFactors = FALSE)
 failed = which(!sapply(results, isTRUE))
 df$result[failed] = paste(df$result[failed], " [", 1:length(failed) ,"]", sep="")

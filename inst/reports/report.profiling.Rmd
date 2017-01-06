@@ -7,8 +7,9 @@ output:
 ---
 
 ```{r,results='hide',echo=FALSE}
-library(strucchange)
-library(bfast)
+suppressMessages(library(strucchange))
+suppressMessages(library(bfast))
+suppressMessages(if (!require(igraph)) stop("this report uses the igraph package, please install it with install.packages(\"igraph\")"))
 
 buildProfileGraph <- function(profobj, threshold = 2.5) {
   invisible(require(igraph))
@@ -68,8 +69,9 @@ This document identifies computational bottlenecks in functions from `benchmark.
 Below, two tables for all test functions present profiling results with `set_default_options()` and `set_fast_options()` respectively. 
 
 ```{r, echo=FALSE, results='hide'}
-library(lineprof)
-library(knitr)
+suppressMessages(if (!require(lineprof)) stop("this report uses the igraph package, please install it with install.packages(\"lineprof\")"))
+suppressMessages(library(knitr))
+
 test.env = new.env()
 source("benchmark.R", local = test.env )
 

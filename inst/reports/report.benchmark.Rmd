@@ -10,8 +10,8 @@ This document evaluates computation times and speedup factors using `set_default
 
 
 ```{r, echo=FALSE, results='hide'}
-library(strucchange)
-library(bfast)
+suppressMessages(library(strucchange))
+suppressMessages(library(bfast))
 
 
 test.env = new.env()
@@ -27,13 +27,13 @@ for (i in 1:length(fs))
   f = get(fs[i],envir = test.env)
   set_default_options()
   results.default= rbind(results.default, data.frame(f=fs[i], time=system.time(f())[3], row.names = NULL))
-  set_fast_options()
+  set_fast_options() # TODO: devide by n?
   results.fast = rbind(results.fast, data.frame(f=fs[i], time=system.time(f())[3], row.names = NULL))
 }
 ```
 
 ```{r, echo=FALSE, results='asis'}
-library(knitr)
+suppressMessages(library(knitr))
 r = merge(results.default,results.fast,by="f", suffixes=c(".default",".fast"))
 r$speedup = r$time.default / r$time.fast
 kable(r,format="markdown")
