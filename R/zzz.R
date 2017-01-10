@@ -2,10 +2,11 @@
   # make sure that environments of packages used in C++ can be accessed 
   #require(stats)
   #require(strucchange)
-  options(strucchange.use_armadillo=FALSE)
   op <- options()
   op.bfast <- list(
-    bfast.prefer_matrix_methods = FALSE 
+    bfast.prefer_matrix_methods = FALSE,
+    bfast.use_bfastts_modifications = FALSE,
+    strucchange.use_armadillo=FALSE
   )
   toset <- !(names(op.bfast) %in% names(op))
   if(any(toset)) options(op.bfast[toset])
@@ -25,11 +26,15 @@ set_fast_options <- function() {
   {
     stop("failed to set fast options, please reinstall strucchange from http://github.com/appelmar/strucchange")
   }
-  return(options(strucchange.use_armadillo=TRUE, bfast.prefer_matrix_methods=TRUE))
+  return(options(strucchange.use_armadillo=TRUE, 
+                 bfast.prefer_matrix_methods=TRUE,
+                 bfast.use_bfastts_modifications=TRUE))
 }
 
 
 
 set_default_options <- function() {
-  return(options(strucchange.use_armadillo=FALSE, bfast.prefer_matrix_methods=FALSE))
+  return(options(strucchange.use_armadillo=FALSE, 
+                 bfast.prefer_matrix_methods=FALSE,
+                 bfast.use_bfastts_modifications=FALSE))
 }

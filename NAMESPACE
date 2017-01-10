@@ -1,4 +1,7 @@
 import("graphics", "stats", "strucchange", "zoo", "raster", "sp", "forecast")
+useDynLib(bfast)
+importFrom(Rcpp, evalCpp)
+exportPattern("^[[:alpha:]]+")
 
 export(
   "bfast",

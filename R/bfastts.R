@@ -4,31 +4,130 @@
 ## e.g. 10 day or 16 day time series
 bfastts <- function(data,dates, type = c("irregular", "16-day", "10-day")) {
 	
-	yday365 <- function(x) {
-		x <- as.POSIXlt(x)
-		mdays <- c(31L, 28L, 31L, 30L, 31L, 30L, 31L, 31L, 30L, 31L, 30L, 31L)
-		cumsum(c(0L, mdays))[1L + x$mon] + x$mday
-	}
-	
-	if (type == "irregular") {
-	zz <- zoo(data,1900 + as.POSIXlt(dates)$year + (yday365(dates) - 1)/365, frequency = 365)
-	}
-	
-	if (type == "16-day") {
-		z <- zoo(data, dates)
-		yr <- as.numeric(format(time(z), "%Y"))
-		jul <- as.numeric(format(time(z), "%j"))
-		delta <- min(unlist(tapply(jul, yr, diff))) # 16
-		zz <- aggregate(z, yr + (jul - 1) / delta / 23)
-	}
-	
-	if (type == "10-day") {
-	  tz <- as.POSIXlt(dates)
-	  zz <- zoo(data,
-	           1900L + tz$year + round((tz$yday - 1L)/ 10L)/36L,
-	           frequency = 36L)
-	}
   
-	tso <- as.ts(zz)
-	return(tso)
+  if (getOption("bfast.use_bfastts_modifications", FALSE)) {
+    return(.bfastts.new (data, dates, type))
+  }
+  else 
+  {
+  	yday365 <- function(x) {
+  		x <- as.POSIXlt(x)
+  		mdays_sum <- c(0L, 31L, 59L, 90L, 120L, 151L, 181L, 212L, 243L, 273L, 304L, 334L, 365)
+  		mdays_sum[1L + x$mon] + x$mday
+  	}
+  	
+  	if (type == "irregular") {
+  	zz <- zoo(data,1900 + as.POSIXlt(dates)$year + (yday365(dates) - 1)/365, frequency = 365)
+  	}
+  	
+  	if (type == "16-day") {
+  		z <- zoo(data, dates)
+  		yr <- as.numeric(format(time(z), "%Y"))
+  		jul <- as.numeric(format(time(z), "%j"))
+  		delta <- min(unlist(tapply(jul, yr, diff))) # 16
+  		zz <- aggregate(z, yr + (jul - 1) / delta / 23)
+  	}
+  	
+  	if (type == "10-day") {
+  	  tz <- as.POSIXlt(dates)
+  	  zz <- zoo(data,
+  	           1900L + tz$year + round((tz$yday - 1L)/ 10L)/36L,
+  	           frequency = 36L)
+  	}
+    
+  	tso <- as.ts(zz)
+  	return(tso)
+  }
 }
+
+.bfastts.new <- function(data,dates, type = c("irregular", "16-day", "10-day")) {
+  
+  yday365 <- function(x) {
+    x <- as.POSIXlt(x)
+    mdays_sum <- c(0L, 31L, 59L, 90L, 120L, 151L, 181L, 212L, 243L, 273L, 304L, 334L, 365)
+    mdays_sum[1L + x$mon] + x$mday
+  }
+  
+  if (type == "irregular") {
+    idx = 1900 + as.POSIXlt(dates)$year + (yday365(dates) - 1)/365
+    freq = 365
+    
+  }
+  else if (type == "16-day") {
+    yr <- as.numeric(format(time(z), "%Y"))
+    jul <- as.numeric(format(time(z), "%j"))
+    delta <- min(unlist(tapply(jul, yr, diff))) # 16
+    idx = yr + (jul - 1) / delta / 23
+    freq = 23
+  }
+  
+  else if (type == "10-day") {
+    freq = 36
+    index = 1900L + tz$year + round((tz$yday - 1L)/ 10L)/36L
+  }
+  else {
+    stop("no valid time series type specified.")
+  }
+  
+  # define target ts and fill with NAs
+  start = idx[1]
+  end = idx[length(idx)]
+  A = ts(start = start,end = end, frequency = freq) 
+  
+  # find closest points in the target time series for all observations
+  matches = .bfast_cpp_closestfrom(idx,time(A), TRUE)
+  
+  # replace NAs with the observations at corresponding indexes
+  A[matches] = data
+  return(A)
+
+}
+
+
+
+
+
+
+
+
+
+# this is an alternative (faster) implementation that tries to work more precisely 
+# with leap years and arbitrary frequencies but needs more testing. 
+.bfast_construct_ts <- function(data, dates, freq=23) {
+  if (class(dates) != "Date") {
+    dates = as.Date(dates)
+  }
+  
+  # find out year and fractional year of the observations
+  data.yr <- as.numeric(format(dates, "%Y"))
+  data.doy <- as.numeric(format(dates, "%j"))
+  ndays = function(year){
+   ifelse ((((year %% 4 == 0) & (year %% 100 != 0)) | (year %% 400 == 0)), 366, 365)
+  }
+  data.time = data.yr + (data.doy-1)/ndays(data.yr)
+  
+  
+  
+  # define a NA time series with given frequency 
+  start = c(data.yr[1], 1)
+  end = c(data.yr[length(data)], freq)
+  A = ts(start = start,end = end, frequency = freq)
+  
+  
+  # find closest points in the target time series for all osbervations
+  idx = .bfast_cpp_closestfrom(data.time,time(A), TRUE)
+  if (anyDuplicated(idx)) 
+    stop("multiple observations belong to the same point cycle in the time series")
+  
+  # replace NAs with the observations at corresponding indexes
+  A[idx] = data
+  
+  #  crop time series and return
+  bounds = range(which(!is.na(A)))
+  return(ts(A[bounds[1]:bounds[2]], start=time(A)[bounds[1]], end=time(A)[bounds[2]], freq=freq))
+}
+
+
+
+
+

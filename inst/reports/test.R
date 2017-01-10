@@ -159,4 +159,15 @@ test.recresid <- function() {
 }
 
 
+bfast01.test <- function() {
+  bfast01(NDVIa, test = c("BIC", "OLS-MOSUM", "supLM"), aggregate = any)
+}
+
+
+
+
+  
+}
+
+
 

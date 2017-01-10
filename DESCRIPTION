@@ -21,9 +21,10 @@ Description: This package integrates the decomposition of time series into trend
        BFAST approach is flexible approach that handles missing data without interpolation.
        Furthermore now different models can be used to fit the time series data and detect structural changes (breaks).
 Depends: R (>= 3.0.0), strucchange
-Imports: graphics, stats, zoo, forecast, sp, raster
+Imports: graphics, stats, zoo, forecast, sp, raster, Rcpp (>= 0.12.7)
 Suggests:
 License: GPL (>= 2)
 URL: http://bfast.R-Forge.R-project.org/
 LazyLoad: yes
 LazyData: yes
+LinkingTo: Rcpp
