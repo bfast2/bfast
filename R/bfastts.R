@@ -54,8 +54,8 @@ bfastts <- function(data,dates, type = c("irregular", "16-day", "10-day")) {
     
   }
   else if (type == "16-day") {
-    yr <- as.numeric(format(time(z), "%Y"))
-    jul <- as.numeric(format(time(z), "%j"))
+    yr <- as.numeric(format(dates, "%Y"))
+    jul <- as.numeric(format(dates, "%j"))
     delta <- min(unlist(tapply(jul, yr, diff))) # 16
     idx = yr + (jul - 1) / delta / 23
     freq = 23
