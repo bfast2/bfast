@@ -104,6 +104,12 @@ bfast.recmosum <- function() {
   return(list(x$magnitude, x$Time, x$output[[1]]$ci.Vt, x$output[[1]]$bp.Vt$breakpoints, x$output[[1]]$ci.Vt$confint, x$nobp))
 }
 
+bfast.dummy <- function() {
+  x = bfast(harvest,h=rdist, type="OLS-CUSUM", season="dummy", max.iter = 1)
+  return(list(x$magnitude, x$Time, x$output[[1]]$ci.Vt, x$output[[1]]$bp.Vt$breakpoints, x$output[[1]]$ci.Vt$confint, x$nobp))
+}
+
+
 test.recresid <- function() {
 	set.seed(1111)
  

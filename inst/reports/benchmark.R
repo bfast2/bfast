@@ -62,6 +62,11 @@ bfast.olscusum <- function() {
   replicate(5,bfast(harvest,h=rdist, type="OLS-CUSUM", season="harmonic", max.iter = 1))
 }
 
+
+bfast.dummy <- function() {
+  replicate(5,bfast(harvest,h=rdist, type="OLS-CUSUM", season="dummy", max.iter = 1))
+}
+
 bfast.olsmosum <- function() {
   replicate(5,bfast(harvest,h=rdist, type="OLS-MOSUM", season="harmonic", max.iter = 1))
 }
