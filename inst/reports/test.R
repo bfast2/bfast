@@ -159,12 +159,18 @@ test.recresid <- function() {
 }
 
 
-bfast01.test <- function() {
-  bfast01(NDVIa, test = c("BIC", "OLS-MOSUM", "supLM"), aggregate = any)
+bfast01.test01 <- function() {
+  bf1 <- bfast01(NDVIa)
 }
 
 
+bfast01.test02 <- function() {
+  bfast01(NDVIa, test = c("BIC", "OLS-MOSUM", "supLM"), aggregate = any)
+}
 
+bfast01.test03 <- function() {
+  bfast01(NDVIa, test = c("OLS-MOSUM", "supLM"), aggregate = any, bandwidth = 0.11) 
+}
 
 
 
