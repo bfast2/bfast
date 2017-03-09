@@ -1,7 +1,4 @@
 .onLoad <- function(libname, pkgname) {
-  # make sure that environments of packages used in C++ can be accessed 
-  #require(stats)
-  #require(strucchange)
   op <- options()
   op.bfast <- list(
     bfast.prefer_matrix_methods = FALSE,
