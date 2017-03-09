@@ -27,7 +27,7 @@ for (i in 1:length(fs))
   f = get(fs[i],envir = test.env)
   set_default_options()
   results.default= rbind(results.default, data.frame(f=fs[i], time=system.time(f())[3], row.names = NULL))
-  set_fast_options() # TODO: devide by n?
+  set_fast_options() 
   results.fast = rbind(results.fast, data.frame(f=fs[i], time=system.time(f())[3], row.names = NULL))
 }
 ```
@@ -44,7 +44,14 @@ kable(r,format="markdown")
 #par(mar=c(5,4,3,2))
 par(oma=c(5,0,0,0))
 par(cex=0.8)
-barplot(horiz=F,height = t(as.matrix(r[,c("time.default","time.fast")])), beside = T, names.arg = r$f, ylab="Computation time (seconds)", legend.text=c("set_default_options()", "set_fast_options()"), las=3, args.legend=list(x="topleft"))
+
+# divide into groups based un first part of the function name
+fgroups = unique(sapply(strsplit(as.character(r$f),"\\."), function(x) return(x[1])))
+
+for (fg in fgroups) {
+  r.sub = r[which(grepl(paste(fg,"\\.",sep=""),as.character(r$f))),]
+  barplot(horiz=F,height = t(as.matrix(r.sub[,c("time.default","time.fast")])), beside = T, names.arg = r.sub$f, ylab="Computation time (seconds)", legend.text=c("set_default_options()", "set_fast_options()"), las=3, args.legend=list(x="topleft"), main=fg)
+}
 ```
 
 
