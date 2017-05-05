@@ -50,6 +50,33 @@ bfastmonitor.modis <- function() {
   x <-replicate(10,calc(modisbrick,function(x) {xbfastmonitor(x, dates)}))
 }
 
+bfastmonitor.modis.all <- function() {
+  ## helper function to be used with the calc() function
+  xbfastmonitor <- function(x,dates) {
+    ndvi <- bfastts(x, dates, type = c("16-day"))
+    ndvi <- window(ndvi,end=c(2011,14))/10000
+    ## delete end of the time to obtain a dataset similar to RSE paper (Verbesselt et al.,2012)
+    bfm <- bfastmonitor(data = ndvi, start=c(2010,12), history = c("all"))
+    return(cbind(bfm$breakpoint, bfm$magnitude))
+  }
+  x <-replicate(10,calc(modisbrick,function(x) {xbfastmonitor(x, dates)}))
+}
+
+
+bfastmonitor.modis.all.irregular <- function() {
+  ## helper function to be used with the calc() function
+  xbfastmonitor <- function(x,dates) {
+    ndvi <- bfastts(x, dates, type = c("irregular"))
+    ndvi <- window(ndvi,end=c(2011,14))/10000
+    ## delete end of the time to obtain a dataset similar to RSE paper (Verbesselt et al.,2012)
+    bfm <- bfastmonitor(data = ndvi, start=c(2010,12), history = c("all"))
+    return(cbind(bfm$breakpoint, bfm$magnitude))
+  }
+  x <-replicate(10,calc(modisbrick,function(x) {xbfastmonitor(x, dates)}))
+}
+
+
+
 
 rdist <- 10/length(harvest)
 require(forecast)
