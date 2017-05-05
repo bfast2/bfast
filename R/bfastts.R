@@ -40,12 +40,19 @@ bfastts <- function(data,dates, type = c("irregular", "16-day", "10-day")) {
   }
 }
 
-.bfastts.new <- function(data,dates, type = c("irregular", "16-day", "10-day")) {
+.bfastts.new <- function(data, dates, type = c("irregular", "16-day", "10-day")) {
   
   yday365 <- function(x) {
     x <- as.POSIXlt(x)
     mdays_sum <- c(0L, 31L, 59L, 90L, 120L, 151L, 181L, 212L, 243L, 273L, 304L, 334L, 365)
     mdays_sum[1L + x$mon] + x$mday
+  }
+  
+  # sort by date if needed
+  if (is.unsorted(dates)) {
+    ord = order(dates)
+    dates = dates[ord]
+    data = data[ord]
   }
   
   if (type == "irregular") {
