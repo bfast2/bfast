@@ -6,8 +6,8 @@
 Series}
 \usage{
 bfast(Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
-  max.iter = NULL, breaks = NULL, hpc = "none", level = 0.05,
-  type = "OLS-MOSUM")
+  max.iter = 10, breaks = NULL, hpc = "none", level = 0.05,
+  reg = "lm", type = "OLS-MOSUM", ...)
 }
 \arguments{
 \item{Yt}{univariate time series to be analyzed. This should be an object of
@@ -40,6 +40,8 @@ for hpc support.}
 \item{level}{numeric; threshold value for the \link[strucchange]{sctest.efp}
 test; if a length 2 vector is passed, the first value is used for the trend,
 the second for the seasonality}
+
+\item{reg}{"lm" or "rlm"}
 
 \item{type}{character, indicating the type argument to
 \link[strucchange]{efp}}

@@ -5,7 +5,7 @@ This fork aims at reducing computation times in the R package [bfast](https://cr
 ```
 library(devtools)
 install_github("appelmar/strucchange")
-install_github("appelmar/bfast")
+install_github("kongdd/bfast")
 ```
 
 
@@ -71,6 +71,12 @@ Most important modifications include:
 
 
 
+## Altered by Martin Jung - 2017
 
+Changes made:
 
-
+- Altered "bfast01":  
+  -- Add functionality to support different regressors such as robust linear regression (MASS package)  
+  -- Switched to stlplus (stlplus package) as default to allow missing data in time series
+- "bfast"  
+  -- Switched to stlplus (stlplus package) as default to allow missing data in time series
