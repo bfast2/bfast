@@ -6,7 +6,7 @@
 \usage{
 bfast01(data, formula = NULL, test = "OLS-MOSUM", level = 0.05,
   aggregate = all, trim = NULL, bandwidth = 0.15, functional = "max",
-  order = 3, lag = NULL, slag = NULL, na.action = na.omit,
+  order = 3, lag = NULL, slag = NULL, na.action = na.omit, reg = "lm",
   stl = "none")
 }
 \arguments{
