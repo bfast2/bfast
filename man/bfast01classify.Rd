@@ -48,6 +48,9 @@ bf1 <- bfast01(ndvi)
 bfast01classify(bf1, pct_stable = 0.25)
 
 }
+\author{
+Rogier de Jong, Jan Verbesselt
+}
 \references{
 de Jong R, Verbesselt J, Zeileis A, Schaepman M (2013).  Shifts
 in global vegetation activity trends.  \emph{Remote Sensing}, \bold{5},
@@ -56,7 +59,5 @@ in global vegetation activity trends.  \emph{Remote Sensing}, \bold{5},
 \seealso{
 \code{\link[bfast]{bfast01}}
 }
-\author{
-Rogier de Jong, Jan Verbesselt
-}
 \keyword{ts,bfast01}
+

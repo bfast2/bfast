@@ -145,6 +145,9 @@ if (requireNamespace("forecast", quietly = TRUE)) {
 }
 
 }
+\author{
+Jan Verbesselt
+}
 \references{
 Verbesselt J, Hyndman R, Newnham G, Culvenor D (2010).
 Detecting Trend and Seasonal Changes in Satellite Image Time Series.
@@ -161,7 +164,5 @@ Time Series.  \emph{Remote Sensing of Environment}, \bold{114}(12),
 \cr \code{\link[strucchange]{breakpoints}} for more examples and background
 information about estimation of breakpoints in time series.
 }
-\author{
-Jan Verbesselt
-}
 \keyword{ts}
+

@@ -143,14 +143,14 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
                    type = "OLS-MOSUM", ...) 
 {
   # Error catching
-  if(!(reg %in% c("lm","rlm"))) stop("Regression method unknown. ?bfast01")
+  if(!(reg %in% c("lm","rlm"))) stop("Regression method unknown, use either 'lm' or 'rlm'.")
   if(reg == "rlm") require(MASS)
   if(!require("stlplus",quietly = T)) stop("Please install the stlplus package!")
   ## Get Arguments
   season <- match.arg(season)
   level  <- rep(level, length.out = 2)
   ti <- time(Yt)
-  f <- frequency(Yt)
+  f <- frequency(Yt) # on cycle every f time points (seasonal cycle)
   if (class(Yt) != "ts") 
     stop("Not a time series object")
   output <- list()
@@ -165,9 +165,11 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
     co3 <- cos(2 * pi * tl * w * 3)
     si3 <- sin(2 * pi * tl * w * 3)
     smod <- Wt ~ co + si + co2 + si2 + co3 + si3
+    # Start the iterative procedure and for first iteration St=decompose result
     St   <- stlplus(Yt, t=ti,"periodic",n.p = f, ...)$data[, "seasonal"]
   }
   else if (season == "dummy") {
+    # Start the iterative procedure and for first iteration St=decompose result
     St <-  stlplus(Yt,t=ti,"periodic",n.p = f, ...)$data[, "seasonal"]
     D <- seasonaldummy(Yt)
     D[rowSums(D) == 0, ] <- -1
@@ -199,8 +201,8 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
     if (nobp.Vt) {
       ## No Change detected
       fm0   <- lm(Vt ~ ti)
-      Vt.bp <- 0
-      Tt <- ts(data=NA,start = ti[1], end = ti[length(ti)],frequency = f)
+      Vt.bp <- 0 # no breaks times
+      Tt <- ts(data=NA,start = ti[1], end = ti[length(ti)],frequency = f) # Data minus trend
       Tt[which(!is.na(Yt))] <- fitted(fm0) # Overwrite non-missing with fitted values
       tsp(Tt) <- tsp(Yt)
       ci.Vt <- NA
@@ -222,7 +224,7 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
     } else {
       ### Change in seasonal component
       Wt <- Yt - Tt
-      p.Wt <- sctest(efp(smod, h = h, type = type))
+      p.Wt <- sctest(efp(smod, h = h, type = type)) # preliminary test 
       if (p.Wt$p.value <= level[2]) {
         bp.Wt <- breakpoints(smod, h = h, breaks = breaks, 
                              hpc = hpc)
@@ -255,13 +257,12 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
       }
     }
     i <- i + 1
-    output[[i]] <- list(Tt = Tt, St = St, Nt = Yt - Tt - 
-                          St, Vt = Vt, bp.Vt = bp.Vt, Vt.bp = Vt.bp, ci.Vt = ci.Vt, 
+    output[[i]] <- list(Tt = Tt, St = St, Nt = Yt - Tt - St, Vt = Vt, bp.Vt = bp.Vt, Vt.bp = Vt.bp, ci.Vt = ci.Vt,
                         Wt = Wt, bp.Wt = bp.Wt, Wt.bp = Wt.bp, ci.Wt = ci.Wt)
   }
-  if (!nobp.Vt) {
+  if (!nobp.Vt) { # probably only works well for dummy model!
     Vt.nrbp <- length(bp.Vt$breakpoints)
-    co  <- coef(fm1)
+    co  <- coef(fm1) # final fitted trend model
     Mag <- matrix(NA, Vt.nrbp, 3)
     for (r in 1:Vt.nrbp) {
       if (r == 1) {
@@ -277,14 +278,14 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
     }
     index <- which.max(abs(Mag[, 3]))
     m.x <- rep(Vt.bp[index], 2)
-    m.y <- c(Mag[index, 1], Mag[index, 2])
-    Magnitude <- Mag[index, 3]
+    m.y <- c(Mag[index, 1], Mag[index, 2]) #Magnitude position
+    Magnitude <- Mag[index, 3] # Magnitude of biggest change
     Time <- Vt.bp[index]
   } else {
     m.x <- NA
     m.y <- NA
-    Magnitude <- 0
-    Time <- NA
+    Magnitude <- 0 # if we do not detect a break then the magnitude is zero
+    Time <- NA # if we do not detect a break then we have no timing of the break
     Mag <- 0
   }
   return(structure(list(Yt = Yt, output = output, nobp = list(Vt = nobp.Vt, Wt = nobp.Wt), 

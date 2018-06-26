@@ -95,6 +95,9 @@ d3lm <- lm.fit(d3$X, d3$y)
 d3lm$coefficients
 
 }
+\author{
+Achim Zeileis
+}
 \references{
 Verbesselt J, Zeileis A, Herold M (2011).  Near Real-Time
 Disturbance Detection in Terrestrial Ecosystems Using Satellite Image Time
@@ -107,7 +110,5 @@ Remote Sensing and Environment.
 \seealso{
 \code{\link[bfast]{bfastmonitor}}
 }
-\author{
-Achim Zeileis
-}
 \keyword{ts}
+

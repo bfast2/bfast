@@ -93,7 +93,11 @@ bfast01classify <- function(object, alpha=0.05, pct_stable=NULL) {
     if(reg == "lm"){
       segment.anova <- anova(lm((object.zoo.subset$response-object.zoo.subset$season)~time(object.zoo.subset))) 
     }else if(reg == "rlm"){
-      segment.anova <- anova.rlm(rlm((object.zoo.subset$response-object.zoo.subset$season)~time(object.zoo.subset))) 
+      if ("sfsmisc" %in% installed.packages()[,"Package"]) {
+        segment.anova <- sfsmisc::f.robftest(rlm((object.zoo.subset$response-object.zoo.subset$season)~time(object.zoo.subset))) 
+      } else {
+        stop("sfsmisc package not installed, unable to estimate F statistics for rlm models")
+      }
     }
     # linear model of deseasonalized trend versus time
     out[segment+2] <- segment.anova$Pr[1]

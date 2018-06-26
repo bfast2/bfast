@@ -176,7 +176,8 @@ bfast01 <- function(data, formula = NULL,
   }
   test <- structure(sapply(test, improvement01), names = test)
   rval <- list(call = match.call(), data = data, formula = formula, 
-               breaks = as.numeric(aggregate(test)), breakpoints = ifelse(as.numeric(aggregate(test))==0,0,bp$breakpoints), 
+               breaks = as.numeric(aggregate(test)), breakpoints = bp$breakpoints,
+               # DM: Could return 0 if the breakpoint is insignificant using breakpoints=ifelse(as.numeric(aggregate(test))==0,0,bp$breakpoints)
                test = test, model = list(model1, model2))
   class(rval) <- "bfast01"
   rval$confint <- .confint01(rval, level = 1 - level)
