@@ -106,6 +106,7 @@ bfastts <- function(data,dates, type = c("irregular", "16-day", "10-day")) {
   }
   
   else if (type == "10-day") {
+    tz = as.POSIXlt(dates)
     freq = 36
     index = 1900L + tz$year + round((tz$yday - 1L)/ 10L)/36L
   }
