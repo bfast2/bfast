@@ -91,15 +91,17 @@ bfastpp<- function(data, order = 3,
                    stl = c("none", "trend", "seasonal", "both"),
                    formula = NULL) {
   
+  if(!require("stlplus",quietly = T)) stop("Please install the stlplus package!")
+  if(!is.ts(data)) data <- as.ts(data)
+
   if (is.null(formula)) {
     return(.bfastpp.full(data, order, lag, slag, na.action, stl))
   }
   else {
     return(.bfastpp.formula(data, order, lag, slag, na.action, stl, formula))
-  }
-  
+  } 
 }
-
+  
 
 .bfastpp.full <- function(data, order = 3,
                     lag = NULL, slag = NULL, na.action = na.omit,
@@ -114,7 +116,7 @@ bfastpp<- function(data, order = 3,
   stl <- match.arg(stl)
   if(stl != "none") {
     stl_adjust <- function(x) {
-      x_stl <- stats::stl(x, s.window = "periodic")$time.series
+      x_stl <- stlplus::stlplus(x, s.window = "periodic", ...)$data
       switch(stl,
              "trend" = x - x_stl[, "trend"],
              "seasonal" = x - x_stl[, "seasonal"],

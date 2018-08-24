@@ -131,61 +131,55 @@
 bfast01 <- function(data, formula = NULL,
                     test = "OLS-MOSUM", level = 0.05, aggregate = all,
                     trim = NULL, bandwidth = 0.15, functional = "max",
-                    order = 3, lag = NULL, slag = NULL, na.action = na.omit, stl = "none")
+                    order = 3, lag = NULL, slag = NULL, na.action = na.omit, 
+                    reg = "lm", stl = "none")
 {
+  # Error catching
+  if(!(reg %in% c("lm","rlm"))) stop("Regression method unknown. ?bfast01")
+  if(reg == "rlm") require(MASS)
   ## data preprocessing
   stl <- match.arg(stl, c("none", "trend", "seasonal", "both"))
-  if(!inherits(data, "data.frame")) data <- bfastpp(data,
-                                                    order = order, lag = lag, slag = slag, na.action = na.action, stl = stl)
-  
-  if(is.null(formula)) {
-    formula <- c(
-      trend = !(stl %in% c("trend", "both")),
-      harmon = order > 0 & !(stl %in% c("seasonal", "both")),
-      lag = !is.null(lag),
-      slag = !is.null(slag)
-    )
-    formula <- as.formula(paste("response ~",
-                                paste(names(formula)[formula], collapse = " + ")))
+  if (!inherits(data, "data.frame")) 
+    data <- bfastpp(data, order = order, lag = lag, slag = slag, 
+                    na.action = na.action, stl = stl)
+  if (is.null(formula)) {
+    formula <- c(trend = !(stl %in% c("trend", "both")), 
+                 harmon = order > 0 & !(stl %in% c("seasonal", "both")), 
+                 lag = !is.null(lag), slag = !is.null(slag))
+    formula <- as.formula(paste("response ~", paste(names(formula)[formula], 
+                                                    collapse = " + ")))
   }
-  
   ## fit 1-segment model
-  model1 <- lm(formula, data = data)  
-  
+  model1 <- do.call(reg, list(formula = formula, data = data))
   ## determine optimal single breakpoint
   if(is.null(trim)) trim <- 5 * length(coef(model1))
   fs <- Fstats(formula, data = data, from = trim)
   bp <- breakpoints(fs)
-  
   ## fit 2-segment model
   data$segment <- breakfactor(bp)
   levels(data$segment) <- c("1", "2")
   formula2 <- update(update(formula, . ~ segment/(.)), . ~ . - 1)
-  model2 <- lm(formula2, data = data)
-  
+  model2   <- do.call(reg, list(formula = formula2, data = data) )
   ## compute BIC values
   bic <- c(BIC(model1), BIC(model2) + log(nrow(data)))
-  
   ## perform tests
   improvement01 <- function(test) {
     trim01 <- if(trim > 1) trim/nrow(data) else trim
-    if(test == "BIC") return(bic[2] < bic[1])
-    if(test %in% c("supF", "aveF", "expF")) return(sctest(fs, type = test)$p.value < level)
-    if(test == "supLM") return(sctest(gefp(formula, data = data), functional = supLM(trim01))$p.value < level)
-    sctest(formula, data = data, type = test, h = bandwidth, functional = functional)$p.value < level
+    if (test == "BIC") return(bic[2] < bic[1])
+    if (test %in% c("supF", "aveF", "expF")) 
+      return( sctest(fs, type = test)$p.value < level)
+    if (test == "supLM") 
+      return( sctest(gefp(formula, data = data), 
+                     functional = supLM(trim01))$p.value < level )
+    sctest(formula, data = data, type = test, h = bandwidth, 
+           functional = functional)$p.value < level
   }
   test <- structure(sapply(test, improvement01), names = test)
-  
-  rval <- list(
-    call = match.call(),
-    data = data,
-    formula = formula,
-    breaks = as.numeric(aggregate(test)),
-    breakpoints = bp$breakpoints,
-    test = test,
-    model = list(model1, model2)    
-  )
-  class(rval) <- "bfast01"  
+  rval <- list(call = match.call(), data = data, formula = formula, 
+               breaks = as.numeric(aggregate(test)), breakpoints = bp$breakpoints,
+               # DM: Could return 0 if the breakpoint is insignificant using breakpoints=ifelse(as.numeric(aggregate(test))==0,0,bp$breakpoints)
+               test = test, model = list(model1, model2))
+  class(rval) <- "bfast01"
   rval$confint <- .confint01(rval, level = 1 - level)
   return(rval)
 }
@@ -410,7 +404,7 @@ plot.bfast01 <- function(x, breaks = NULL, which = c("response", "fitted", "tren
         y0 = at,
         x1 = object$data$time[object$confint[3]],
         y1 = at),
-                          ci))
+        ci))
     }
   }
 }

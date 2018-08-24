@@ -33,7 +33,3 @@ IntegerVector bfast_cpp_closestfrom(const NumericVector& a, const NumericVector&
   }
   return out;
 }
-
-
-
-

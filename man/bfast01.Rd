@@ -6,7 +6,7 @@
 \usage{
 bfast01(data, formula = NULL, test = "OLS-MOSUM", level = 0.05,
   aggregate = all, trim = NULL, bandwidth = 0.15, functional = "max",
-  order = 3, lag = NULL, slag = NULL, na.action = na.omit,
+  order = 3, lag = NULL, slag = NULL, na.action = na.omit, reg = "lm",
   stl = "none")
 }
 \arguments{
@@ -144,6 +144,9 @@ plot(bf3)
 
 
 }
+\author{
+Achim Zeileis, Jan Verbesselt
+}
 \references{
 de Jong R, Verbesselt J, Zeileis A, Schaepman M (2013).  Shifts
 in global vegetation activity trends.  \emph{Remote Sensing}, \bold{5},
@@ -157,7 +160,5 @@ scores, F statistics, and OLS residuals.  \emph{Econometric Reviews},
 \code{\link[bfast]{bfastmonitor}},
 \code{\link[strucchange]{breakpoints}}
 }
-\author{
-Achim Zeileis, Jan Verbesselt
-}
 \keyword{ts}
+

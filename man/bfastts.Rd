@@ -35,21 +35,19 @@ time (dates) information.
 \code{bfastts} create a regular time series
 }
 \examples{
-
-
 library("raster")
 f <- system.file("extdata/modisraster.grd", package="bfast")
 modisbrick <- brick(f)
 ndvi <- bfastts(as.vector(modisbrick[1]), dates, type = c("16-day")) ## data of pixel 1
 plot(ndvi/10000) 
 
-
-}
-\seealso{
-\code{\link[strucchange]{monitor}},
-\code{\link[strucchange]{mefp}}, \code{\link[strucchange]{breakpoints}}
 }
 \author{
 Achim Zeileis, Jan Verbesselt
 }
+\seealso{
+\code{\link[strucchange]{monitor}}, \code{\link[strucchange]{mefp}}, 
+\code{\link[strucchange]{breakpoints}}
+}
 \keyword{ts}
+

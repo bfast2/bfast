@@ -209,6 +209,9 @@ KML(timeofbreak, "timeofbreak.kmz")
 
 
 }
+\author{
+Achim Zeileis, Jan Verbesselt
+}
 \references{
 Verbesselt J, Zeileis A, Herold M (2012). Near real-time
 disturbance detection using satellite image time series. \emph{Remote
@@ -219,7 +222,5 @@ Sensing Of Environment}, \bold{123}, 98--108.
 \code{\link[strucchange]{monitor}},
 \code{\link[strucchange]{mefp}}, \code{\link[strucchange]{breakpoints}}
 }
-\author{
-Achim Zeileis, Jan Verbesselt
-}
 \keyword{ts}
+
