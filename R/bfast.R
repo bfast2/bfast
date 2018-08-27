@@ -32,7 +32,10 @@
 #' @param level numeric; threshold value for the \link[strucchange]{sctest.efp}
 #' test; if a length 2 vector is passed, the first value is used for the trend,
 #' the second for the seasonality
-#' @param reg "lm" or "rlm"
+#' @param reg "lm" or "rlm": use regular or robust linear regression
+#' @param decomp "stlplus" or "stl": use the NA-tolerant decomposition package
+#' or the reference package (which can make use of time series with 2-3
+#' observations per year)
 #' @param type character, indicating the type argument to
 #' \link[strucchange]{efp}
 #' @return An object of the class "bfast" is a list with the following
@@ -139,13 +142,15 @@
 #' @export bfast
 bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"), 
                    max.iter = 10, breaks = NULL, hpc = "none", level = 0.05,
-                   reg = "lm",
+                   reg = c("lm", "rlm"), decomp=c("stlplus", "stl"),
                    type = "OLS-MOSUM", ...) 
 {
   # Error catching
+  reg = match.arg(reg)
   if(!(reg %in% c("lm","rlm"))) stop("Regression method unknown, use either 'lm' or 'rlm'.")
   if(reg == "rlm") require(MASS)
-  if(!require("stlplus",quietly = T)) stop("Please install the stlplus package!")
+  decomp = match.arg(decomp)
+  if(decomp == "stlplus" && !require("stlplus",quietly = T)) stop("Please install the stlplus package!")
   ## Get Arguments
   season <- match.arg(season)
   level  <- rep(level, length.out = 2)
@@ -166,11 +171,19 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
     si3 <- sin(2 * pi * tl * w * 3)
     smod <- Wt ~ co + si + co2 + si2 + co3 + si3
     # Start the iterative procedure and for first iteration St=decompose result
-    St   <- stlplus(Yt, t=ti,"periodic",n.p = f, ...)$data[, "seasonal"]
+    if (decomp == "stlplus") {
+        St <- stlplus(Yt, t=ti, n.p = f, s.window = "periodic", ...)$data[, "seasonal"]
+    } else {
+        St <- stl    (Yt, "periodic")$time.series[, "seasonal"]
+    }
   }
   else if (season == "dummy") {
     # Start the iterative procedure and for first iteration St=decompose result
-    St <-  stlplus(Yt,t=ti,"periodic",n.p = f, ...)$data[, "seasonal"]
+    if (decomp == "stlplus") {
+        St <-  stlplus(Yt, t=ti, n.p = f, s.window = "periodic", ...)$data[, "seasonal"]
+    } else {
+        St <- stl(Yt, "periodic")$time.series[, "seasonal"]
+    }
     D <- seasonaldummy(Yt)
     D[rowSums(D) == 0, ] <- -1
     smod <- Wt ~ -1 + D
