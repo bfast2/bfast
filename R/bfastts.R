@@ -9,7 +9,14 @@
 #' Create a regular time series object by combining measurements (data) and
 #' time (dates) information.
 #' 
-#' \code{bfastts} create a regular time series
+#' Creates a regular time series (\code{\link{ts}} object) from given data and
+#' dates. Any data can be used with \code{type="irregular"}, but it is not
+#' efficient with regards to memory for sparse regularly-obtained data due to
+#' the result being converted into a daily time series.
+#' 
+#' Pseudo-regular time series (e.g. "10-day" data collected on every 1st, 11th
+#' and 21st day, such as by Proba-V) is not supported yet, use \code{\link{ts}}
+#' directly instead.
 #' 
 #' @param data A data vector
 #' @param dates Optional input of dates for each measurement in the 'data'
@@ -17,12 +24,16 @@
 #' for each measurement can be supplied using this 'dates' variable. The
 #' irregular data will be linked with the dates vector to create daily regular
 #' time series with a frequency = 365. Extra days in leap years might cause
-#' problems. Please be carefull using this option as it is experimental.
+#' problems. Please be careful using this option as it is experimental.
 #' Feedback is welcome.
-#' @param type (\code{"irregular"}) indicates that the data is collected at
-#' irregular dates and as such will be converted to a daily time series.
-#' (\code{"16-day"})indicates that data is collected at a regular time interval
-#' (every 16-days e.g. like the MODIS 16-day data products)
+#' @param type \code{"irregular"} indicates that the data is collected at
+#' irregular dates and as such will be converted to a daily time series 
+#' (with NA values in between).
+#' \code{"16-day"} and \code{"10-day"} indicates that data is collected at a
+#' regular time interval (e.g. like the MODIS 10-day/16-day data products).
+#' \code{"regular"} indicates that it is an arbitrarily regular time series and
+#' is regular over all time (e.g. taken every 7 days with no regards to months);
+#' in this case, the interval will be inferred from the data and dates.
 #' @return \code{bfastts} returns an object of class \code{"ts"}, i.e., a list
 #' with components as follows.  \item{zz}{ a regular \code{"ts"} time series
 #' with a frequency equal to 365 or 23 i.e. 16-day time series.}
@@ -39,7 +50,7 @@
 #' plot(ndvi/10000) 
 #' 
 #' @export
-bfastts <- function(data,dates, type = c("irregular", "16-day", "10-day")) {
+bfastts <- function(data,dates, type = c("irregular", "16-day", "10-day", "regular")) {
 	
   
   if (getOption("bfast.use_bfastts_modifications", FALSE)) {
@@ -55,21 +66,19 @@ bfastts <- function(data,dates, type = c("irregular", "16-day", "10-day")) {
   	
   	if (type == "irregular") {
   	zz <- zoo(data,1900 + as.POSIXlt(dates)$year + (yday365(dates) - 1)/365, frequency = 365)
-  	}
-  	
-  	if (type == "16-day") {
+  	} else if (type == "16-day") {
   		z <- zoo(data, dates)
   		yr <- as.numeric(format(time(z), "%Y"))
   		jul <- as.numeric(format(time(z), "%j"))
   		delta <- min(unlist(tapply(jul, yr, diff))) # 16
   		zz <- aggregate(z, yr + (jul - 1) / delta / 23)
-  	}
-  	
-  	if (type == "10-day") {
+  	} else if (type == "10-day") {
   	  tz <- as.POSIXlt(dates)
   	  zz <- zoo(data,
   	           1900L + tz$year + round((tz$yday - 1L)/ 10L)/36L,
   	           frequency = 36L)
+  	} else if (type == "regular") { # In this case frequency will be < 1
+        zz <- zoo(data, dates)
   	}
     
   	tso <- as.ts(zz)
