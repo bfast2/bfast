@@ -57,7 +57,7 @@ main = NULL, range.bars = FALSE, ..., col.range = "light gray", fit = NULL)
         plot(X[, i], col = if(i == 1) "black"
            else "red",
           ylim = if (i == 1 | i == 3)
-            range(X[, 1])
+            range(X[, 1], na.rm = TRUE)
         else range(X[, i], sim$time.series[, i - 1], na.rm = TRUE),
             type = if (i < nplot)
                 "l"
