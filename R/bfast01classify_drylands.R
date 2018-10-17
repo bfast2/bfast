@@ -138,44 +138,44 @@ bfast01classify_drylands <- function(object, alpha=0.05) {
 ## ---------------------------------------------------------------------------------
 ## Examples
 
-# A time series with non-monotonic increase, accelerating after the breakpoint
-set.seed(11)
-
-# Simulating data for a time series using an AR(1) model
-x<-arima.sim(model= list(order = c(1,1,0), ar=0.68), n = 200)
-
-# Creating the time series object
-ts1<-ts(x, start = 1801, end = 2000, frequency = 1)
-
-# Creating bfast01 object
-bf1 <- bfast01(ts1, formula = response ~ trend)
-
-# Applying the classification
-bfast01classify_drylands(bf1) # Non-monotonic increase, Accelerating
-
-# Visualizing the time series with break and fitted trends
-plot(bf1) 
-
-##
-
-# A time series with reversal in trends direction, from decreasing to increasing
-
-# Simulating data for a time series with decreasing trend
-set.seed(3)
-y1 <- arima.sim(list(order = c(0,1,12), ma = c(-0.8,rep(0,10),-0.8)), n = 359, sd = 0.2)
-
-# Simulating data for a time series with increasing trend
-set.seed(4)
-y2 <- arima.sim(list(order = c(0,1,12), ma = c(-0.8,rep(0,10),-0.8)), n = 359, sd = 0.2)
-
-# Joining data and creating a time series object
-ts2 <- ts(c(y1,y2), start = c(1941,1), end = c(2000,12), frequency = 12)
-
-# Creating bfast01 object
-bf2 <- bfast01(ts2, formula = response ~ trend)
-
-# Applying the classification
-bfast01classify_drylands(bf2) # Reversal from decrease to increase, Complete
-
-# Visualizing the time series with break and fitted trends
-plot(bf2) 
+# # A time series with non-monotonic increase, accelerating after the breakpoint
+# set.seed(11)
+# 
+# # Simulating data for a time series using an AR(1) model
+# x<-arima.sim(model= list(order = c(1,1,0), ar=0.68), n = 200)
+# 
+# # Creating the time series object
+# ts1<-ts(x, start = 1801, end = 2000, frequency = 1)
+# 
+# # Creating bfast01 object
+# bf1 <- bfast01(ts1, formula = response ~ trend)
+# 
+# # Applying the classification
+# bfast01classify_drylands(bf1) # Non-monotonic increase, Accelerating
+# 
+# # Visualizing the time series with break and fitted trends
+# plot(bf1) 
+# 
+# ##
+# 
+# # A time series with reversal in trends direction, from decreasing to increasing
+# 
+# # Simulating data for a time series with decreasing trend
+# set.seed(3)
+# y1 <- arima.sim(list(order = c(0,1,12), ma = c(-0.8,rep(0,10),-0.8)), n = 359, sd = 0.2)
+# 
+# # Simulating data for a time series with increasing trend
+# set.seed(4)
+# y2 <- arima.sim(list(order = c(0,1,12), ma = c(-0.8,rep(0,10),-0.8)), n = 359, sd = 0.2)
+# 
+# # Joining data and creating a time series object
+# ts2 <- ts(c(y1,y2), start = c(1941,1), end = c(2000,12), frequency = 12)
+# 
+# # Creating bfast01 object
+# bf2 <- bfast01(ts2, formula = response ~ trend)
+# 
+# # Applying the classification
+# bfast01classify_drylands(bf2) # Reversal from decrease to increase, Complete
+# 
+# # Visualizing the time series with break and fitted trends
+# plot(bf2) 
