@@ -271,7 +271,7 @@ bfast01classify <- function(object, alpha=0.05, pct_stable=NULL, typology="stand
 #
 # # A time series which would be classified as interruption: increase with negative break by
 # # the standard typology, and as non-monotonic increase, accelerating after the breakpoint,
-# # by the typology optmized for drylands.
+# # by the typology optimized for drylands.
 # 
 # set.seed(11)
 # 
@@ -295,7 +295,7 @@ bfast01classify <- function(object, alpha=0.05, pct_stable=NULL, typology="stand
 # 
 # # A time series which would be classified as reversal from decrease to increase by the 
 # # standard typology, and as a complete reversal from decrease to increase by the 
-# # typology optmized for drylands.
+# # typology optimized for drylands.
 # 
 # # Simulating data for a time series with decreasing trend
 # set.seed(3)
