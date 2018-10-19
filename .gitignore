@@ -2,8 +2,9 @@
 .Rhistory
 .Rapp.history
 
-# Session Data files
+.Rproj.user
 .RData
+.Ruserdata
 
 # Example code in package build process
 *-Ex.R
@@ -13,11 +14,6 @@
 
 # Output files from R CMD check
 /*.Rcheck/
-
-# RStudio files
-.Rproj.user/
-.Rbuildignore
-*.Rproj
 
 # produced vignettes
 vignettes/*.html

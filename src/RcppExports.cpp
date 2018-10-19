@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // bfast_cpp_closestfrom
 IntegerVector bfast_cpp_closestfrom(const NumericVector& a, const NumericVector& b, const bool twosided);
-RcppExport SEXP bfast_bfast_cpp_closestfrom(SEXP aSEXP, SEXP bSEXP, SEXP twosidedSEXP) {
+RcppExport SEXP _bfast_bfast_cpp_closestfrom(SEXP aSEXP, SEXP bSEXP, SEXP twosidedSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -17,4 +17,14 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(bfast_cpp_closestfrom(a, b, twosided));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_bfast_bfast_cpp_closestfrom", (DL_FUNC) &_bfast_bfast_cpp_closestfrom, 3},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_bfast(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }

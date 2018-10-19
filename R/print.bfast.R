@@ -1,3 +1,5 @@
+#' @method print bfast
+#' @export
 print.bfast <- function(x, ...)
 {    
     cat("\n  TREND BREAKPOINTS")

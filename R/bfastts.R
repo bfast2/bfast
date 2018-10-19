@@ -2,6 +2,43 @@
 ## to do solve the issue of 29 Februari
 ## to do and functionality for other types of time series
 ## e.g. 10 day or 16 day time series
+
+
+#' Create a regular time series object by combining data and date information
+#' 
+#' Create a regular time series object by combining measurements (data) and
+#' time (dates) information.
+#' 
+#' \code{bfastts} create a regular time series
+#' 
+#' @param data A data vector
+#' @param dates Optional input of dates for each measurement in the 'data'
+#' variable. In case the data is a irregular time series, a vector with 'dates'
+#' for each measurement can be supplied using this 'dates' variable. The
+#' irregular data will be linked with the dates vector to create daily regular
+#' time series with a frequency = 365. Extra days in leap years might cause
+#' problems. Please be carefull using this option as it is experimental.
+#' Feedback is welcome.
+#' @param type (\code{"irregular"}) indicates that the data is collected at
+#' irregular dates and as such will be converted to a daily time series.
+#' (\code{"16-day"})indicates that data is collected at a regular time interval
+#' (every 16-days e.g. like the MODIS 16-day data products)
+#' @return \code{bfastts} returns an object of class \code{"ts"}, i.e., a list
+#' with components as follows.  \item{zz}{ a regular \code{"ts"} time series
+#' with a frequency equal to 365 or 23 i.e. 16-day time series.}
+#' @author Achim Zeileis, Jan Verbesselt
+#' @seealso \code{\link[strucchange]{monitor}}, \code{\link[strucchange]{mefp}}, 
+#' \code{\link[strucchange]{breakpoints}}
+#' @keywords ts
+#' 
+#' @examples
+#' library("raster")
+#' f <- system.file("extdata/modisraster.grd", package="bfast")
+#' modisbrick <- brick(f)
+#' ndvi <- bfastts(as.vector(modisbrick[1]), dates, type = c("16-day")) ## data of pixel 1
+#' plot(ndvi/10000) 
+#' 
+#' @export
 bfastts <- function(data,dates, type = c("irregular", "16-day", "10-day")) {
 	
   
@@ -69,6 +106,7 @@ bfastts <- function(data,dates, type = c("irregular", "16-day", "10-day")) {
   }
   
   else if (type == "10-day") {
+    tz = as.POSIXlt(dates)
     freq = 36
     index = 1900L + tz$year + round((tz$yday - 1L)/ 10L)/36L
   }

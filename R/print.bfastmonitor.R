@@ -1,3 +1,5 @@
+#' @method print bfastmonitor
+#' @export
 print.bfastmonitor <- function(x, ...)
 {
   freq <- frequency(x$data)

@@ -7,6 +7,48 @@
 ## object: bfast01 object
 ## alpha: threshold for significance tests, default 0.05
 ## pct_stable: threshold for segment stability, unit: percent change per unit time (0-100), default NULL
+#' Change type analysis of the bfast01 function
+#' 
+#' A function to determine the change type
+#' 
+#' \code{bfast01classify}
+#' 
+#' @param object \code{\link[bfast]{bfast01}} object, i.e. the output of the
+#' \code{\link[bfast]{bfast01}} function.
+#' @param alpha threshold for significance tests, default 0.05
+#' @param pct_stable threshold for segment stability, unit: percent change per
+#' unit time (0-100), default NULL
+#' @return \code{bfast01classify} returns a data.frame with the following
+#' elements: \item{flag_type}{Type of shift: (1) monotonic increase, (2)
+#' monotonic decrease, (3) monotonic increase (with positive break), (4)
+#' monotonic decrease (with negative break), (5) interruption: increase with
+#' negative break, (6) interruption: decrease with positive break, (7)
+#' reversal: increase to decrease, (8) reversal: decrease to increase }
+#' \item{flag_significance}{SIGNIFICANCE FLAG: (0) both segments significant
+#' (or no break and significant), (1) only first segment significant, (2) only
+#' 2nd segment significant, (3) both segments insignificant (or no break and
+#' not significant) } \item{flag_pct_stable}{STABILITY FLAG: (0) change in both
+#' segments is substantial (or no break and substantial), (1) only first
+#' segment substantial, (2) only 2nd segment substantial (3) both segments are
+#' stable (or no break and stable) } and also significance and percentage of
+#' both segments before and after the potentially detected break: "p_segment1",
+#' "p_segment2", "pct_segment1", "pct_segment2".
+#' @author Rogier de Jong, Jan Verbesselt
+#' @seealso \code{\link[bfast]{bfast01}}
+#' @references de Jong R, Verbesselt J, Zeileis A, Schaepman M (2013).  Shifts
+#' in global vegetation activity trends.  \emph{Remote Sensing}, \bold{5},
+#' 1117--1133.  \url{http://dx.doi.org/10.3390/rs5031117}
+#' @keywords ts,bfast01
+#' @examples
+#' 
+#' library(zoo)
+#' ## define a regular time series
+#' ndvi <- as.ts(zoo(som$NDVI.a, som$Time))
+#' ## fit variations
+#' bf1 <- bfast01(ndvi)
+#' bfast01classify(bf1, pct_stable = 0.25)
+#' 
+#' @export bfast01classify
 
 bfast01classify <- function(object, alpha=0.05, pct_stable=NULL, typology=c("standard", "drylands")) { 
    ## output array 
@@ -16,6 +58,8 @@ bfast01classify <- function(object, alpha=0.05, pct_stable=NULL, typology=c("sta
    
    ## Segment and break point parameters
    object.zoo <- as.zoo(object) # data series
+   ## Determine regression object (take first class from model )
+   reg = class(object$model[[2]])[1]
    ## if break, list segment and break point parameters (p$..)
    if(object$breaks != 0) {
      ToB <- as.numeric(object$breakpoints[[1]])  # time of break
@@ -31,29 +75,37 @@ bfast01classify <- function(object, alpha=0.05, pct_stable=NULL, typology=c("sta
       date.end <- if(segment==2 || object$breaks==0) object$data$time[nrow(object$data)] else object$data$time[ToB]
       object.zoo.subset <- window(object.zoo, start=date.start, end=date.end)
       # Anova
+      if(reg == "lm"){
       segment.anova <- anova(lm((object.zoo.subset$response-object.zoo.subset$season)~time(object.zoo.subset))) 
-      # linear model of deseasonalized trend versus time
-      out[segment+2] <- segment.anova$Pr[1]
-      # PctChange
-      obs.start <- if(segment==1)  1 else ToB+1
-      obs.end <- if(segment==2 || object$breaks==0) nrow(object$data) else ToB
-      if(object.zoo$trend[[obs.end]] / object.zoo$trend[[obs.start]] > 0){
-         segment.pctchange <- 
-           ( (object.zoo$trend[[obs.end]] / object.zoo$trend[[obs.start]])^(1/(date.end-date.start)) -1) * 100      
+    }else if(reg == "rlm"){
+      if ("sfsmisc" %in% installed.packages()[,"Package"]) {
+        segment.anova <- sfsmisc::f.robftest(rlm((object.zoo.subset$response-object.zoo.subset$season)~time(object.zoo.subset))) 
       } else {
-         if(object.zoo$trend[[obs.start]] < object.zoo$trend[[obs.end]]){
-            value.start <- object.zoo$trend[[obs.start]] + 2 * abs(object.zoo$trend[[obs.start]])
-            value.end <- object.zoo$trend[[obs.end]] + 2 * abs(object.zoo$trend[[obs.start]])
-            segment.pctchange <- ( (value.end / value.start)^(1/(date.end-date.start)) -1) * 100               
-         } else {
-            value.start <- object.zoo$trend[[obs.start]] + 2 * abs(object.zoo$trend[[obs.end]])
-            value.end <- object.zoo$trend[[obs.end]] + 2 * abs(object.zoo$trend[[obs.end]])
-            segment.pctchange <- ( (value.end / value.start)^(1/(date.end-date.start)) -1) * 100                           
-         }
+        stop("sfsmisc package not installed, unable to estimate F statistics for rlm models")
       }
-      out[segment+4] <- segment.pctchange
-   }
-      
+    }
+    # linear model of deseasonalized trend versus time
+    out[segment+2] <- segment.anova$Pr[1]
+    # PctChange
+    obs.start <- if(segment==1)  1 else ToB+1
+    obs.end <- if(segment==2 || object$breaks==0) nrow(object$data) else ToB
+    if(object.zoo$trend[[obs.end]] / object.zoo$trend[[obs.start]] > 0){
+      segment.pctchange <- 
+        ( (object.zoo$trend[[obs.end]] / object.zoo$trend[[obs.start]])^(1/(date.end-date.start)) -1) * 100      
+    } else {
+      if(object.zoo$trend[[obs.start]] < object.zoo$trend[[obs.end]]){
+        value.start <- object.zoo$trend[[obs.start]] + 2 * abs(object.zoo$trend[[obs.start]])
+        value.end <- object.zoo$trend[[obs.end]] + 2 * abs(object.zoo$trend[[obs.start]])
+        segment.pctchange <- ( (value.end / value.start)^(1/(date.end-date.start)) -1) * 100               
+      } else {
+        value.start <- object.zoo$trend[[obs.start]] + 2 * abs(object.zoo$trend[[obs.end]])
+        value.end <- object.zoo$trend[[obs.end]] + 2 * abs(object.zoo$trend[[obs.end]])
+        segment.pctchange <- ( (value.end / value.start)^(1/(date.end-date.start)) -1) * 100                           
+      }
+    }
+    out[segment+4] <- segment.pctchange
+  }
+
    ## CLASSIFICATION 
    ## Standard Typo
    if(typology=="standard"){
@@ -178,7 +230,7 @@ bfast01classify <- function(object, alpha=0.05, pct_stable=NULL, typology=c("sta
 #    class_names <- c('change in both segments is substantial (or no break and substantial)','only first segment substantial','only 2nd segment substantial','both segments are stable (or no break and stable)')
 #    for (i in 0:3) cat(i, " -- ", class_names[i+1], "\n")
 # }
-
+#
 # ## print the flag labels for the typology optimized for drylands
 # classlabels.bfast01 <- function() {
 #   cat("\n*** TYPE OF SHIFT *** \n")

@@ -7,6 +7,6 @@
 #' @param twosided logical value, if false, indexes will always point to elements in b that are less than or equal to elements in a but not greater than.
 #' @return integer vector of the same size as a with elements represnting indexes pointing to closest values in b
 .bfast_cpp_closestfrom <- function(a, b, twosided) {
-    .Call('bfast_bfast_cpp_closestfrom', PACKAGE = 'bfast', a, b, twosided)
+    .Call('_bfast_bfast_cpp_closestfrom', PACKAGE = 'bfast', a, b, twosided)
 }
 

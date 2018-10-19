@@ -1,3 +1,5 @@
+#' @method plot bfastmonitor
+#' @export
 plot.bfastmonitor <- function(x, na.rm = TRUE, main = TRUE, ylab = "Data", ...)
 {
   if(isTRUE(main)) main <- if(is.na(x$breakpoint)) {
