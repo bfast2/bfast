@@ -53,7 +53,7 @@
 #' 
 #' @export bfast01classify
 
-bfast01classify <- function(object, alpha=0.05, pct_stable=NULL, typology="standard") { 
+bfast01classify <- function(object, alpha=0.05, pct_stable=NULL, typology=c("standard", "drylands")) { 
    ## output array 
    out <- rep(NA,7)
    if(typology=="standard"){
