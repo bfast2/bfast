@@ -7,9 +7,6 @@
 ## object: bfast01 object
 ## alpha: threshold for significance tests, default 0.05
 ## pct_stable: threshold for segment stability, unit: percent change per unit time (0-100), default NULL
-
-
-
 #' Change type analysis of the bfast01 function
 #' 
 #' A function to determine the change type
@@ -52,45 +49,33 @@
 #' bfast01classify(bf1, pct_stable = 0.25)
 #' 
 #' @export bfast01classify
-bfast01classify <- function(object, alpha=0.05, pct_stable=NULL) { 
-  ## output array 
-  out <- rep(NA,7)
-  names(out) <- c("flag_type","flag_significance","p_segment1","p_segment2",
-                  "pct_segment1","pct_segment2","flag_pct_stable")
-  ## classification
-  object.zoo <- as.zoo(object) # data series
-  ## Determine regression object (take first class from model )
-  reg = class(object$model[[2]])[1]
-  ## monotonic if no break
-  if(object$breaks == 0) {     
-    slope <- object$model[[1]]$coefficients[2] # slope
-    if(slope > 0) out[1] <- 1
-    if(slope < 0) out[1] <- 2
-  } else {
-    ## if break, list segment and break point parameters (p$..)
-    ToB <- as.numeric(object$breakpoints[[1]])  # time of break
-    s1 <- object$model[[2]]$coefficients[3] # slope segment 1
-    s2 <- object$model[[2]]$coefficients[4] # slope segment 2
-    m <- as.numeric(object.zoo$trend[ToB+1]) - as.numeric(object.zoo$trend[ToB]) # magnitude of abrupt change
-    ## classes with break
-    # with break, but still monotonic
-    if(s1 > 0 && s2 > 0 && m > 0) out[1] <- 3
-    if(s1 < 0 && s2 < 0 && m < 0) out[1] <- 4
-    # interrupted gradual change (setback or boost)
-    if(s1 > 0 && s2 > 0 && m < 0) out[1] <- 5
-    if(s1 < 0 && s2 < 0 && m > 0) out[1] <- 6
-    # trend reversal (greening to browning v.v.)
-    if(s1 > 0 && s2 < 0) out[1] <- 7
-    if(s1 < 0 && s2 > 0) out[1] <- 8
-  }
-  ## ANOVA and PCTCHANGE      
-  for (segment in 1:(object$breaks+1)) {
-    # subset zoo object for segment
-    date.start <- if(segment==1)  object$data$time[1] else object$data$time[ToB+1]
-    date.end <- if(segment==2 || object$breaks==0) object$data$time[nrow(object$data)] else object$data$time[ToB]
-    object.zoo.subset <- window(object.zoo, start=date.start, end=date.end)
-    # Anova
-    if(reg == "lm"){
+
+bfast01classify <- function(object, alpha=0.05, pct_stable=NULL, typology=c("standard", "drylands")) { 
+   ## output array 
+   out <- rep(NA,8)
+   names(out) <- c("flag_type","flag_significance","p_segment1","p_segment2",
+                   "pct_segment1","pct_segment2","flag_pct_stable","flag_subtype")
+   
+   ## Segment and break point parameters
+   object.zoo <- as.zoo(object) # data series
+   ## Determine regression object (take first class from model )
+   reg = class(object$model[[2]])[1]
+   ## if break, list segment and break point parameters (p$..)
+   if(object$breaks != 0) {
+     ToB <- as.numeric(object$breakpoints[[1]])  # time of break
+     s1 <- object$model[[2]]$coefficients[3] # slope segment 1
+     s2 <- object$model[[2]]$coefficients[4] # slope segment 2
+     m <- as.numeric(object.zoo$trend[ToB+1]) - as.numeric(object.zoo$trend[ToB]) # magnitude of abrupt change
+   }  
+   
+   ## ANOVA and PCTCHANGE
+   for (segment in 1:(object$breaks+1)) {
+      # subset zoo object for segment
+      date.start <- if(segment==1)  object$data$time[1] else object$data$time[ToB+1]
+      date.end <- if(segment==2 || object$breaks==0) object$data$time[nrow(object$data)] else object$data$time[ToB]
+      object.zoo.subset <- window(object.zoo, start=date.start, end=date.end)
+      # Anova
+      if(reg == "lm"){
       segment.anova <- anova(lm((object.zoo.subset$response-object.zoo.subset$season)~time(object.zoo.subset))) 
     }else if(reg == "rlm"){
       if ("sfsmisc" %in% installed.packages()[,"Package"]) {
@@ -120,49 +105,118 @@ bfast01classify <- function(object, alpha=0.05, pct_stable=NULL) {
     }
     out[segment+4] <- segment.pctchange
   }
-  ## Segment significance flag
-  # code: 0 = both segments significant (or no break and significant), 
-  # 1 = only first segment significant, 
-  # 2 = only 2nd segment significant, 
-  # 3 = both segments insignificant (or no break and not significant)
+
+   ## CLASSIFICATION 
+   ## Standard Typo
+   if(typology=="standard"){
+      ## monotonic if no break
+      if(object$breaks == 0) {     
+         slope <- object$model[[1]]$coefficients[2] # slope
+         if(slope > 0) out[1] <- 1
+         if(slope < 0) out[1] <- 2
+      }else{
+         ## classes with break
+         # with break, but still monotonic
+         if(s1 > 0 && s2 > 0 && m > 0) out[1] <- 3
+         if(s1 < 0 && s2 < 0 && m < 0) out[1] <- 4
+         # interrupted gradual change (setback or boost)
+         if(s1 > 0 && s2 > 0 && m < 0) out[1] <- 5
+         if(s1 < 0 && s2 < 0 && m > 0) out[1] <- 6
+         # trend reversal (greening to browning v.v.)
+         if(s1 > 0 && s2 < 0) out[1] <- 7
+         if(s1 < 0 && s2 > 0) out[1] <- 8
+      }
+   }   
+      
+   # Drylands Typo
+   if(typology=="drylands"){
+      ## monotonic if no break
+      if(object$breaks == 0) {
+         if(out[3] > alpha){
+         out[1] <- 0 #fluctuating/no change
+      }else{
+         slope <- object$model[[1]]$coefficients[2] # slope
+         if(slope > 0) out[1] <- 1 # monotonic increase
+         if(slope < 0) out[1] <- 2 # monotonic decrease  
+      }
+      } else {
+         ## classes with break
+         if(out[3] > alpha && out[4] > alpha){
+            out[1] <- 0 #fluctuating/no change
+         }else{
+            # with break, but still same direction
+            if(s1 > 0 && s2 > 0) out[1] <- 3 # non-monotonic increase
+            if(s1 < 0 && s2 < 0) out[1] <- 4 # non-monotonic decrease
+            # trend reversal (greening to browning v.v.)
+            if(s1 > 0 && s2 < 0) out[1] <- 5 # reversal increase to decrease
+            if(s1 < 0 && s2 > 0) out[1] <- 6 # reversal decrease to increase
+         }
+      }
   
-  # no break
-  if(object$breaks == 0) {     
-    if(out[3] <= alpha) out[2] <- 0
-    if(out[3] > alpha) out[2] <- 3
-    # with break
-  } else {
-    if(out[3] <= alpha && out[4] <= alpha) out[2] <- 0
-    if(out[3] <= alpha && out[4] > alpha) out[2] <- 1
-    if(out[3] > alpha && out[4] <= alpha) out[2] <- 2
-    if(out[3] > alpha && out[4] > alpha) out[2] <- 3
-  }   
-  
-  ## Segment stability flag
-  # code: 0 = both segments beyond stable (or no break and not stable), 
-  # 1 = only first segment beyond stable, 
-  # 2 = only 2nd segment beyond stable, 
-  # 3 = both segments stable (or no break and stable)
-  
-  if(!is.null(pct_stable)) {
-    # no break
-    if(object$breaks == 0) {     
-      if(abs(out[5]) > pct_stable) out[7] <- 0
-      if(abs(out[5]) <= pct_stable) out[7] <- 3
-      # with break
-    } else {
-      if(abs(out[5]) > pct_stable && abs(out[6]) > pct_stable) out[7] <- 0
-      if(abs(out[5]) > pct_stable && abs(out[6]) <= pct_stable) out[7] <- 1
-      if(abs(out[5]) <= pct_stable && abs(out[6]) > pct_stable) out[7] <- 2
-      if(abs(out[5]) <= pct_stable && abs(out[6]) <= pct_stable) out[7] <- 3
-    }        
-  } else {
-    out[7] <- NA
-  }   
-  return(as.data.frame(t(out)))
+      ## Sub-classification
+      if(object$breaks != 0 && out[1] != 0) { #if there's a break and at least one sign. trend
+         if( (s1 > 0 && s2 > 0) || (s1 < 0 && s2 < 0)){
+         # non mono trends (sub-types 1 and 2, "slowing down" and "accelerating")
+         if( (s1 > 0 && s2 > 0) || (s1 < 0 && s2 < 0) ){
+            if(abs(s1) > abs(s2)) out[8] <- 1 # slowing down
+            if(abs(s1) < abs(s2)) out[8] <- 2 # accelerating
+         }
+      }else if( (s1 < 0 && s2 > 0) || (s1 > 0 && s2 < 0)){
+         # reversal trend (sub-types 3 and 4, "transition" and "complete")
+         if( (out[3] <= alpha && out[4] > alpha) || (out[3] > alpha && out[4] <= alpha) ) out[8] <- 3 # transition
+         if(out[3] <= alpha && out[4] <= alpha) out[8] <- 4 # complete
+         }
+      }
+   }
+    
+   ## Segment significance flag
+   # code: 0 = both segments significant (or no break and significant), 
+   # 1 = only first segment significant, 
+   # 2 = only 2nd segment significant, 
+   # 3 = both segments insignificant (or no break and not significant)
+   
+   # no break
+   if(object$breaks == 0) {     
+      if(out[3] <= alpha) out[2] <- 0
+      if(out[3] > alpha) out[2] <- 3
+   # with break
+   } else {
+      if(out[3] <= alpha && out[4] <= alpha) out[2] <- 0
+      if(out[3] <= alpha && out[4] > alpha) out[2] <- 1
+      if(out[3] > alpha && out[4] <= alpha) out[2] <- 2
+      if(out[3] > alpha && out[4] > alpha) out[2] <- 3
+   }   
+
+   ## Segment stability flag
+   # code: 0 = both segments beyond stable (or no break and not stable), 
+   # 1 = only first segment beyond stable, 
+   # 2 = only 2nd segment beyond stable, 
+   # 3 = both segments stable (or no break and stable)
+   
+     if(!is.null(pct_stable)) {
+        # no break
+        if(object$breaks == 0) {     
+           if(abs(out[5]) > pct_stable) out[7] <- 0
+           if(abs(out[5]) <= pct_stable) out[7] <- 3
+        # with break
+        } else {
+           if(abs(out[5]) > pct_stable && abs(out[6]) > pct_stable) out[7] <- 0
+           if(abs(out[5]) > pct_stable && abs(out[6]) <= pct_stable) out[7] <- 1
+           if(abs(out[5]) <= pct_stable && abs(out[6]) > pct_stable) out[7] <- 2
+           if(abs(out[5]) <= pct_stable && abs(out[6]) <= pct_stable) out[7] <- 3
+        }        
+     }else{
+     out[7] <- NA
+   }
+     
+  if(typology=="standard"){
+    return(as.data.frame(t(out))[1:7])
+  }else if(typology=="drylands"){
+    return(as.data.frame(t(out[c(1,8,2:7)])))
+  }
 }
 
-# ## print the flag labels
+# ## print the flag labels for the standard typology
 # classlabels.bfast01 <- function() {
 #    cat("\n*** TYPE OF SHIFT *** \n")
 #    class_names <- c('monotonic increase','monotonic decrease','monotonic increase (with positive break)','monotonic decrease (with negative break)','interruption: increase with negative break','interruption: decrease with positive break','reversal: increase to decrease','reversal: decrease to increase')
@@ -176,3 +230,74 @@ bfast01classify <- function(object, alpha=0.05, pct_stable=NULL) {
 #    class_names <- c('change in both segments is substantial (or no break and substantial)','only first segment substantial','only 2nd segment substantial','both segments are stable (or no break and stable)')
 #    for (i in 0:3) cat(i, " -- ", class_names[i+1], "\n")
 # }
+#
+# ## print the flag labels for the typology optimized for drylands
+# classlabels.bfast01 <- function() {
+#   cat("\n*** TYPE OF SHIFT *** \n")
+#   class_names <- c('fluctuating/no change','monotonic increase','monotonic decrease',
+#                    'non-monotonic increase','non-monotonic decrease',
+#                    'reversal: increase to decrease','reversal: decrease to increase')
+#   for (i in 0:6) cat(i, " -- ", class_names[i+1], "\n")
+#   
+#   cat("\n*** SUBTYPE OF SHIFT *** \n")
+#   class_names <- c('slowing down','accelerating','transition','complete')
+#   for (i in 1:4) cat(i, " -- ", class_names[i], "\n")
+#   
+#   cat("\n*** SIGNIFICANCE FLAG *** \n")
+#   class_names <- c('both segments significant (or no break and significant)',
+#                    'only first segment significant','only 2nd segment significant',
+#                    'both segments insignificant (or no break and not significant)')
+#   for (i in 0:3) cat(i, " -- ", class_names[i+1], "\n")
+# }
+#
+## ----------------------------------------------------------------------------------------
+## Examples
+#
+# # A time series which would be classified as interruption: increase with negative break by
+# # the standard typology, and as non-monotonic increase, accelerating after the breakpoint,
+# # by the typology optimized for drylands.
+# 
+# set.seed(11)
+# 
+# # Simulating data for a time series using an AR(1) model
+# x<-arima.sim(model= list(order = c(1,1,0), ar=0.68), n = 200)
+# 
+# # Creating the time series object
+# ts1<-ts(x, start = 1801, end = 2000, frequency = 1)
+# 
+# # Creating bfast01 object
+# bf1 <- bfast01(ts1, formula = response ~ trend)
+# 
+# # Applying the classification
+# bfast01classify(bf1, typology = "standard") # Interruption: increase with negative break
+# bfast01classify(bf1, typology = "drylands") # Non-monotonic increase, Accelerating
+# 
+# # Visualizing the time series with break and fitted trends
+# plot(bf1) 
+# 
+# ##
+# 
+# # A time series which would be classified as reversal from decrease to increase by the 
+# # standard typology, and as a complete reversal from decrease to increase by the 
+# # typology optimized for drylands.
+# 
+# # Simulating data for a time series with decreasing trend
+# set.seed(3)
+# y1 <- arima.sim(list(order = c(0,1,12), ma = c(-0.8,rep(0,10),-0.8)), n = 359, sd = 0.2)
+# 
+# # Simulating data for a time series with increasing trend
+# set.seed(4)
+# y2 <- arima.sim(list(order = c(0,1,12), ma = c(-0.8,rep(0,10),-0.8)), n = 359, sd = 0.2)
+# 
+# # Joining data and creating a time series object
+# ts2 <- ts(c(y1,y2), start = c(1941,1), end = c(2000,12), frequency = 12)
+# 
+# # Creating bfast01 object
+# bf2 <- bfast01(ts2, formula = response ~ trend)
+# 
+# # Applying the classification
+# bfast01classify(bf2, typology = "standard") # Reversal from decrease to increase
+# bfast01classify(bf2, typology = "drylands") # Reversal from decrease to increase, Complete
+# 
+# # Visualizing the time series with break and fitted trends
+# plot(bf2) 
