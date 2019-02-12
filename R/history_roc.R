@@ -19,7 +19,8 @@ history_roc.matrix <- function(X, y,time, level = 0.05) {
   if (!is.ts(y)) y <- ts(y) # needed?
   y_rcus <- efp.matrix(X_rev,y_rev,time_rev, type = "Rec-CUSUM") ## TODO
   
-  y_start <- if(sctest(y_rcus)$p.value < level) {
+  pval = sctest(y_rcus)$p.value
+  y_start <- if(!is.na(pval) && pval < level) {
     length(y_rcus$process) - min(which(abs(y_rcus$process)[-1] > boundary(y_rcus)[-1])) + 1
   } else {
     1    
@@ -37,7 +38,8 @@ history_roc.formula <- function(formula, data, level = 0.05) {
   data_rev$response <- ts(data_rev$response)
   y_rcus <- efp(formula, data = data_rev, type = "Rec-CUSUM")
 
-  y_start <- if(sctest(y_rcus)$p.value < level) {
+  pval = sctest(y_rcus)$p.value
+  y_start <- if(!is.na(pval) && pval < level) {
     length(y_rcus$process) - min(which(abs(y_rcus$process)[-1] > boundary(y_rcus)[-1])) + 1
   } else {
     1    
