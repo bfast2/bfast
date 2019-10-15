@@ -76,28 +76,22 @@ Most important performance modifications include:
 * using `lm.fit()` instead of `lm()` when possible
 
 ## Contribution guidelines:
-We always welcome contributions to the package.
+We always welcome contributions to the package. If you would like to propose a new functionality and/or report an issue, please use GitHub's tracker called [Issues](https://github.com/bfast2/bfast/issues).
 
-### When you are familiar with GitHub:
-We work with [GitHub Flow](https://guides.github.com/introduction/flow/) branching model.
+For development we use the [GitHub Flow](https://guides.github.com/introduction/flow/) branching model.
 
 Key steps:
+
 1. Create a GitHub issue in this repository with description of the work that you plan to do.
 2. Assign yourself to the GitHub issue you are working on, to inform other developers that you are working on it.
-3. Create your own working branch (or fork) based on the `dev` branch.
-4. Make your changes in that branch or fork.
-5. Commit your changes to your working branch/fork as long as you are not finished with your development.
-6. Make sure the release notes in NEWS.Rd are updated.
-7. Add your name to the contributors list in the DESCRIPTION file.
-8. Run the tests and checks as CRAN, make sure they pass.
-9. Once your work is finished, make a pull request, such that another developer can review your changes before merging them with the `dev` branch.
+3. Create your own working fork or branch based on the `dev` branch.
+4. Make your changes in that branch.
+5. Commit your changes to your working branch as long as you are not finished with your development.
+6. Make sure that all tests pass (e.g., in Travis or Circle CI).
+7. Once your work is finished, create a pull request so that another developer can review your changes before merging them with the `dev` (or `main`) branch.
 
-### When you are unfamiliar with GitHub:
-If you would like to propose additional functionalities or report an issue. Go to [issues](https://github.com/wadpac/GGIR/issues) and create a new issue.
+Additional steps for [preparing a new release](https://guide.esciencecenter.nl/best_practices/releases.html):
 
-If you would like to propose changes to the text of the manual this is possible.
-1. Please go to the [man](https://github.com/wadpac/GGIR/tree/master/man) folder which holds all the parts of the manual.
-2. Go to the part of the manual you want to edit and click on edit button (little pencil symbol) and make your changes.
-3. Once you are finished, scroll down and describe you update and select the radio button "Create a new branch for this commit and start a pull request". One of the developers will then be able to review your changes and merge them in the `dev` version of the code.
-4. Click the green button "Propose file changes"
-
+8. Update the `NEWS.Rd` file with most notable changes.
+9. Add new contributors to the `DESCRIPTION` file if applicable.
+10. Release the package and make it citable (add `CITATION.cff` including DOI).
