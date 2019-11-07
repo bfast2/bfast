@@ -10,8 +10,8 @@ Parts of the improvements rely on modifications of the [strucchange](https://cra
 
 ```
 library(devtools)
-install_github("appelmar/strucchange")
-install_github("GreatEmerald/bfast")
+install_github("bfast2/strucchange")
+install_github("bfast2/bfast")
 ```
 
 
