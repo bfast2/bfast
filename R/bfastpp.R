@@ -123,7 +123,7 @@ bfastpp<- function(data, order = 3,
       x_stl <- if (decomp=="stlplus") {
         stlplus::stlplus(x, s.window = "periodic")$data
       } else {
-        stats::stl(x, s.window = "periodic")$time.series)
+        stats::stl(x, s.window = "periodic")$time.series
       }
       switch(stl,
              "trend" = x - x_stl[, "trend"],
@@ -211,7 +211,7 @@ bfastpp<- function(data, order = 3,
       x_stl <- if (decomp=="stlplus") {
         stlplus::stlplus(x, s.window = "periodic")$data
       } else {
-        stats::stl(x, s.window = "periodic")$time.series)
+        stats::stl(x, s.window = "periodic")$time.series
       }
       switch(stl,
              "trend" = x - x_stl[, "trend"],
