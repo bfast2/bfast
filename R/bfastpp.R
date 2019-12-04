@@ -120,9 +120,11 @@ bfastpp<- function(data, order = 3,
   stl <- match.arg(stl)
   if(stl != "none") {
     stl_adjust <- function(x) {
-      x_stl <- ifelse(decomp=="stlplus",
-                      stlplus::stlplus(x, s.window = "periodic")$data,
-                      stats::stl(x, s.window = "periodic")$time.series)
+      x_stl <- if (decomp=="stlplus") {
+        stlplus::stlplus(x, s.window = "periodic")$data
+      } else {
+        stats::stl(x, s.window = "periodic")$time.series)
+      }
       switch(stl,
              "trend" = x - x_stl[, "trend"],
              "seasonal" = x - x_stl[, "seasonal"],
@@ -206,9 +208,11 @@ bfastpp<- function(data, order = 3,
   stl <- match.arg(stl)
   if(stl != "none") {
     stl_adjust <- function(x) {
-      x_stl <- ifelse(decomp=="stlplus",
-                      stlplus::stlplus(x, s.window = "periodic")$data,
-                      stats::stl(x, s.window = "periodic")$time.series)
+      x_stl <- if (decomp=="stlplus") {
+        stlplus::stlplus(x, s.window = "periodic")$data
+      } else {
+        stats::stl(x, s.window = "periodic")$time.series)
+      }
       switch(stl,
              "trend" = x - x_stl[, "trend"],
              "seasonal" = x - x_stl[, "seasonal"],
