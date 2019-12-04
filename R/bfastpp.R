@@ -31,6 +31,9 @@
 #' and/or season-adjustment.  The \code{"trend"} or \code{"seasonal"} component
 #' or both from \code{\link[stats]{stl}} are removed from each column in
 #' \code{data}. By default (\code{"none"}), no STL adjustment is used.
+#' @param decomp "stlplus" or "stl": use the NA-tolerant decomposition package
+#' or the reference package (which can make use of time series with 2-3
+#' observations per year)
 #' @param formula regression model to be used (see
 #' \code{\link[bfast]{bfastmonitor}}).  If given, only independent variables
 #' that occur in the formula will be computed and the output will be a list of
@@ -89,23 +92,24 @@
 bfastpp<- function(data, order = 3,
                    lag = NULL, slag = NULL, na.action = na.omit,
                    stl = c("none", "trend", "seasonal", "both"),
-                   formula = NULL) {
+                   formula = NULL, decomp=c("stlplus", "stl")) {
   
-  if(!require("stlplus",quietly = T)) stop("Please install the stlplus package!")
+  decomp = match.arg(decomp)
+  if(decomp == "stlplus" && !require("stlplus",quietly = T)) stop("Please install the stlplus package!")
   if(!is.ts(data)) data <- as.ts(data)
 
   if (is.null(formula)) {
-    return(.bfastpp.full(data, order, lag, slag, na.action, stl))
+    return(.bfastpp.full(data, order, lag, slag, na.action, stl, decomp))
   }
   else {
-    return(.bfastpp.formula(data, order, lag, slag, na.action, stl, formula))
+    return(.bfastpp.formula(data, order, lag, slag, na.action, stl, formula, decomp))
   } 
 }
   
 
 .bfastpp.full <- function(data, order = 3,
                     lag = NULL, slag = NULL, na.action = na.omit,
-                    stl = c("none", "trend", "seasonal", "both"))
+                    stl = c("none", "trend", "seasonal", "both"), decomp=c("stlplus", "stl"))
 {
   ## double check what happens with 29-02 if that happens...
   ## we should keep it simple an remove the datum if that happens
@@ -116,7 +120,9 @@ bfastpp<- function(data, order = 3,
   stl <- match.arg(stl)
   if(stl != "none") {
     stl_adjust <- function(x) {
-      x_stl <- stlplus::stlplus(x, s.window = "periodic", ...)$data
+      x_stl <- ifelse(decomp=="stlplus",
+                      stlplus::stlplus(x, s.window = "periodic")$data,
+                      stats::stl(x, s.window = "periodic")$time.series)
       switch(stl,
              "trend" = x - x_stl[, "trend"],
              "seasonal" = x - x_stl[, "seasonal"],
@@ -189,7 +195,7 @@ bfastpp<- function(data, order = 3,
 .bfastpp.formula <- function(data, order = 3,
                             lag = NULL, slag = NULL, na.action = na.omit,
                             stl = c("none", "trend", "seasonal", "both"),
-                            formula = NULL)
+                            formula = NULL, decomp=c("stlplus", "stl"))
 {
   ## double check what happens with 29-02 if that happens...
   ## we should keep it simple an remove the datum if that happens
@@ -200,7 +206,9 @@ bfastpp<- function(data, order = 3,
   stl <- match.arg(stl)
   if(stl != "none") {
     stl_adjust <- function(x) {
-      x_stl <- stats::stl(x, s.window = "periodic")$time.series
+      x_stl <- ifelse(decomp=="stlplus",
+                      stlplus::stlplus(x, s.window = "periodic")$data,
+                      stats::stl(x, s.window = "periodic")$time.series)
       switch(stl,
              "trend" = x - x_stl[, "trend"],
              "seasonal" = x - x_stl[, "seasonal"],
