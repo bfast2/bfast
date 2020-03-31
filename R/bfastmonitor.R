@@ -72,7 +72,7 @@
 #' @param end numeric. Maximum time (relative to the history period) that will
 #' be monitored (in MOSUM/ME processes). Default is 10 times the history
 #' period.
-#' @param level numeric. Significance level of the monitoring (and ROC, if
+#' @param level numeric vector. Significance levels of the monitoring and ROC (if
 #' selected) procedure, i.e., probability of type I error.
 #' @param hpc character specifying the high performance computing support.
 #' Default is \code{"none"}, can be set to \code{"foreach"}. See
@@ -213,12 +213,10 @@ bfastmonitor <- function(data, start,
                          formula = response ~ trend + harmon,
                          order = 3, lag = NULL, slag = NULL,
                          history = c("ROC", "BP", "all"),
-                         type = "OLS-MOSUM", h = 0.25, end = 10, level = 0.05,
+                         type = "OLS-MOSUM", h = 0.25, end = 10, level = c(0.05, 0.05),
                          hpc = "none", verbose = FALSE, plot = FALSE)
 {
   ## PREPROCESSING
-  ## two levels needed: 1. monitoring, 2. in ROC (if selected)
-  level <- rep(level, length.out = 2)
   
   if(!is.ts(data)) data <- as.ts(data)
   
