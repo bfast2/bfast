@@ -240,6 +240,8 @@ bfastmonitor <- function(data, start,
   history_X =  X[time < start,]
   history_y =  y[time < start]
   history_time = time[time < start]
+  if (length(history_y) <= ncol(history_X))
+      stop("Fewer observations in the history period than number of regressors")
   
   ## find start of history period
   ## (may be specified via character, function, or time index directly)
