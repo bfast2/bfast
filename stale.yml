@@ -1,0 +1,19 @@
+name: Mark stale pull requests
+
+on:
+  schedule:
+  - cron: "0 12 * * *"
+
+jobs:
+  stale:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/stale@v1.1.0
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        stale-pr-message: 'Due to lack of activity on this pull request, it may now be merged without review.'
+        stale-pr-label: 'stale'
+        days-before-stale: 15
+        exempt-pr-label: 'wip'
