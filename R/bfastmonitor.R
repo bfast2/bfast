@@ -217,7 +217,10 @@ bfastmonitor <- function(data, start,
                          hpc = "none", verbose = FALSE, plot = FALSE)
 {
   ## PREPROCESSING
-  
+  ## two levels needed: 1. monitoring, 2. in ROC (if selected)
+  if (length(level) == 1) # Backwards compatibility, assume both are the same
+    level <- rep(level, length.out = 2)
+    
   if(!is.ts(data)) data <- as.ts(data)
   
   ## frequency of data
