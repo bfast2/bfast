@@ -17,3 +17,4 @@ jobs:
         stale-pr-label: 'stale'
         days-before-stale: 15
         exempt-pr-label: 'wip'
+        days-before-close: -1
