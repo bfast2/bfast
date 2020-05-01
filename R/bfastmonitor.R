@@ -231,10 +231,12 @@ bfastmonitor <- function(data, start,
   
 
   ## full data
-  data_tspp <- bfastpp(data, order = order, lag = lag, slag = slag, formula = formula)
-  X = data_tspp$X
-  y = data_tspp$y
-  time = data_tspp$t
+  data_tspp <- bfastpp(data, order = order, lag = lag, slag = slag)
+  data_tsmat = model.matrix(formula, data_tspp)
+  X = data_tsmat
+  y = data_tspp$response
+  time = data_tspp$time
+  rm(data_tspp, data_tsmat)
   
   ## SELECT STABLE HISTORY  
   ## full history period
