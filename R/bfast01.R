@@ -8,7 +8,7 @@
 #' steps:
 #' 
 #' 1. The data is preprocessed with bfastpp using the arguments
-#' order/lag/slag/na.action/stl.
+#' order/lag/slag/na.action/stl/sbins.
 #' 
 #' 2. A linear model with the given formula is fitted. By default a suitable
 #' formula is guessed based on the preprocessing parameters.
@@ -70,6 +70,7 @@
 #' omitted.
 #' @param na.action arguments passed on to \code{\link[bfast]{bfastpp}}
 #' @param stl argument passed on to \code{\link[bfast]{bfastpp}}
+#' @param sbins argument passed on to \code{\link[bfast]{bfastpp}}
 #' @return \code{bfast01} returns a list of class \code{"bfast01"} with the
 #' following elements: \item{call}{the original function call.} \item{data}{the
 #' data preprocessed by \code{"bfastpp"}.} \item{formula}{the model formulae.}
@@ -132,7 +133,7 @@ bfast01 <- function(data, formula = NULL,
                     test = "OLS-MOSUM", level = 0.05, aggregate = all,
                     trim = NULL, bandwidth = 0.15, functional = "max",
                     order = 3, lag = NULL, slag = NULL, na.action = na.omit, 
-                    reg = "lm", stl = "none")
+                    reg = "lm", stl = "none", sbins = 1)
 {
   # Error catching
   if(!(reg %in% c("lm","rlm"))) stop("Regression method unknown. ?bfast01")
@@ -141,7 +142,7 @@ bfast01 <- function(data, formula = NULL,
   stl <- match.arg(stl, c("none", "trend", "seasonal", "both"))
   if (!inherits(data, "data.frame")) 
     data <- bfastpp(data, order = order, lag = lag, slag = slag, 
-                    na.action = na.action, stl = stl)
+                    na.action = na.action, stl = stl, sbins = sbins)
   if (is.null(formula)) {
     formula <- c(trend = !(stl %in% c("trend", "both")), 
                  harmon = order > 0 & !(stl %in% c("seasonal", "both")), 

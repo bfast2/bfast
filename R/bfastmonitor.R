@@ -80,6 +80,8 @@
 #' @param verbose logical. Should information about the monitoring be printed
 #' during computation?
 #' @param plot logical. Should the result be plotted?
+#' @param sbins numeric. Number of seasonal dummies, passed to
+#' \code{\link{bfastpp}}.
 #' @return \code{bfastmonitor} returns an object of class
 #' \code{"bfastmonitor"}, i.e., a list with components as follows.
 #' \item{data}{original \code{"ts"} time series,} \item{tspp}{preprocessed
@@ -194,16 +196,16 @@ bfastmonitor <- function(data, start,
                          order = 3, lag = NULL, slag = NULL,
                          history = c("ROC", "BP", "all"),
                          type = "OLS-MOSUM", h = 0.25, end = 10, level = 0.05,
-                         hpc = "none", verbose = FALSE, plot = FALSE)
+                         hpc = "none", verbose = FALSE, plot = FALSE, sbins = 1)
 {
   
   if (getOption("bfast.prefer_matrix_methods", FALSE)) {
     return(.bfastmonitor.matrix(data,start,formula,order, lag, slag,
-                                 history, type, h, end, level, hpc, verbose, plot))
+        history, type, h, end, level, hpc, verbose, plot, sbins))
   }
   else {
     return(.bfastmonitor.default(data,start,formula,order, lag, slag,
-                                history, type, h, end, level, hpc, verbose, plot))
+        history, type, h, end, level, hpc, verbose, plot, sbins))
   }
 }
 
@@ -231,7 +233,7 @@ bfastmonitor <- function(data, start,
   
 
   ## full data
-  data_tspp <- bfastpp(data, order = order, lag = lag, slag = slag)
+  data_tspp <- bfastpp(data, order = order, lag = lag, slag = slag, sbins = sbins)
   data_tsmat = model.matrix(formula, data_tspp)
   X = data_tsmat
   y = data_tspp$response
@@ -370,7 +372,7 @@ bfastmonitor <- function(data, start,
                          order = 3, lag = NULL, slag = NULL,
                          history = c("ROC", "BP", "all"),
                          type = "OLS-MOSUM", h = 0.25, end = 10, level = 0.05,
-                         hpc = "none", verbose = FALSE, plot = FALSE)
+                         hpc = "none", verbose = FALSE, plot = FALSE, sbins = 1)
 {
   ## PREPROCESSING
   ## two levels needed: 1. monitoring, 2. in ROC (if selected)
@@ -385,7 +387,7 @@ bfastmonitor <- function(data, start,
   start <- time2num(start)
   
   ## full data
-  data_tspp <- bfastpp(data, order = order, lag = lag, slag = slag)
+  data_tspp <- bfastpp(data, order = order, lag = lag, slag = slag, sbins = sbins)
   
   ## SELECT STABLE HISTORY  
   ## full history period

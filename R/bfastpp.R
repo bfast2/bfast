@@ -34,6 +34,10 @@
 #' @param decomp "stlplus" or "stl": use the NA-tolerant decomposition package
 #' or the reference package (which can make use of time series with 2-3
 #' observations per year)
+#' @param sbins numeric. Controls the number of seasonal dummies. If integer
+#' > 1, sets the number of seasonal dummies to use per year.
+#' If <= 1, treated as a multiplier to the number of observations per year, i.e.
+#' ndummies = nobs/year * sbins.
 #' @return If no formula is provided, \code{bfastpp} returns a
 #' \code{"data.frame"} with the following variables (some of which may be
 #' matrices).  \item{time}{numeric vector of time stamps,}
@@ -87,7 +91,7 @@
 bfastpp<- function(data, order = 3,
                    lag = NULL, slag = NULL, na.action = na.omit,
                    stl = c("none", "trend", "seasonal", "both"),
-                   decomp=c("stlplus", "stl"))
+                   decomp=c("stlplus", "stl"), sbins=1)
 {
   decomp = match.arg(decomp)
   if(decomp == "stlplus" && !require("stlplus",quietly = T)) stop("Please install the stlplus package or set decomp=stl.")
@@ -132,7 +136,7 @@ bfastpp<- function(data, order = 3,
     time = as.numeric(time(y)),
     response = y,
     trend = 1:NROW(y),
-    season = factor(cycle(y))
+    season = cut(cycle(y), if (sbins > 1) sbins else frequency(y)*sbins, ordered_result = TRUE)
   )
   
   ## set up harmonic trend matrix as well
