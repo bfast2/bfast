@@ -21,10 +21,19 @@
 #' while also being able to deal with NA values by excluding them
 #' via \code{bfastpp}.
 #'
+#' @inheritParams bfastpp
+#' @inheritParams strucchange::breakpoints
+#'
 #' @export bfast0n
 
-bfast0n <- function()
+bfast0n <- function(data, order = 3,
+                   lag = NULL, slag = NULL, na.action = na.omit,
+                   stl = c("none", "trend", "seasonal", "both"),
+                   decomp=c("stlplus", "stl"), sbins=1), ...)
 {
-  data_pp <- bfastpp()
-  strucchange::breakpoints(data_pp)
+  data_pp <- bfastpp(data, order = 3,
+                   lag = NULL, slag = NULL, na.action = na.omit,
+                   stl = c("none", "trend", "seasonal", "both"),
+                   decomp=c("stlplus", "stl"), sbins=1))
+  return(strucchange::breakpoints(data = data_pp, ...))
 }
