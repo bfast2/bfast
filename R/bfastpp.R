@@ -31,12 +31,13 @@
 #' and/or season-adjustment.  The \code{"trend"} or \code{"seasonal"} component
 #' or both from \code{\link[stats]{stl}} are removed from each column in
 #' \code{data}. By default (\code{"none"}), no STL adjustment is used.
-#' @param formula regression model to be used (see
-#' \code{\link[bfast]{bfastmonitor}}).  If given, only independent variables
-#' that occur in the formula will be computed and the output will be a list of
-#' the design matrix, the response vector, and the vector of times instead of a
-#' single \code{data.frame}. Providing a formula may reduce relative expensive
-#' calls of \code{model.matrix} and \code{model.frame} in following operations.
+#' @param decomp "stlplus" or "stl": use the NA-tolerant decomposition package
+#' or the reference package (which can make use of time series with 2-3
+#' observations per year)
+#' @param sbins numeric. Controls the number of seasonal dummies. If integer
+#' > 1, sets the number of seasonal dummies to use per year.
+#' If <= 1, treated as a multiplier to the number of observations per year, i.e.
+#' ndummies = nobs/year * sbins.
 #' @return If no formula is provided, \code{bfastpp} returns a
 #' \code{"data.frame"} with the following variables (some of which may be
 #' matrices).  \item{time}{numeric vector of time stamps,}
@@ -80,33 +81,21 @@
 #' d2lm <- lm(response ~ lag, data = d2)
 #' summary(d2lm)
 #' 
-#' ## provide a formula and use the lower level lm.fit function
-#' d3 <- bfastpp(ndvi, stl = "both", lag = 1:2, formula = response ~ lag)
-#' d3lm <- lm.fit(d3$X, d3$y)
+#' ## use the lower level lm.fit function
+#' d3 <- bfastpp(ndvi, stl = "both", lag = 1:2)
+#' d3mm <- model.matrix(response ~ lag, d3)
+#' d3lm <- lm.fit(d3mm, d3$response)
 #' d3lm$coefficients
 #' 
 #' @export bfastpp
 bfastpp<- function(data, order = 3,
                    lag = NULL, slag = NULL, na.action = na.omit,
                    stl = c("none", "trend", "seasonal", "both"),
-                   formula = NULL) {
-  
-  if(!require("stlplus",quietly = T)) stop("Please install the stlplus package!")
-  if(!is.ts(data)) data <- as.ts(data)
-
-  if (is.null(formula)) {
-    return(.bfastpp.full(data, order, lag, slag, na.action, stl))
-  }
-  else {
-    return(.bfastpp.formula(data, order, lag, slag, na.action, stl, formula))
-  } 
-}
-  
-
-.bfastpp.full <- function(data, order = 3,
-                    lag = NULL, slag = NULL, na.action = na.omit,
-                    stl = c("none", "trend", "seasonal", "both"))
+                   decomp=c("stlplus", "stl"), sbins=1)
 {
+  decomp = match.arg(decomp)
+  if(decomp == "stlplus" && !require("stlplus",quietly = T)) stop("Please install the stlplus package or set decomp=stl.")
+
   ## double check what happens with 29-02 if that happens...
   ## we should keep it simple an remove the datum if that happens
   
@@ -116,7 +105,11 @@ bfastpp<- function(data, order = 3,
   stl <- match.arg(stl)
   if(stl != "none") {
     stl_adjust <- function(x) {
-      x_stl <- stlplus::stlplus(x, s.window = "periodic", ...)$data
+      x_stl <- if (decomp=="stlplus") {
+        stlplus::stlplus(x, s.window = "periodic")$data
+      } else {
+        stats::stl(x, s.window = "periodic")$time.series
+      }
       switch(stl,
              "trend" = x - x_stl[, "trend"],
              "seasonal" = x - x_stl[, "seasonal"],
@@ -143,7 +136,7 @@ bfastpp<- function(data, order = 3,
     time = as.numeric(time(y)),
     response = y,
     trend = 1:NROW(y),
-    season = factor(cycle(y))
+    season = cut(cycle(y), if (sbins > 1) sbins else frequency(y)*sbins, ordered_result = TRUE)
   )
   
   ## set up harmonic trend matrix as well
@@ -179,121 +172,3 @@ bfastpp<- function(data, order = 3,
   ## return everything
   return(rval)
 }
-
-
-
-
-
-# this function builds the design matrix X for bfast based on a given formula. Only terms 
-# given in the formula will be added to X.
-.bfastpp.formula <- function(data, order = 3,
-                            lag = NULL, slag = NULL, na.action = na.omit,
-                            stl = c("none", "trend", "seasonal", "both"),
-                            formula = NULL)
-{
-  ## double check what happens with 29-02 if that happens...
-  ## we should keep it simple an remove the datum if that happens
-  
-  if(!is.ts(data)) data <- as.ts(data)
-  
-  ## STL pre-processing to try to adjust for trend or season
-  stl <- match.arg(stl)
-  if(stl != "none") {
-    stl_adjust <- function(x) {
-      x_stl <- stats::stl(x, s.window = "periodic")$time.series
-      switch(stl,
-             "trend" = x - x_stl[, "trend"],
-             "seasonal" = x - x_stl[, "seasonal"],
-             "both" = x - x_stl[, "trend"] - x_stl[, "seasonal"])
-    }
-    if(NCOL(data) > 1L) {
-      for(i in 1:NCOL(data)) data[,i] <- stl_adjust(data[,i])
-    } else {
-      data <- stl_adjust(data)
-    }
-  }
-  
-  
-  ## check for covariates
-  if(NCOL(data) > 1L) {
-    x <- coredata(data)[, -1L]
-    y <- data[, 1L]
-  } else {
-    x <- NULL
-    y <- data
-  }
-  
-  
-  rval = as.numeric(y) # remove ts attrs in order to avoid cbind.ts
-  rval.names = "response"
-  
-  rval = cbind(rval, as.numeric(time(y)))
-  rval.names = c(rval.names, "time")
-  
-  
-  if (attr(terms(formula), "intercept")) {
-    rval = cbind(rval, 1)
-    rval.names = c(rval.names, "(Intercept)")
-  }
-  
-  
-  if ("trend" %in% attr(terms.formula(formula),"term.labels")){ 
-    rval = cbind(rval,1:NROW(y))
-    rval.names = c(rval.names, "trend")
-  }
-  
-  if ("season" %in% attr(terms.formula(formula),"term.labels")){
-    rval = cbind(rval,1 + seq(as.numeric(cycle(y[1]))-1,length.out=max(length(y),nrow(y))) %% frequency(y))
-    rval.names = c(rval.names, "season")
-  }
-  
-  
-  ## set up harmonic trend matrix as well
-  if ("harmon" %in% attr(terms.formula(formula),"term.labels")){
-    
-    freq <- frequency(y)
-    order <- min(freq, order)
-    harmon <- outer(2 * pi * rval[,2], 1:order) # rval[,2] is as.numeric(time(y))
-    harmon <- cbind(apply(harmon, 2, cos), apply(harmon, 2, sin))
-    colnames(harmon) <- if(order == 1) {
-      c("harmoncos", "harmonsin")
-    } else {
-      c(paste("harmon.cos", 1:order, sep = ""), paste("harmon.sin", 1:order, sep = ""))
-    }
-    if((2 * order) == freq) harmon <- harmon[, -(2 * order)]
-    rval = cbind(rval,harmon)
-    rval.names = c(rval.names, colnames(harmon))
-  }
-  nalag <- function(x, k) c(rep(NA, k), head(x, -k))
-  if ("lag" %in% attr(terms.formula(formula),"term.labels")){
-    if(!is.null(lag)) {
-      rval = cbind(rval,sapply(lag, function(k) nalag(y, k)))
-      rval.names = c(rval.names, paste0("lag",lag))
-    }
-  }
-  if ("slag" %in% attr(terms.formula(formula),"term.labels")){
-    if(!is.null(slag)) {
-      rval = cbind(rval, sapply(slag * frequency(y), function(k) nalag(as.vector(y), k)))
-      rval.names = c(rval.names, paste0("slag",slag))
-    }
-  }
-  
-  if ("xreg" %in% attr(terms.formula(formula),"term.labels")){
-    rval = cbind(rval, x)
-    rval.names = c(rval.names, paste0("xreg.",colnames(x)))
-  }
-  
-  ## omit missing values
-  #if (!is.ts(rval)) rval <- ts(rval,start = start(data), frequency = frequency(data))
-  colnames(rval) <- rval.names
-  
-  #class(rval) <- "matrix" # prevent calling na.omit.ts
-  rval <- na.action(rval)
-  
-  return(list(y=rval[,1L],X=rval[,-c(1L,2L)], t=rval[,2L]))
-}
-
-
-
-
-

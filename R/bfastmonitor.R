@@ -72,7 +72,7 @@
 #' @param end numeric. Maximum time (relative to the history period) that will
 #' be monitored (in MOSUM/ME processes). Default is 10 times the history
 #' period.
-#' @param level numeric. Significance level of the monitoring (and ROC, if
+#' @param level numeric vector. Significance levels of the monitoring and ROC (if
 #' selected) procedure, i.e., probability of type I error.
 #' @param hpc character specifying the high performance computing support.
 #' Default is \code{"none"}, can be set to \code{"foreach"}. See
@@ -80,6 +80,8 @@
 #' @param verbose logical. Should information about the monitoring be printed
 #' during computation?
 #' @param plot logical. Should the result be plotted?
+#' @param sbins numeric. Number of seasonal dummies, passed to
+#' \code{\link{bfastpp}}.
 #' @return \code{bfastmonitor} returns an object of class
 #' \code{"bfastmonitor"}, i.e., a list with components as follows.
 #' \item{data}{original \code{"ts"} time series,} \item{tspp}{preprocessed
@@ -194,16 +196,16 @@ bfastmonitor <- function(data, start,
                          order = 3, lag = NULL, slag = NULL,
                          history = c("ROC", "BP", "all"),
                          type = "OLS-MOSUM", h = 0.25, end = 10, level = 0.05,
-                         hpc = "none", verbose = FALSE, plot = FALSE)
+                         hpc = "none", verbose = FALSE, plot = FALSE, sbins = 1)
 {
   
   if (getOption("bfast.prefer_matrix_methods", FALSE)) {
     return(.bfastmonitor.matrix(data,start,formula,order, lag, slag,
-                                 history, type, h, end, level, hpc, verbose, plot))
+        history, type, h, end, level, hpc, verbose, plot, sbins))
   }
   else {
     return(.bfastmonitor.default(data,start,formula,order, lag, slag,
-                                history, type, h, end, level, hpc, verbose, plot))
+        history, type, h, end, level, hpc, verbose, plot, sbins))
   }
 }
 
@@ -213,13 +215,14 @@ bfastmonitor <- function(data, start,
                          formula = response ~ trend + harmon,
                          order = 3, lag = NULL, slag = NULL,
                          history = c("ROC", "BP", "all"),
-                         type = "OLS-MOSUM", h = 0.25, end = 10, level = 0.05,
+                         type = "OLS-MOSUM", h = 0.25, end = 10, level = c(0.05, 0.05),
                          hpc = "none", verbose = FALSE, plot = FALSE)
 {
   ## PREPROCESSING
   ## two levels needed: 1. monitoring, 2. in ROC (if selected)
-  level <- rep(level, length.out = 2)
-  
+  if (length(level) == 1) # Backwards compatibility, assume both are the same
+    level <- rep(level, length.out = 2)
+    
   if(!is.ts(data)) data <- as.ts(data)
   
   ## frequency of data
@@ -230,16 +233,20 @@ bfastmonitor <- function(data, start,
   
 
   ## full data
-  data_tspp <- bfastpp(data, order = order, lag = lag, slag = slag, formula = formula)
-  X = data_tspp$X
-  y = data_tspp$y
-  time = data_tspp$t
+  data_tspp <- bfastpp(data, order = order, lag = lag, slag = slag, sbins = sbins)
+  data_tsmat = model.matrix(formula, data_tspp)
+  X = data_tsmat
+  y = data_tspp$response
+  time = data_tspp$time
+  rm(data_tspp, data_tsmat)
   
   ## SELECT STABLE HISTORY  
   ## full history period
   history_X =  X[time < start,]
   history_y =  y[time < start]
   history_time = time[time < start]
+  if (length(history_y) <= ncol(history_X))
+      stop("Fewer observations in the history period than number of regressors")
   
   ## find start of history period
   ## (may be specified via character, function, or time index directly)
@@ -365,7 +372,7 @@ bfastmonitor <- function(data, start,
                          order = 3, lag = NULL, slag = NULL,
                          history = c("ROC", "BP", "all"),
                          type = "OLS-MOSUM", h = 0.25, end = 10, level = 0.05,
-                         hpc = "none", verbose = FALSE, plot = FALSE)
+                         hpc = "none", verbose = FALSE, plot = FALSE, sbins = 1)
 {
   ## PREPROCESSING
   ## two levels needed: 1. monitoring, 2. in ROC (if selected)
@@ -380,7 +387,7 @@ bfastmonitor <- function(data, start,
   start <- time2num(start)
   
   ## full data
-  data_tspp <- bfastpp(data, order = order, lag = lag, slag = slag)
+  data_tspp <- bfastpp(data, order = order, lag = lag, slag = slag, sbins = sbins)
   
   ## SELECT STABLE HISTORY  
   ## full history period
