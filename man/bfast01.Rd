@@ -4,10 +4,23 @@
 \alias{bfast01}
 \title{Checking for one major break in the time series}
 \usage{
-bfast01(data, formula = NULL, test = "OLS-MOSUM", level = 0.05,
-  aggregate = all, trim = NULL, bandwidth = 0.15, functional = "max",
-  order = 3, lag = NULL, slag = NULL, na.action = na.omit, reg = "lm",
-  stl = "none")
+bfast01(
+  data,
+  formula = NULL,
+  test = "OLS-MOSUM",
+  level = 0.05,
+  aggregate = all,
+  trim = NULL,
+  bandwidth = 0.15,
+  functional = "max",
+  order = 3,
+  lag = NULL,
+  slag = NULL,
+  na.action = na.omit,
+  reg = "lm",
+  stl = "none",
+  sbins = 1
+)
 }
 \arguments{
 \item{data}{A time series of class \code{\link[stats]{ts}}, or another
@@ -56,6 +69,8 @@ omitted.}
 \item{na.action}{arguments passed on to \code{\link[bfast]{bfastpp}}}
 
 \item{stl}{argument passed on to \code{\link[bfast]{bfastpp}}}
+
+\item{sbins}{argument passed on to \code{\link[bfast]{bfastpp}}}
 }
 \value{
 \code{bfast01} returns a list of class \code{"bfast01"} with the
@@ -77,7 +92,7 @@ either a model with 0 or with 1 breakpoint. It proceeds in the following
 steps:
 
 1. The data is preprocessed with bfastpp using the arguments
-order/lag/slag/na.action/stl.
+order/lag/slag/na.action/stl/sbins.
 
 2. A linear model with the given formula is fitted. By default a suitable
 formula is guessed based on the preprocessing parameters.
@@ -144,9 +159,6 @@ plot(bf3)
 
 
 }
-\author{
-Achim Zeileis, Jan Verbesselt
-}
 \references{
 de Jong R, Verbesselt J, Zeileis A, Schaepman M (2013).  Shifts
 in global vegetation activity trends.  \emph{Remote Sensing}, \bold{5},
@@ -160,5 +172,7 @@ scores, F statistics, and OLS residuals.  \emph{Econometric Reviews},
 \code{\link[bfast]{bfastmonitor}},
 \code{\link[strucchange]{breakpoints}}
 }
+\author{
+Achim Zeileis, Jan Verbesselt
+}
 \keyword{ts}
-

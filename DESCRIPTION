@@ -43,4 +43,4 @@ URL: http://bfast.R-Forge.R-project.org/
 LazyLoad: yes
 LazyData: yes
 LinkingTo: Rcpp
-RoxygenNote: 5.0.1
+RoxygenNote: 7.1.0

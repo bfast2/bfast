@@ -4,8 +4,16 @@
 \alias{bfastpp}
 \title{Time Series Preprocessing for BFAST-Type Models}
 \usage{
-bfastpp(data, order = 3, lag = NULL, slag = NULL, na.action = na.omit,
-  stl = c("none", "trend", "seasonal", "both"), formula = NULL)
+bfastpp(
+  data,
+  order = 3,
+  lag = NULL,
+  slag = NULL,
+  na.action = na.omit,
+  stl = c("none", "trend", "seasonal", "both"),
+  decomp = c("stlplus", "stl"),
+  sbins = 1
+)
 }
 \arguments{
 \item{data}{A time series of class \code{\link[stats]{ts}}, or another
@@ -28,12 +36,14 @@ and/or season-adjustment.  The \code{"trend"} or \code{"seasonal"} component
 or both from \code{\link[stats]{stl}} are removed from each column in
 \code{data}. By default (\code{"none"}), no STL adjustment is used.}
 
-\item{formula}{regression model to be used (see
-\code{\link[bfast]{bfastmonitor}}).  If given, only independent variables
-that occur in the formula will be computed and the output will be a list of
-the design matrix, the response vector, and the vector of times instead of a
-single \code{data.frame}. Providing a formula may reduce relative expensive
-calls of \code{model.matrix} and \code{model.frame} in following operations.}
+\item{decomp}{"stlplus" or "stl": use the NA-tolerant decomposition package
+or the reference package (which can make use of time series with 2-3
+observations per year)}
+
+\item{sbins}{numeric. Controls the number of seasonal dummies. If integer
+> 1, sets the number of seasonal dummies to use per year.
+If <= 1, treated as a multiplier to the number of observations per year, i.e.
+ndummies = nobs/year * sbins.}
 }
 \value{
 If no formula is provided, \code{bfastpp} returns a
@@ -89,14 +99,12 @@ d2 <- bfastpp(ndvi, stl = "both", lag = 1:2)
 d2lm <- lm(response ~ lag, data = d2)
 summary(d2lm)
 
-## provide a formula and use the lower level lm.fit function
-d3 <- bfastpp(ndvi, stl = "both", lag = 1:2, formula = response ~ lag)
-d3lm <- lm.fit(d3$X, d3$y)
+## use the lower level lm.fit function
+d3 <- bfastpp(ndvi, stl = "both", lag = 1:2)
+d3mm <- model.matrix(response ~ lag, d3)
+d3lm <- lm.fit(d3mm, d3$response)
 d3lm$coefficients
 
-}
-\author{
-Achim Zeileis
 }
 \references{
 Verbesselt J, Zeileis A, Herold M (2011).  Near Real-Time
@@ -110,5 +118,7 @@ Remote Sensing and Environment.
 \seealso{
 \code{\link[bfast]{bfastmonitor}}
 }
+\author{
+Achim Zeileis
+}
 \keyword{ts}
-

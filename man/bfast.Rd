@@ -5,9 +5,19 @@
 \title{Break Detection in the Seasonal and Trend Component of a Univariate Time
 Series}
 \usage{
-bfast(Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
-  max.iter = 10, breaks = NULL, hpc = "none", level = 0.05,
-  reg = "lm", type = "OLS-MOSUM", ...)
+bfast(
+  Yt,
+  h = 0.15,
+  season = c("dummy", "harmonic", "none"),
+  max.iter = 10,
+  breaks = NULL,
+  hpc = "none",
+  level = 0.05,
+  reg = c("lm", "rlm"),
+  decomp = c("stlplus", "stl"),
+  type = "OLS-MOSUM",
+  ...
+)
 }
 \arguments{
 \item{Yt}{univariate time series to be analyzed. This should be an object of
@@ -41,7 +51,11 @@ for hpc support.}
 test; if a length 2 vector is passed, the first value is used for the trend,
 the second for the seasonality}
 
-\item{reg}{"lm" or "rlm"}
+\item{reg}{"lm" or "rlm": use regular or robust linear regression}
+
+\item{decomp}{"stlplus" or "stl": use the NA-tolerant decomposition package
+or the reference package (which can make use of time series with 2-3
+observations per year)}
 
 \item{type}{character, indicating the type argument to
 \link[strucchange]{efp}}
@@ -145,9 +159,6 @@ if (requireNamespace("forecast", quietly = TRUE)) {
 }
 
 }
-\author{
-Jan Verbesselt
-}
 \references{
 Verbesselt J, Hyndman R, Newnham G, Culvenor D (2010).
 Detecting Trend and Seasonal Changes in Satellite Image Time Series.
@@ -164,5 +175,7 @@ Time Series.  \emph{Remote Sensing of Environment}, \bold{114}(12),
 \cr \code{\link[strucchange]{breakpoints}} for more examples and background
 information about estimation of breakpoints in time series.
 }
+\author{
+Jan Verbesselt
+}
 \keyword{ts}
-

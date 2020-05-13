@@ -4,10 +4,23 @@
 \alias{bfastmonitor}
 \title{Near Real-Time Disturbance Detection Based on BFAST-Type Models}
 \usage{
-bfastmonitor(data, start, formula = response ~ trend + harmon, order = 3,
-  lag = NULL, slag = NULL, history = c("ROC", "BP", "all"),
-  type = "OLS-MOSUM", h = 0.25, end = 10, level = 0.05, hpc = "none",
-  verbose = FALSE, plot = FALSE)
+bfastmonitor(
+  data,
+  start,
+  formula = response ~ trend + harmon,
+  order = 3,
+  lag = NULL,
+  slag = NULL,
+  history = c("ROC", "BP", "all"),
+  type = "OLS-MOSUM",
+  h = 0.25,
+  end = 10,
+  level = 0.05,
+  hpc = "none",
+  verbose = FALSE,
+  plot = FALSE,
+  sbins = 1
+)
 }
 \arguments{
 \item{data}{A time series of class \code{\link[stats]{ts}}, or another
@@ -52,7 +65,7 @@ relative to the sample size in MOSUM/ME monitoring processes.}
 be monitored (in MOSUM/ME processes). Default is 10 times the history
 period.}
 
-\item{level}{numeric. Significance level of the monitoring (and ROC, if
+\item{level}{numeric vector. Significance levels of the monitoring and ROC (if
 selected) procedure, i.e., probability of type I error.}
 
 \item{hpc}{character specifying the high performance computing support.
@@ -63,6 +76,9 @@ Default is \code{"none"}, can be set to \code{"foreach"}. See
 during computation?}
 
 \item{plot}{logical. Should the result be plotted?}
+
+\item{sbins}{numeric. Number of seasonal dummies, passed to
+\code{\link{bfastpp}}.}
 }
 \value{
 \code{bfastmonitor} returns an object of class
@@ -209,9 +225,6 @@ KML(timeofbreak, "timeofbreak.kmz")
 
 
 }
-\author{
-Achim Zeileis, Jan Verbesselt
-}
 \references{
 Verbesselt J, Zeileis A, Herold M (2012). Near real-time
 disturbance detection using satellite image time series. \emph{Remote
@@ -222,5 +235,7 @@ Sensing Of Environment}, \bold{123}, 98--108.
 \code{\link[strucchange]{monitor}},
 \code{\link[strucchange]{mefp}}, \code{\link[strucchange]{breakpoints}}
 }
+\author{
+Achim Zeileis, Jan Verbesselt
+}
 \keyword{ts}
-
