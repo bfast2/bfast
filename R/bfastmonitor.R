@@ -233,7 +233,7 @@ bfastmonitor <- function(data, start,
   
 
   ## full data
-  data_tspp <- bfastpp(data, order = order, lag = lag, slag = slag, sbins = sbins, sbins = sbins)
+  data_tspp <- bfastpp(data, order = order, lag = lag, slag = slag, sbins = sbins)
   data_tsmat = model.matrix(formula, data_tspp)
   X = data_tsmat
   y = data_tspp$response
