@@ -216,7 +216,7 @@ bfastmonitor <- function(data, start,
                          order = 3, lag = NULL, slag = NULL,
                          history = c("ROC", "BP", "all"),
                          type = "OLS-MOSUM", h = 0.25, end = 10, level = c(0.05, 0.05),
-                         hpc = "none", verbose = FALSE, plot = FALSE)
+                         hpc = "none", verbose = FALSE, plot = FALSE, sbins = 1)
 {
   ## PREPROCESSING
   ## two levels needed: 1. monitoring, 2. in ROC (if selected)
@@ -233,7 +233,7 @@ bfastmonitor <- function(data, start,
   
 
   ## full data
-  data_tspp <- bfastpp(data, order = order, lag = lag, slag = slag, sbins = sbins)
+  data_tspp <- bfastpp(data, order = order, lag = lag, slag = slag, sbins = sbins, sbins = sbins)
   data_tsmat = model.matrix(formula, data_tspp)
   X = data_tsmat
   y = data_tspp$response
