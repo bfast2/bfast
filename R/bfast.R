@@ -257,9 +257,11 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
         ci.Wt <- NA
       } else {
         if (season == "dummy") 
-          sm1 <- lm(Wt ~ -1 + D %in% breakfactor(bp.Wt))
+          sm1 <- lm(Wt[!is.na(Wt)] ~ -1 + D[!is.na(Wt),] %in% breakfactor(bp.Wt))
         if (season == "harmonic") 
-          sm1 <- lm(Wt ~ (co + si + co2 + si2 + co3 + si3) %in% breakfactor(bp.Wt))
+          sm1 <- lm(Wt[!is.na(Wt)] ~ (
+            co[!is.na(Wt)] + si[!is.na(Wt)] + co2[!is.na(Wt)] + si2[!is.na(Wt)] + co3[!is.na(Wt)] + si3[!is.na(Wt)]
+            ) %in% breakfactor(bp.Wt))
         ci.Wt <- confint(bp.Wt, het.err = FALSE)
         Wt.bp <- ci.Wt$confint[, 2]
         

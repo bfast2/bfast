@@ -29,11 +29,11 @@
 bfast0n <- function(data, order = 3,
                    lag = NULL, slag = NULL, na.action = na.omit,
                    stl = c("none", "trend", "seasonal", "both"),
-                   decomp=c("stlplus", "stl"), sbins=1), ...)
+                   decomp=c("stlplus", "stl"), sbins=1, ...)
 {
-  data_pp <- bfastpp(data, order = 3,
-                   lag = NULL, slag = NULL, na.action = na.omit,
-                   stl = c("none", "trend", "seasonal", "both"),
-                   decomp=c("stlplus", "stl"), sbins=1))
-  return(strucchange::breakpoints(data = data_pp, ...))
+  data_pp <- bfastpp(data, order = order,
+                   lag = lag, slag = slag, na.action = na.action,
+                   stl = stl, decomp=decomp, sbins=sbins)
+  breakpoints <- strucchange::breakpoints(data = data_pp, ...)
+  return(breakpoints)
 }
