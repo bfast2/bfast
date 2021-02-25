@@ -14,4 +14,3 @@ plot(ndvi)
 }
 \keyword{datasets}
 \keyword{ts}
-

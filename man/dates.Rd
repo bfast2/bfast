@@ -21,4 +21,3 @@ information to create a 16-day time series object.
 
 }
 \keyword{datasets}
-

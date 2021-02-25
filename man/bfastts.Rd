@@ -42,12 +42,11 @@ ndvi <- bfastts(as.vector(modisbrick[1]), dates, type = c("16-day")) ## data of 
 plot(ndvi/10000) 
 
 }
-\author{
-Achim Zeileis, Jan Verbesselt
-}
 \seealso{
 \code{\link[strucchange]{monitor}}, \code{\link[strucchange]{mefp}}, 
 \code{\link[strucchange]{breakpoints}}
 }
+\author{
+Achim Zeileis, Jan Verbesselt
+}
 \keyword{ts}
-

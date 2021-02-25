@@ -44,10 +44,7 @@ possible. This can avoid expensive repeated calls of \code{model.matrix} and
 Setting this option to TRUE requires according functions in the
 \code{strucchange} package.  }
 }
-\author{
-Jan Verbesselt [aut, cre], Achim Zeileis [aut], Rob Hyndman [ctb],
-Rogier De Jong [ctb]
-}
+
 \references{
 Verbesselt J, Zeileis A, Herold M (2012).  Near real-time
 disturbance detection using satellite image time series.  \emph{Remote
@@ -64,5 +61,8 @@ Detection while Accounting for Abrupt and Gradual Trends in Satellite Image
 Time Series.  \emph{Remote Sensing of Environment}, \bold{114}(12),
 2970--2980.  \url{http://dx.doi.org/10.1016/j.rse.2010.08.003}
 }
+\author{
+Jan Verbesselt [aut, cre], Achim Zeileis [aut], Rob Hyndman [ctb],
+Rogier De Jong [ctb]
+}
 \keyword{ts}
-

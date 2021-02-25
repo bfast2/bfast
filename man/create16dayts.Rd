@@ -21,11 +21,10 @@ Time series creation
 #plot(ndvi)
 
 }
-\author{
-Achim Zeileis, Jan Verbesselt
-}
 \seealso{
 \code{\link[bfast]{bfastmonitor}}
 }
+\author{
+Achim Zeileis, Jan Verbesselt
+}
 \keyword{ts}
-

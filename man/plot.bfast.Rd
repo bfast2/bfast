@@ -4,9 +4,15 @@
 \alias{plot.bfast}
 \title{Methods for objects of class "bfast".}
 \usage{
-\method{plot}{bfast}(x, type = c("components", "all", "data", "seasonal",
-  "trend", "noise"), sim = NULL, largest = FALSE, main, ANOVA = FALSE,
-  ...)
+\method{plot}{bfast}(
+  x,
+  type = c("components", "all", "data", "seasonal", "trend", "noise"),
+  sim = NULL,
+  largest = FALSE,
+  main,
+  ANOVA = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{\code{\link[bfast]{bfast}} object}
@@ -46,11 +52,10 @@ shown on each graph.
 }
 \examples{
 
-## See \\code{\\link[bfast]{bfast}} for examples.
+## See \code{\link[bfast]{bfast}} for examples.
 
 }
 \author{
 Jan Verbesselt, Rob Hyndman and Rogier De Jong
 }
 \keyword{ts}
-
