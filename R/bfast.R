@@ -45,11 +45,13 @@
 #' component\cr \code{Nt} \tab the noise or remainder component\cr \code{Vt}
 #' \tab equals the deseasonalized data \code{Yt - St} for each iteration\cr
 #' \code{bp.Vt} \tab output of the \code{\link[strucchange]{breakpoints}}
-#' function for the trend model\cr \code{ci.Vt} \tab output of the
+#' function for the trend model. Note that the output breakpoints are index
+#' numbers of \code{na.omit(as.numeric(Vt))}.\cr \code{ci.Vt} \tab output of the
 #' \code{\link[strucchange]{breakpoints}} confint function for the trend
 #' model\cr \code{Wt} \tab equals the detrended data \code{Yt - Tt} for each
 #' iteration\cr \code{bp.Wt} \tab output of the
-#' \code{\link[strucchange]{breakpoints}} function for the seasonal model\cr
+#' \code{\link[strucchange]{breakpoints}} function for the seasonal model.
+#' Note that the output breakpoints are index numbers of \code{na.omit(as.numeric(Wt))}. \cr
 #' \code{ci.Wt} \tab output of the \code{\link[strucchange]{breakpoints}}
 #' confint function for the seasonal model }} \item{nobp}{ is a list with the
 #' following elements: \tabular{ll}{ \code{nobp.Vt} \tab logical, TRUE if there

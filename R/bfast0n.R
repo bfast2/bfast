@@ -36,6 +36,6 @@ bfast0n <- function(data, formula=response ~ trend + harmon, order = 3,
   data_pp <- bfastpp(data, order = order,
                    lag = lag, slag = slag, na.action = na.action,
                    stl = stl, decomp=decomp, sbins=sbins)
-  breakpoints <- strucchange::breakpoints(data = data_pp, formula=formula, ...)
+  breakpoints <- strucchange::breakpoints(formula=formula, data = data_pp, ...)
   return(breakpoints)
 }
