@@ -1,2 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^\.github$
+^CONTRIBUTING\.md$
+^LICENSE$
+^examples$
