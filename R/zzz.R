@@ -38,7 +38,6 @@
 #' 
 #' @export set_fast_options set_default_options
 set_fast_options <- function() {
-  
   if (!requireNamespace("strucchangeRcpp", quietly = TRUE)) {
     warning("package strucchangeRcpp required for enabling fast options; using default implementation of strucchange")
   }
@@ -47,13 +46,13 @@ set_fast_options <- function() {
                    bfast.prefer_matrix_methods=TRUE,
                    bfast.use_bfastts_modifications=TRUE))
   }
- 
 }
 
 
-
 set_default_options <- function() {
-  return(options(strucchange.use_armadillo=FALSE, 
-                 bfast.prefer_matrix_methods=FALSE,
-                 bfast.use_bfastts_modifications=FALSE))
+  if (requireNamespace("strucchangeRcpp", quietly = TRUE)) {
+    return(options(strucchange.use_armadillo=FALSE, 
+                   bfast.prefer_matrix_methods=FALSE,
+                   bfast.use_bfastts_modifications=FALSE))
+  }
 }
