@@ -31,12 +31,19 @@
 #' \code{\link[strucchange]{breakpoints}}
 #' @keywords ts
 #' 
+#' @example examples/bfastts.r
 #' @examples
+#'
+#'
+#' \dontrun{
+#' # Example of use with a raster
+#'
 #' library("raster")
 #' f <- system.file("extdata/modisraster.grd", package="bfast")
 #' modisbrick <- brick(f)
 #' ndvi <- bfastts(as.vector(modisbrick[1]), dates, type = c("16-day")) ## data of pixel 1
 #' plot(ndvi/10000) 
+#' }
 #' 
 #' @export
 bfastts <- function(data,dates, type = c("irregular", "16-day", "10-day")) {

@@ -152,7 +152,10 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
   if(!(reg %in% c("lm","rlm"))) stop("Regression method unknown, use either 'lm' or 'rlm'.")
   if(reg == "rlm") require(MASS)
   decomp = match.arg(decomp)
-  if(decomp == "stlplus" && !require("stlplus",quietly = T)) stop("Please install the stlplus package!")
+  if(decomp == "stlplus" && !require("stlplus",quietly = T)) {
+    warning("stlplus package could not be loaded, falling back to decomp='stl'.")
+    decomp = "stl"
+  }
   ## Get Arguments
   season <- match.arg(season)
   level  <- rep(level, length.out = 2)

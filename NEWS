@@ -1,3 +1,20 @@
+Changes in Version 1.6.0
+
+  o Integrated work by Marius Appel on speeding up BFAST algorithms using Rcpp.
+  Whether the speedups are enabled is controlled by set_fast_options() vs
+  set_default_options(). The fast options are now default.
+  
+  o Integrated work by Martin Jung on allowing BFAST to operate on time series
+  that have NA values by making use of the stlplus package. This is controlled
+  by the "decomp" parameter in bfast(), stlplus is now default, with stl as the
+  fallback.
+  
+  o bfast() now defaults to max.iter = 10, making the argument optional.
+  
+  o create16dayts() is now deprecated in favour of bfastts().
+  
+  o The raster package is no longer a dependency.
+
 Changes in Version 1.5-9
 
   o minor bug    x_coor <-  out$bp.Wt$datatsp[[1]] with x_coor <- tsp(out$Wt)[1] in seasonal()

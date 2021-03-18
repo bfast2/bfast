@@ -140,10 +140,7 @@
 #'     start = c(2010, 13), order = 6, plot = TRUE)
 #' summary(mon$model)
 #' 
-#' ## For more info
-#' ?bfastmonitor
-#' 
-#' 
+#' \dontrun{
 #' ## TUTORIAL for processing raster bricks (satellite image time series of 16-day NDVI images)
 #' f <- system.file("extdata/modisraster.grd", package="bfast")
 #' library("raster")
@@ -174,7 +171,6 @@
 #' plot(bfm)
 #' xbfastmonitor(modisbrick[1], dates) ## helper function applied on one pixel
 #' 
-#' \dontrun{
 #' ## apply the bfastmonitor function onto a raster brick
 #' library(raster)
 #' timeofbreak <- calc(modisbrick, fun=function(x){

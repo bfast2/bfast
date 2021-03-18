@@ -32,14 +32,14 @@ Imports:
     zoo,
     forecast,
     sp,
-    raster,
-    stlplus,
     Rcpp (>= 0.12.7)
 Suggests:
     MASS,
-    sfsmisc
+    sfsmisc,
+    stlplus
 License: GPL (>= 2)
-URL: http://bfast.R-Forge.R-project.org/
+URL: https://bfast2.github.io/
+BugReports: https://github.com/bfast2/bfast/issues
 LazyLoad: yes
 LazyData: yes
 LinkingTo: Rcpp

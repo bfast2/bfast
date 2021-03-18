@@ -35,11 +35,23 @@ time (dates) information.
 \code{bfastts} create a regular time series
 }
 \examples{
+# 16-day time series (i.e. MODIS)
+timedf <- data.frame(y=som$NDVI.b, dates=dates[1:nrow(som)])
+bfastts(timedf$y, timedf$dates, type="16-day")
+
+# Irregular
+head(bfastts(timedf$y, timedf$dates, type="irregular"), 50)
+
+
+\dontrun{
+# Example of use with a raster
+
 library("raster")
 f <- system.file("extdata/modisraster.grd", package="bfast")
 modisbrick <- brick(f)
 ndvi <- bfastts(as.vector(modisbrick[1]), dates, type = c("16-day")) ## data of pixel 1
 plot(ndvi/10000) 
+}
 
 }
 \seealso{
