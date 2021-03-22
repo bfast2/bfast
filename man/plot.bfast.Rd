@@ -32,6 +32,9 @@ identified trend segment}
 \item{...}{further arguments passed to the \code{\link[graphics]{plot}}
 function.}
 }
+\value{
+No return value, called for side effects.
+}
 \description{
 Plot methods for objects of class "bfast".
 }

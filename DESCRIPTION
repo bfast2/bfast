@@ -36,7 +36,8 @@ Imports:
 Suggests:
     MASS,
     sfsmisc,
-    stlplus
+    stlplus,
+    raster
 License: GPL (>= 2)
 URL: https://bfast2.github.io/
 BugReports: https://github.com/bfast2/bfast/issues
