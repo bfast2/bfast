@@ -191,7 +191,7 @@ bfastmonitor <- function(data, start,
                          formula = response ~ trend + harmon,
                          order = 3, lag = NULL, slag = NULL,
                          history = c("ROC", "BP", "all"),
-                         type = "OLS-MOSUM", h = 0.25, end = 10, level = 0.05,
+                         type = "OLS-MOSUM", h = 0.25, end = 10, level = c(0.05, 0.05),
                          hpc = "none", verbose = FALSE, plot = FALSE, sbins = 1)
 {
   
@@ -367,12 +367,13 @@ bfastmonitor <- function(data, start,
                          formula = response ~ trend + harmon,
                          order = 3, lag = NULL, slag = NULL,
                          history = c("ROC", "BP", "all"),
-                         type = "OLS-MOSUM", h = 0.25, end = 10, level = 0.05,
+                         type = "OLS-MOSUM", h = 0.25, end = 10, level = c(0.05, 0.05),
                          hpc = "none", verbose = FALSE, plot = FALSE, sbins = 1)
 {
   ## PREPROCESSING
   ## two levels needed: 1. monitoring, 2. in ROC (if selected)
-  level <- rep(level, length.out = 2)
+  if (length(level) == 1) # Backwards compatibility, assume both are the same
+    level <- rep(level, length.out = 2)
   
   if(!is.ts(data)) data <- as.ts(data)
   

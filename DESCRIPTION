@@ -6,11 +6,12 @@ Authors@R: c(person(given = "Jan", family = "Verbesselt", role = c("aut", "cre")
              person(given = "Dainius", family = "Masiliunas", role = c("aut"),
              email = "pastas4@gmail.com", comment = c(ORCID = "0000-0001-5654-1277")),
              person(given = "Achim", family = "Zeileis", role = "aut", email = "Achim.Zeileis@R-project.org"),
-             person(given = "Andrei", family = "Mirt", role = "ctb", email = "andrei.mirt@wur.nl",
-                    comment = c(ORCID = "0000-0003-3654-2090")),
              person(given = "Rob", family = "Hyndman", role = "ctb", email = "Rob.Hyndman@buseco.monash.edu.au"),
              person(given = "Marius", family = "Appel", role = "ctb", email = "marius.appel@uni-muenster.de"),
-             person(given = "Martin", family = "Jung", role = "ctb", email = "m.jung@sussex.ac.uk"))
+             person(given = "Martin", family = "Jung", role = "ctb", email = "m.jung@sussex.ac.uk"),
+             person(given = "Andrei", family = "Mirt", role = "ctb", email = "andrei.mirt@wur.nl",
+                    comment = c(ORCID = "0000-0003-3654-2090"))
+                    )
 Description: This package integrates the decomposition of time series into
     trend, seasonal, and remainder components with methods for detecting and
     characterizing abrupt changes within the trend and seasonal components. 'BFAST'

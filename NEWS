@@ -6,14 +6,18 @@ Changes in Version 1.6.0
   
   o Integrated work by Martin Jung on allowing BFAST to operate on time series
   that have NA values by making use of the stlplus package. This is controlled
-  by the "decomp" parameter in bfast(), stlplus is now default, with stl as the
-  fallback.
+  by the "decomp" parameter in bfast(). 'stl' is still the default for
+  backwards compatibility and for use in sparse time series.
   
   o bfast() now defaults to max.iter = 10, making the argument optional.
   
   o create16dayts() is now deprecated in favour of bfastts().
   
-  o The raster package is no longer a dependency.
+  o The raster package is no longer a dependency, but is suggested.
+  
+  o bfastmonitor() now allows to specify the significance 'level' separately
+  for the ROC and the monitoring algorithms. If only one specified, both are
+  set to the same level.
 
 Changes in Version 1.5-9
 
