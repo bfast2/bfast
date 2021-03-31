@@ -42,7 +42,7 @@ use the design matrix instead of the formula and a dataframe whenever
 possible. This can avoid expensive repeated calls of \code{model.matrix} and
 \code{model.frame} and make model fitting faster using \code{lm.fit}.
 Setting this option to TRUE requires according functions in the
-\code{strucchange} package.  }
+\code{strucchangeRcpp} package.}
 }
 
 \references{
