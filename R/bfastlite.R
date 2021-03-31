@@ -28,7 +28,7 @@
 #' \item{breakpoints}{output from \code{\link[strucchangeRcpp]{breakpoints}},
 #' containing information about the estimated breakpoints.}
 #' \item{data_pp}{preprocessed data as output by \code{\link{bfastpp}}.}
-#' @example examples/bfast0n.r
+#' @example examples/bfastlite.r
 #'
 #' @export
 

@@ -14,7 +14,10 @@ Changes in Version 1.6.0
   o bfast() now defaults to max.iter = 10, making the argument optional.
   
   o create16dayts() is now deprecated in favour of bfastts().
-  
+
+  o Switched dependencies from strucchange to strucchangeRcpp for better
+  performance.
+
   o The raster package is no longer a dependency, but is suggested.
   
   o bfastmonitor() now allows to specify the significance 'level' separately

@@ -86,10 +86,10 @@ tsp(datats) <- tsp(simts$time.series) # assign correct time series attributes
 plot(datats)
 
 # Detect breaks
-bp = bfast0n(datats)
+bp = bfastlite(datats)
 
 # Default method of estimating breakpoints
-bp[["breakpoints"]]
+bp[["breakpoints"]][["breakpoints"]]
 # Custom method
-strucchange::breakpoints(bp, breaks=2)
+strucchangeRcpp::breakpoints(bp[["breakpoints"]], breaks=2)
 }
