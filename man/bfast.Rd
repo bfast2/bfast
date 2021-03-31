@@ -47,7 +47,7 @@ calculated. By default the maximal number allowed by h is used.}
 Default is "none", can be set to "foreach". Install the "foreach" package
 for hpc support.}
 
-\item{level}{numeric; threshold value for the \link[strucchange]{sctest.efp}
+\item{level}{numeric; threshold value for the \link[strucchangeRcpp]{sctest.efp}
 test; if a length 2 vector is passed, the first value is used for the trend,
 the second for the seasonality}
 
@@ -58,7 +58,7 @@ the second for the seasonality}
 can handle \code{NA} values in the time series.}
 
 \item{type}{character, indicating the type argument to
-\link[strucchange]{efp}}
+\link[strucchangeRcpp]{efp}}
 }
 \value{
 An object of the class "bfast" is a list with the following
@@ -67,15 +67,15 @@ with the following elements (for each iteration): \tabular{ll}{ \code{Tt}
 \tab the fitted trend component\cr \code{St} \tab the fitted seasonal
 component\cr \code{Nt} \tab the noise or remainder component\cr \code{Vt}
 \tab equals the deseasonalized data \code{Yt - St} for each iteration\cr
-\code{bp.Vt} \tab output of the \code{\link[strucchange]{breakpoints}}
+\code{bp.Vt} \tab output of the \code{\link[strucchangeRcpp]{breakpoints}}
 function for the trend model. Note that the output breakpoints are index
 numbers of \code{na.omit(as.numeric(Vt))}.\cr \code{ci.Vt} \tab output of the
-\code{\link[strucchange]{breakpoints}} confint function for the trend
+\code{\link[strucchangeRcpp]{breakpoints}} confint function for the trend
 model\cr \code{Wt} \tab equals the detrended data \code{Yt - Tt} for each
 iteration\cr \code{bp.Wt} \tab output of the
-\code{\link[strucchange]{breakpoints}} function for the seasonal model.
+\code{\link[strucchangeRcpp]{breakpoints}} function for the seasonal model.
 Note that the output breakpoints are index numbers of \code{na.omit(as.numeric(Wt))}. \cr
-\code{ci.Wt} \tab output of the \code{\link[strucchange]{breakpoints}}
+\code{ci.Wt} \tab output of the \code{\link[strucchangeRcpp]{breakpoints}}
 confint function for the seasonal model }} \item{nobp}{ is a list with the
 following elements: \tabular{ll}{ \code{nobp.Vt} \tab logical, TRUE if there
 are no breakpoints detected\cr \code{nobp.Wt} \tab logical, TRUE if there
@@ -174,7 +174,7 @@ Time Series.  \emph{Remote Sensing of Environment}, \bold{114}(12),
 }
 \seealso{
 \code{\link[bfast]{plot.bfast}} for plotting of bfast() results.
-\cr \code{\link[strucchange]{breakpoints}} for more examples and background
+\cr \code{\link[strucchangeRcpp]{breakpoints}} for more examples and background
 information about estimation of breakpoints in time series.
 }
 \author{

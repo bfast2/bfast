@@ -16,14 +16,14 @@
 
 #' Detect multiple breaks in a time series
 #'
-#' A combination of \code{\link{bfastpp}} and \code{\link[strucchange]{breakpoints}}
+#' A combination of \code{\link{bfastpp}} and \code{\link[strucchangeRcpp]{breakpoints}}
 #' to do light-weight detection of multiple breaks in a time series
 #' while also being able to deal with NA values by excluding them
 #' via \code{bfastpp}.
 #'
-#' @param ... Additional arguments to \code{\link[strucchange]{breakpoints}}.
+#' @param ... Additional arguments to \code{\link[strucchangeRcpp]{breakpoints}}.
 #' @inheritParams bfastpp
-#' @inheritParams strucchange::breakpoints
+#' @inheritParams strucchangeRcpp::breakpoints
 #' @return An object of class \code{bfastlite}, with two elements:
 #' \item{breakpoints}{output from \code{\link[strucchangeRcpp]{breakpoints}},
 #' containing information about the estimated breakpoints.}

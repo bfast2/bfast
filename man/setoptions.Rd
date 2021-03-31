@@ -12,9 +12,9 @@ set_fast_options()
 A list of modified options and their new values.
 }
 \description{
-These functions set options of the bfast and strucchange package to enable
+These functions set options of the bfast and strucchangeRcpp package to enable
 faster computations. The fast options should return equal results but
-require a compatible version of the \code{strucchange} package with
+require the \code{strucchangeRcpp} package, which includes
 matrix-based functions. Notice that only some functions of the \code{bfast}
 package make use of these options.
 }

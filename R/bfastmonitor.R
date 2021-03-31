@@ -66,7 +66,7 @@
 #' \code{history(formula, data)} to compute a numeric start date.
 #' @param type character specifying the type of monitoring process. By default,
 #' a MOSUM process based on OLS residuals is employed. See
-#' \code{\link[strucchange]{mefp}} for alternatives.
+#' \code{\link[strucchangeRcpp]{mefp}} for alternatives.
 #' @param h numeric scalar from interval (0,1) specifying the bandwidth
 #' relative to the sample size in MOSUM/ME monitoring processes.
 #' @param end numeric. Maximum time (relative to the history period) that will
@@ -76,7 +76,7 @@
 #' selected) procedure, i.e., probability of type I error.
 #' @param hpc character specifying the high performance computing support.
 #' Default is \code{"none"}, can be set to \code{"foreach"}. See
-#' \code{\link[strucchange]{breakpoints}} for more details.
+#' \code{\link[strucchangeRcpp]{breakpoints}} for more details.
 #' @param verbose logical. Should information about the monitoring be printed
 #' during computation?
 #' @param plot logical. Should the result be plotted?
@@ -93,8 +93,8 @@
 #' \item{magnitude}{median of the difference between the data and the model
 #' prediction in the monitoring period.}
 #' @author Achim Zeileis, Jan Verbesselt
-#' @seealso \code{\link[strucchange]{monitor}},
-#' \code{\link[strucchange]{mefp}}, \code{\link[strucchange]{breakpoints}}
+#' @seealso \code{\link[strucchangeRcpp]{monitor}},
+#' \code{\link[strucchangeRcpp]{mefp}}, \code{\link[strucchangeRcpp]{breakpoints}}
 #' @references Verbesselt J, Zeileis A, Herold M (2012). Near real-time
 #' disturbance detection using satellite image time series. \emph{Remote
 #' Sensing Of Environment}, \bold{123}, 98--108.

@@ -64,7 +64,7 @@ observations per year)}
 If <= 1, treated as a multiplier to the number of observations per year, i.e.
 ndummies = nobs/year * sbins.}
 
-\item{...}{Additional arguments to \code{\link[strucchange]{breakpoints}}.}
+\item{...}{Additional arguments to \code{\link[strucchangeRcpp]{breakpoints}}.}
 }
 \value{
 An object of class \code{bfastlite}, with two elements:
@@ -73,7 +73,7 @@ containing information about the estimated breakpoints.}
 \item{data_pp}{preprocessed data as output by \code{\link{bfastpp}}.}
 }
 \description{
-A combination of \code{\link{bfastpp}} and \code{\link[strucchange]{breakpoints}}
+A combination of \code{\link{bfastpp}} and \code{\link[strucchangeRcpp]{breakpoints}}
 to do light-weight detection of multiple breaks in a time series
 while also being able to deal with NA values by excluding them
 via \code{bfastpp}.
