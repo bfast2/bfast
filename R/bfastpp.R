@@ -94,7 +94,8 @@ bfastpp<- function(data, order = 3,
                    decomp=c("stlplus", "stl"), sbins=1)
 {
   decomp = match.arg(decomp)
-  if(decomp == "stlplus" && !require("stlplus",quietly = T)) stop("Please install the stlplus package or set decomp=stl.")
+  if (stl != "none" && decomp == "stlplus" && !require("stlplus",quietly = T))
+    stop("Please install the stlplus package or set decomp = 'stl' or stl = 'none'.")
 
   ## double check what happens with 29-02 if that happens...
   ## we should keep it simple an remove the datum if that happens
