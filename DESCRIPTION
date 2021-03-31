@@ -1,27 +1,31 @@
 Package: bfast
-Version: 1.6.0.9000
-Date: 2017-03-09
+Version: 1.5.7.9000
+Date: 2021-03-23
 Title: Breaks For Additive Season and Trend
 Authors@R: c(person(given = "Jan", family = "Verbesselt", role = c("aut", "cre"), email = "Jan.Verbesselt@wur.nl"),
+             person(given = "Dainius", family = "Masiliunas", role = c("aut"),
+             email = "pastas4@gmail.com", comment = c(ORCID = "0000-0001-5654-1277")),
              person(given = "Achim", family = "Zeileis", role = "aut", email = "Achim.Zeileis@R-project.org"),
              person(given = "Rob", family = "Hyndman", role = "ctb", email = "Rob.Hyndman@buseco.monash.edu.au"),
              person(given = "Marius", family = "Appel", role = "ctb", email = "marius.appel@uni-muenster.de"),
-             person(given = "Martin", family = "Jung", role = "ctb", email = "m.jung@sussex.ac.uk"))
-Author: Jan Verbesselt [aut, cre], Achim Zeileis [aut], Rob Hyndman [ctb],
-    Marius Appel [ctb], Martin Jung [mj]
-Maintainer: Jan Verbesselt <Jan.Verbesselt@wur.nl>
+             person(given = "Martin", family = "Jung", role = "ctb", email = "m.jung@sussex.ac.uk"),
+             person(given = "Andrei", family = "Mirt", role = "ctb", email = "andrei.mirt@wur.nl",
+                    comment = c(ORCID = "0000-0003-3654-2090"))
+                    )
 Description: This package integrates the decomposition of time series into
     trend, seasonal, and remainder components with methods for detecting and
-    characterizing abrupt changes within the trend and seasonal components. BFAST
+    characterizing abrupt changes within the trend and seasonal components. 'BFAST'
     can be used to analyze different types of satellite image time series and can
     be applied to other disciplines dealing with seasonal or non-seasonal time
     series, such as hydrology, climatology, and econometrics. The algorithm can be
     extended to label detected changes with information on the parameters of the
-    fitted piecewise linear models. BFAST monitoring functionality is added based on
-    a paper that has been submitted to Remote Sensing of Environment. BFAST monitor
-    provides functionality to detect disturbance in near real-time based on BFAST-
-    type models. BFAST approach is flexible approach that handles missing data
-    without interpolation. Furthermore now different models can be used to fit the
+    fitted piecewise linear models. 'BFAST' monitoring functionality is described
+    in Verbesselt et al. (2010) <doi:10.1016/j.rse.2009.08.014>. 'BFAST monitor'
+    provides functionality to detect disturbance in near real-time based on 'BFAST'-
+    type models, and is described in Verbesselt et al. (2012) <doi:10.1016/j.rse.2012.02.022>.
+    'BFAST Lite' approach is a flexible approach that handles missing data
+    without interpolation, and will be described in an upcoming paper.
+    Furthermore, different models can now be used to fit the
     time series data and detect structural changes (breaks).
 Depends:
     R (>= 3.0.0),
@@ -31,15 +35,15 @@ Imports:
     stats,
     zoo,
     forecast,
-    sp,
-    raster,
-    stlplus,
     Rcpp (>= 0.12.7)
 Suggests:
     MASS,
-    sfsmisc
+    sfsmisc,
+    stlplus,
+    raster
 License: GPL (>= 2)
-URL: http://bfast.R-Forge.R-project.org/
+URL: https://bfast2.github.io/
+BugReports: https://github.com/bfast2/bfast/issues
 LazyLoad: yes
 LazyData: yes
 LinkingTo: Rcpp

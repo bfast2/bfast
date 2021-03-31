@@ -40,24 +40,24 @@ autoregressiv terms), or \code{xreg} (further covariates). See
 
 \item{test}{character specifying the type of test(s) performed. Can be one
 or more of BIC, supLM, supF, OLS-MOSUM, ..., or any other test supported by
-\code{\link[strucchange]{sctest.formula}}}
+\code{\link[strucchangeRcpp]{sctest.formula}}}
 
 \item{level}{numeric. Significance for the
-\code{\link[strucchange]{sctest.formula}} performed.}
+\code{\link[strucchangeRcpp]{sctest.formula}} performed.}
 
 \item{aggregate}{function that aggregates a logical vector to a single
 value. This is used for aggregating the individual test decisions from
 \code{test} to a single one.}
 
 \item{trim}{numeric. The mimimal segment size passed to the \code{from}
-argument of the \code{\link[strucchange]{Fstats}} function.}
+argument of the \code{\link[strucchangeRcpp]{Fstats}} function.}
 
 \item{bandwidth}{numeric scalar from interval (0,1), functional. The
 \code{bandwidth} argument is passed to the \code{h} argument of the
-\code{\link[strucchange]{sctest.formula}}.}
+\code{\link[strucchangeRcpp]{sctest.formula}}.}
 
 \item{functional}{arguments passed on to
-\code{\link[strucchange]{sctest.formula}}}
+\code{\link[strucchangeRcpp]{sctest.formula}}}
 
 \item{order}{numeric. Order of the harmonic term, defaulting to \code{3}.}
 
@@ -170,7 +170,7 @@ scores, F statistics, and OLS residuals.  \emph{Econometric Reviews},
 }
 \seealso{
 \code{\link[bfast]{bfastmonitor}},
-\code{\link[strucchange]{breakpoints}}
+\code{\link[strucchangeRcpp]{breakpoints}}
 }
 \author{
 Achim Zeileis, Jan Verbesselt

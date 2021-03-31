@@ -9,11 +9,11 @@
 #' To be completed.
 #' 
 #' @param Yt univariate time series to be analyzed. This should be an object of
-#' class "ts" with a frequency greater than one without NA's.
+#' class "ts" with a frequency greater than one.
 #' @param h minimal segment size between potentially detected breaks in the
 #' trend model given as fraction relative to the sample size (i.e. the minimal
 #' number of observations in each segment divided by the total length of the
-#' timeseries.
+#' timeseries).
 #' @param season the seasonal model used to fit the seasonal component and
 #' detect seasonal breaks (i.e. significant phenological change).  There are
 #' three options: "dummy", "harmonic", or "none" where "dummy" is the model
@@ -29,30 +29,30 @@
 #' @param hpc A character specifying the high performance computing support.
 #' Default is "none", can be set to "foreach". Install the "foreach" package
 #' for hpc support.
-#' @param level numeric; threshold value for the \link[strucchange]{sctest.efp}
+#' @param level numeric; threshold value for the \link[strucchangeRcpp]{sctest.efp}
 #' test; if a length 2 vector is passed, the first value is used for the trend,
 #' the second for the seasonality
 #' @param reg "lm" or "rlm": use regular or robust linear regression
-#' @param decomp "stlplus" or "stl": use the NA-tolerant decomposition package
-#' or the reference package (which can make use of time series with 2-3
-#' observations per year)
+#' @param decomp "stlplus" or "stl": the function to use for decomposition.
+#' \code{stl} can handle sparse time series (1 < frequency < 4), \code{stlplus}
+#' can handle \code{NA} values in the time series.
 #' @param type character, indicating the type argument to
-#' \link[strucchange]{efp}
+#' \link[strucchangeRcpp]{efp}
 #' @return An object of the class "bfast" is a list with the following
 #' elements: \item{Yt}{ equals the Yt used as input.} \item{output}{ is a list
 #' with the following elements (for each iteration): \tabular{ll}{ \code{Tt}
 #' \tab the fitted trend component\cr \code{St} \tab the fitted seasonal
 #' component\cr \code{Nt} \tab the noise or remainder component\cr \code{Vt}
 #' \tab equals the deseasonalized data \code{Yt - St} for each iteration\cr
-#' \code{bp.Vt} \tab output of the \code{\link[strucchange]{breakpoints}}
+#' \code{bp.Vt} \tab output of the \code{\link[strucchangeRcpp]{breakpoints}}
 #' function for the trend model. Note that the output breakpoints are index
 #' numbers of \code{na.omit(as.numeric(Vt))}.\cr \code{ci.Vt} \tab output of the
-#' \code{\link[strucchange]{breakpoints}} confint function for the trend
+#' \code{\link[strucchangeRcpp]{breakpoints}} confint function for the trend
 #' model\cr \code{Wt} \tab equals the detrended data \code{Yt - Tt} for each
 #' iteration\cr \code{bp.Wt} \tab output of the
-#' \code{\link[strucchange]{breakpoints}} function for the seasonal model.
+#' \code{\link[strucchangeRcpp]{breakpoints}} function for the seasonal model.
 #' Note that the output breakpoints are index numbers of \code{na.omit(as.numeric(Wt))}. \cr
-#' \code{ci.Wt} \tab output of the \code{\link[strucchange]{breakpoints}}
+#' \code{ci.Wt} \tab output of the \code{\link[strucchangeRcpp]{breakpoints}}
 #' confint function for the seasonal model }} \item{nobp}{ is a list with the
 #' following elements: \tabular{ll}{ \code{nobp.Vt} \tab logical, TRUE if there
 #' are no breakpoints detected\cr \code{nobp.Wt} \tab logical, TRUE if there
@@ -61,7 +61,7 @@
 #' change detected in the trend component}
 #' @author Jan Verbesselt
 #' @seealso \code{\link[bfast]{plot.bfast}} for plotting of bfast() results.
-#' \cr \code{\link[strucchange]{breakpoints}} for more examples and background
+#' \cr \code{\link[strucchangeRcpp]{breakpoints}} for more examples and background
 #' information about estimation of breakpoints in time series.
 #' @references Verbesselt J, Hyndman R, Newnham G, Culvenor D (2010).
 #' Detecting Trend and Seasonal Changes in Satellite Image Time Series.
@@ -144,7 +144,7 @@
 #' @export bfast
 bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"), 
                    max.iter = 10, breaks = NULL, hpc = "none", level = 0.05,
-                   reg = c("lm", "rlm"), decomp=c("stlplus", "stl"),
+                   reg = c("lm", "rlm"), decomp = c("stl", "stlplus"),
                    type = "OLS-MOSUM", ...) 
 {
   # Error catching
@@ -152,14 +152,27 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
   if(!(reg %in% c("lm","rlm"))) stop("Regression method unknown, use either 'lm' or 'rlm'.")
   if(reg == "rlm") require(MASS)
   decomp = match.arg(decomp)
-  if(decomp == "stlplus" && !require("stlplus",quietly = T)) stop("Please install the stlplus package!")
+  if (decomp == "stl" && any(is.na(Yt))) {
+    warning("The stl() function cannot deal with missing values in the time series, falling back to decomp='stlplus'.")
+    decomp <- "stlplus"
+  }
+  if(decomp == "stlplus" && !require("stlplus", quietly = T)) {
+    warning("stlplus package could not be loaded, falling back to decomp='stl'.")
+    decomp <- "stl"
+  }
   ## Get Arguments
   season <- match.arg(season)
   level  <- rep(level, length.out = 2)
   ti <- time(Yt)
   f <- frequency(Yt) # on cycle every f time points (seasonal cycle)
-  if (class(Yt) != "ts") 
+  if (class(Yt) != "ts")
     stop("Not a time series object")
+  if (f < 1)
+    stop("Time series frequency needs to be more than 1")
+  if (decomp == "stlplus" && f < 4) {
+    warning("Not enough seasons (frequency < 4) for using stlplus decomposition, falling back to decomp = 'stl'")
+    decomp <- "stl"
+  }
   output <- list()
   Tt <- 0
   if (season == "harmonic") {

@@ -13,6 +13,7 @@
 
 #' Set package options with regard to computation times
 #' 
+
 #' These functions set options of the bfast and strucchangeRcpp packages to enable
 #' faster computations. By default (\code{set_default_options}), these optimizations are 
 #' enabled. Notice that only some functions of the \code{bfast}

@@ -51,19 +51,19 @@
 #' \code{\link[bfast]{bfastpp}} for details.
 #' @param test character specifying the type of test(s) performed. Can be one
 #' or more of BIC, supLM, supF, OLS-MOSUM, ..., or any other test supported by
-#' \code{\link[strucchange]{sctest.formula}}
+#' \code{\link[strucchangeRcpp]{sctest.formula}}
 #' @param level numeric. Significance for the
-#' \code{\link[strucchange]{sctest.formula}} performed.
+#' \code{\link[strucchangeRcpp]{sctest.formula}} performed.
 #' @param aggregate function that aggregates a logical vector to a single
 #' value. This is used for aggregating the individual test decisions from
 #' \code{test} to a single one.
 #' @param trim numeric. The mimimal segment size passed to the \code{from}
-#' argument of the \code{\link[strucchange]{Fstats}} function.
+#' argument of the \code{\link[strucchangeRcpp]{Fstats}} function.
 #' @param bandwidth numeric scalar from interval (0,1), functional. The
 #' \code{bandwidth} argument is passed to the \code{h} argument of the
-#' \code{\link[strucchange]{sctest.formula}}.
+#' \code{\link[strucchangeRcpp]{sctest.formula}}.
 #' @param functional arguments passed on to
-#' \code{\link[strucchange]{sctest.formula}}
+#' \code{\link[strucchangeRcpp]{sctest.formula}}
 #' @param order numeric. Order of the harmonic term, defaulting to \code{3}.
 #' @param lag numeric. Order of the autoregressive term, by default omitted.
 #' @param slag numeric. Order of the seasonal autoregressive term, by default
@@ -81,7 +81,7 @@
 #' respectively.}
 #' @author Achim Zeileis, Jan Verbesselt
 #' @seealso \code{\link[bfast]{bfastmonitor}},
-#' \code{\link[strucchange]{breakpoints}}
+#' \code{\link[strucchangeRcpp]{breakpoints}}
 #' @references de Jong R, Verbesselt J, Zeileis A, Schaepman M (2013).  Shifts
 #' in global vegetation activity trends.  \emph{Remote Sensing}, \bold{5},
 #' 1117--1133.  \url{http://dx.doi.org/10.3390/rs5031117}

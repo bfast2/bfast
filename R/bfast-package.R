@@ -40,7 +40,7 @@
 #' possible. This can avoid expensive repeated calls of \code{model.matrix} and
 #' \code{model.frame} and make model fitting faster using \code{lm.fit}.
 #' Setting this option to TRUE requires according functions in the
-#' \code{strucchange} package.  }
+#' \code{strucchangeRcpp} package.}
 #' @name bfast-package
 #' @author Jan Verbesselt [aut, cre], Achim Zeileis [aut], Rob Hyndman [ctb],
 #' Rogier De Jong [ctb]
@@ -59,7 +59,7 @@
 #' Time Series.  \emph{Remote Sensing of Environment}, \bold{114}(12),
 #' 2970--2980.  \url{http://dx.doi.org/10.1016/j.rse.2010.08.003}
 #' @keywords ts
-#' @import strucchange zoo raster sp forecast
+#' @import strucchangeRcpp zoo forecast stats
 #' @importFrom Rcpp evalCpp
 #' @useDynLib bfast
 NULL

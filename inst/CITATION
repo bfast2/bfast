@@ -39,26 +39,20 @@ citEntry(entry = "Article",
 	       "doi:10.1016/j.rse.2010.08.003"),
 )
 
-citEntry(entry = "TechReport",
-  title        = "Near Real-Time Disturbance Detection in Terrestrial Ecosystems Using Satellite Image Time Series: Drought Detection in {S}omalia",
-         author = personList(as.person("Jan Verbesselt"), 
-	                     as.person("Achim Zeileis"),
+citEntry(entry = "Article",
+         title = "Near real-time disturbance detection using satellite image time series",
+         author = personList(as.person("Jan Verbesselt"),
+                             as.person("Achim Zeileis"),
                              as.person("Martin Herold")),
-  institution  = "Working Papers in Economics and Statistics, Research Platform Empirical
-  		  and Experimental Economics, Universit\\\"at Innsbruck",
-  year         = "2011",
-  type         = "Working Paper",
-  number       = "2011-18",
-  month        = "June",
-  url	       = "http://EconPapers.RePEc.org/RePEc:inn:wpaper:2011-18",
-  
-  textVersion  = 
-  paste("Jan Verbesselt, Achim Zeileis, Martin Herold (2011).", 
-	"Near Real-Time Disturbance Detection in Terrestrial Ecosystems Using Satellite Image Time Series: Drought Detection in Somalia.",
- 	"Working Paper 2011-18.",
- 	"Working Papers in Economics and Statistics, Research Platform Empirical and Experimental Economics, Universitaet Innsbruck.",
-	"URL http://EconPapers.RePEc.org/RePEc:inn:wpaper:2011-18"),
-	
-  header       = "If you use bfastmonitor() or bfastpp(), please cite:"
+         journal      = "Remote Sensing of Environment",
+         year         = "2012",
+         volume       = "123",
+         pages        = "98--108",
+         doi          = "10.1016/j.rse.2012.02.022",
+         textVersion  = 
+         paste("Jan Verbesselt, Achim Zeileis, Martin Herold (2012).", 
+               "Near real-time disturbance detection using satellite image time series.",
+               "Remote Sensing of Environment, 123, 98 - 108.",
+               "doi:10.1016/j.rse.2012.02.022"),
+         header       = "If you use bfastmonitor() or bfastpp(), please cite:"
 )
-
