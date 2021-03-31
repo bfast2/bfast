@@ -28,14 +28,13 @@ Description: This package integrates the decomposition of time series into
     Furthermore, different models can now be used to fit the
     time series data and detect structural changes (breaks).
 Depends:
-    R (>= 3.0.0)
+    R (>= 3.0.0),
+    strucchangeRcpp
 Imports:
     graphics,
     stats,
-    strucchangeRcpp,
     zoo,
     forecast,
-    sp,
     Rcpp (>= 0.12.7)
 Suggests:
     MASS,

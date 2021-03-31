@@ -41,7 +41,7 @@ bfastlite <- function(data, formula=response ~ trend + harmon, order = 3,
                    lag = lag, slag = slag, na.action = na.action,
                    stl = stl, decomp=decomp, sbins=sbins)
   breakpoints <- strucchangeRcpp::breakpoints(formula=formula, data = data_pp, ...)
-  Result <- structure(list(breakpoints, data_pp), class="bfastlite")
+  Result <- structure(list(breakpoints=breakpoints, data_pp=data_pp), class="bfastlite")
   return(Result)
 }
 

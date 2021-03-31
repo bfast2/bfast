@@ -59,7 +59,7 @@
 #' Time Series.  \emph{Remote Sensing of Environment}, \bold{114}(12),
 #' 2970--2980.  \url{http://dx.doi.org/10.1016/j.rse.2010.08.003}
 #' @keywords ts
-#' @import strucchangeRcpp zoo sp forecast stats
+#' @import strucchangeRcpp zoo forecast stats
 #' @importFrom Rcpp evalCpp
 #' @useDynLib bfast
 NULL
