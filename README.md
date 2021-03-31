@@ -2,15 +2,21 @@
 
 This fork aims to consolidate all the forks of the `bfast` package to have a unified, updated package that can be submitted back to CRAN eventually and become the new upstream. The features integrated into this fork so far are:
 
-* Documentation ported to `roxygen2` to make for easier development of functions and package building ([GreatEmerald/bfast](https://github.com/GreatEmerald/bfast))
-* Optimised performance by porting critical paths to C++ ([appelmar/bfast](https://github.com/appelmar/bfast))
-* Making use of the `stlplus` package for handling time series with NA values, and optional use of robust regression ([Martin-Jung/bfast](https://github.com/Martin-Jung/bfast))
+* Documentation ported to `roxygen2` to make for easier development of functions and package building (Dainius Masiliūnas)
+* Optimised performance by porting critical paths to C++ (Marius Appel)
+* Making use of the `stlplus` package for handling time series with NA values, and optional use of robust regression (Martin Jung)
 
-Parts of the improvements rely on modifications of the [strucchange](https://cran.r-project.org/web/packages/strucchange/index.html) package [(see here)](https://github.com/appelmar/strucchange). You can install both packages with:
+Parts of the improvements rely on modifications of the [strucchange](https://cran.r-project.org/web/packages/strucchange/index.html) package [(see here)](https://github.com/bfast2/strucchangeRcpp). You can install both packages with:
 
 ```
-library(devtools)
-install_github("bfast2/strucchange")
+install.packages(c("strucchangeRcpp", "bfast"))
+```
+
+To install the development version of the package, run:
+
+```
+library(remotes)
+install_github("bfast2/strucchangeRcpp")
 install_github("bfast2/bfast")
 ```
 

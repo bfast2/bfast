@@ -27,8 +27,8 @@
 #' with components as follows.  \item{zz}{ a regular \code{"ts"} time series
 #' with a frequency equal to 365 or 23 i.e. 16-day time series.}
 #' @author Achim Zeileis, Jan Verbesselt
-#' @seealso \code{\link[strucchange]{monitor}}, \code{\link[strucchange]{mefp}}, 
-#' \code{\link[strucchange]{breakpoints}}
+#' @seealso \code{\link[strucchangeRcpp]{monitor}}, \code{\link[strucchangeRcpp]{mefp}}, 
+#' \code{\link[strucchangeRcpp]{breakpoints}}
 #' @keywords ts
 #' 
 #' @example examples/bfastts.r

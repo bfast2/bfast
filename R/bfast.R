@@ -29,7 +29,7 @@
 #' @param hpc A character specifying the high performance computing support.
 #' Default is "none", can be set to "foreach". Install the "foreach" package
 #' for hpc support.
-#' @param level numeric; threshold value for the \link[strucchange]{sctest.efp}
+#' @param level numeric; threshold value for the \link[strucchangeRcpp]{sctest.efp}
 #' test; if a length 2 vector is passed, the first value is used for the trend,
 #' the second for the seasonality
 #' @param reg "lm" or "rlm": use regular or robust linear regression
@@ -37,22 +37,22 @@
 #' \code{stl} can handle sparse time series (1 < frequency < 4), \code{stlplus}
 #' can handle \code{NA} values in the time series.
 #' @param type character, indicating the type argument to
-#' \link[strucchange]{efp}
+#' \link[strucchangeRcpp]{efp}
 #' @return An object of the class "bfast" is a list with the following
 #' elements: \item{Yt}{ equals the Yt used as input.} \item{output}{ is a list
 #' with the following elements (for each iteration): \tabular{ll}{ \code{Tt}
 #' \tab the fitted trend component\cr \code{St} \tab the fitted seasonal
 #' component\cr \code{Nt} \tab the noise or remainder component\cr \code{Vt}
 #' \tab equals the deseasonalized data \code{Yt - St} for each iteration\cr
-#' \code{bp.Vt} \tab output of the \code{\link[strucchange]{breakpoints}}
+#' \code{bp.Vt} \tab output of the \code{\link[strucchangeRcpp]{breakpoints}}
 #' function for the trend model. Note that the output breakpoints are index
 #' numbers of \code{na.omit(as.numeric(Vt))}.\cr \code{ci.Vt} \tab output of the
-#' \code{\link[strucchange]{breakpoints}} confint function for the trend
+#' \code{\link[strucchangeRcpp]{breakpoints}} confint function for the trend
 #' model\cr \code{Wt} \tab equals the detrended data \code{Yt - Tt} for each
 #' iteration\cr \code{bp.Wt} \tab output of the
-#' \code{\link[strucchange]{breakpoints}} function for the seasonal model.
+#' \code{\link[strucchangeRcpp]{breakpoints}} function for the seasonal model.
 #' Note that the output breakpoints are index numbers of \code{na.omit(as.numeric(Wt))}. \cr
-#' \code{ci.Wt} \tab output of the \code{\link[strucchange]{breakpoints}}
+#' \code{ci.Wt} \tab output of the \code{\link[strucchangeRcpp]{breakpoints}}
 #' confint function for the seasonal model }} \item{nobp}{ is a list with the
 #' following elements: \tabular{ll}{ \code{nobp.Vt} \tab logical, TRUE if there
 #' are no breakpoints detected\cr \code{nobp.Wt} \tab logical, TRUE if there
@@ -61,7 +61,7 @@
 #' change detected in the trend component}
 #' @author Jan Verbesselt
 #' @seealso \code{\link[bfast]{plot.bfast}} for plotting of bfast() results.
-#' \cr \code{\link[strucchange]{breakpoints}} for more examples and background
+#' \cr \code{\link[strucchangeRcpp]{breakpoints}} for more examples and background
 #' information about estimation of breakpoints in time series.
 #' @references Verbesselt J, Hyndman R, Newnham G, Culvenor D (2010).
 #' Detecting Trend and Seasonal Changes in Satellite Image Time Series.

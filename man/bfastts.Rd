@@ -55,8 +55,8 @@ plot(ndvi/10000)
 
 }
 \seealso{
-\code{\link[strucchange]{monitor}}, \code{\link[strucchange]{mefp}}, 
-\code{\link[strucchange]{breakpoints}}
+\code{\link[strucchangeRcpp]{monitor}}, \code{\link[strucchangeRcpp]{mefp}}, 
+\code{\link[strucchangeRcpp]{breakpoints}}
 }
 \author{
 Achim Zeileis, Jan Verbesselt

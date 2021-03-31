@@ -56,7 +56,7 @@ as \code{start}. If a function is supplied it is called as
 
 \item{type}{character specifying the type of monitoring process. By default,
 a MOSUM process based on OLS residuals is employed. See
-\code{\link[strucchange]{mefp}} for alternatives.}
+\code{\link[strucchangeRcpp]{mefp}} for alternatives.}
 
 \item{h}{numeric scalar from interval (0,1) specifying the bandwidth
 relative to the sample size in MOSUM/ME monitoring processes.}
@@ -70,7 +70,7 @@ selected) procedure, i.e., probability of type I error.}
 
 \item{hpc}{character specifying the high performance computing support.
 Default is \code{"none"}, can be set to \code{"foreach"}. See
-\code{\link[strucchange]{breakpoints}} for more details.}
+\code{\link[strucchangeRcpp]{breakpoints}} for more details.}
 
 \item{verbose}{logical. Should information about the monitoring be printed
 during computation?}
@@ -228,8 +228,8 @@ Sensing Of Environment}, \bold{123}, 98--108.
 \url{http://dx.doi.org/10.1016/j.rse.2012.02.022}
 }
 \seealso{
-\code{\link[strucchange]{monitor}},
-\code{\link[strucchange]{mefp}}, \code{\link[strucchange]{breakpoints}}
+\code{\link[strucchangeRcpp]{monitor}},
+\code{\link[strucchangeRcpp]{mefp}}, \code{\link[strucchangeRcpp]{breakpoints}}
 }
 \author{
 Achim Zeileis, Jan Verbesselt
