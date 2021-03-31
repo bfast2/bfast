@@ -15,7 +15,7 @@ bfastmonitor(
   type = "OLS-MOSUM",
   h = 0.25,
   end = 10,
-  level = 0.05,
+  level = c(0.05, 0.05),
   hpc = "none",
   verbose = FALSE,
   plot = FALSE,

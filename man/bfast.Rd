@@ -14,19 +14,19 @@ bfast(
   hpc = "none",
   level = 0.05,
   reg = c("lm", "rlm"),
-  decomp = c("stlplus", "stl"),
+  decomp = c("stl", "stlplus"),
   type = "OLS-MOSUM",
   ...
 )
 }
 \arguments{
 \item{Yt}{univariate time series to be analyzed. This should be an object of
-class "ts" with a frequency greater than one without NA's.}
+class "ts" with a frequency greater than one.}
 
 \item{h}{minimal segment size between potentially detected breaks in the
 trend model given as fraction relative to the sample size (i.e. the minimal
 number of observations in each segment divided by the total length of the
-timeseries.}
+timeseries).}
 
 \item{season}{the seasonal model used to fit the seasonal component and
 detect seasonal breaks (i.e. significant phenological change).  There are
@@ -53,9 +53,9 @@ the second for the seasonality}
 
 \item{reg}{"lm" or "rlm": use regular or robust linear regression}
 
-\item{decomp}{"stlplus" or "stl": use the NA-tolerant decomposition package
-or the reference package (which can make use of time series with 2-3
-observations per year)}
+\item{decomp}{"stlplus" or "stl": the function to use for decomposition.
+\code{stl} can handle sparse time series (1 < frequency < 4), \code{stlplus}
+can handle \code{NA} values in the time series.}
 
 \item{type}{character, indicating the type argument to
 \link[strucchange]{efp}}

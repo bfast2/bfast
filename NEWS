@@ -9,6 +9,8 @@ Changes in Version 1.6.0
   by the "decomp" parameter in bfast(). 'stl' is still the default for
   backwards compatibility and for use in sparse time series.
   
+  o New bfastlite() function for running BFAST Lite (BFAST without STL).
+  
   o bfast() now defaults to max.iter = 10, making the argument optional.
   
   o create16dayts() is now deprecated in favour of bfastts().
