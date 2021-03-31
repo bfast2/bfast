@@ -9,11 +9,11 @@
 #' To be completed.
 #' 
 #' @param Yt univariate time series to be analyzed. This should be an object of
-#' class "ts" with a frequency greater than one without NA's.
+#' class "ts" with a frequency greater than one.
 #' @param h minimal segment size between potentially detected breaks in the
 #' trend model given as fraction relative to the sample size (i.e. the minimal
 #' number of observations in each segment divided by the total length of the
-#' timeseries.
+#' timeseries).
 #' @param season the seasonal model used to fit the seasonal component and
 #' detect seasonal breaks (i.e. significant phenological change).  There are
 #' three options: "dummy", "harmonic", or "none" where "dummy" is the model
@@ -33,9 +33,9 @@
 #' test; if a length 2 vector is passed, the first value is used for the trend,
 #' the second for the seasonality
 #' @param reg "lm" or "rlm": use regular or robust linear regression
-#' @param decomp "stlplus" or "stl": use the NA-tolerant decomposition package
-#' or the reference package (which can make use of time series with 2-3
-#' observations per year)
+#' @param decomp "stlplus" or "stl": the function to use for decomposition.
+#' \code{stl} can handle sparse time series (1 < frequency < 4), \code{stlplus}
+#' can handle \code{NA} values in the time series.
 #' @param type character, indicating the type argument to
 #' \link[strucchange]{efp}
 #' @return An object of the class "bfast" is a list with the following
@@ -144,7 +144,7 @@
 #' @export bfast
 bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"), 
                    max.iter = 10, breaks = NULL, hpc = "none", level = 0.05,
-                   reg = c("lm", "rlm"), decomp=c("stlplus", "stl"),
+                   reg = c("lm", "rlm"), decomp = c("stl", "stlplus"),
                    type = "OLS-MOSUM", ...) 
 {
   # Error catching
@@ -152,14 +152,27 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
   if(!(reg %in% c("lm","rlm"))) stop("Regression method unknown, use either 'lm' or 'rlm'.")
   if(reg == "rlm") require(MASS)
   decomp = match.arg(decomp)
-  if(decomp == "stlplus" && !require("stlplus",quietly = T)) stop("Please install the stlplus package!")
+  if (decomp == "stl" && any(is.na(Yt))) {
+    warning("The stl() function cannot deal with missing values in the time series, falling back to decomp='stlplus'.")
+    decomp <- "stlplus"
+  }
+  if(decomp == "stlplus" && !require("stlplus", quietly = T)) {
+    warning("stlplus package could not be loaded, falling back to decomp='stl'.")
+    decomp <- "stl"
+  }
   ## Get Arguments
   season <- match.arg(season)
   level  <- rep(level, length.out = 2)
   ti <- time(Yt)
   f <- frequency(Yt) # on cycle every f time points (seasonal cycle)
-  if (class(Yt) != "ts") 
+  if (class(Yt) != "ts")
     stop("Not a time series object")
+  if (f < 1)
+    stop("Time series frequency needs to be more than 1")
+  if (decomp == "stlplus" && f < 4) {
+    warning("Not enough seasons (frequency < 4) for using stlplus decomposition, falling back to decomp = 'stl'")
+    decomp <- "stl"
+  }
   output <- list()
   Tt <- 0
   if (season == "harmonic") {

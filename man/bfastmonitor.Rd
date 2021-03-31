@@ -15,7 +15,7 @@ bfastmonitor(
   type = "OLS-MOSUM",
   h = 0.25,
   end = 10,
-  level = 0.05,
+  level = c(0.05, 0.05),
   hpc = "none",
   verbose = FALSE,
   plot = FALSE,
@@ -174,10 +174,7 @@ mon <- bfastmonitor(NDVIb, formula = response ~ harmon,
     start = c(2010, 13), order = 6, plot = TRUE)
 summary(mon$model)
 
-## For more info
-?bfastmonitor
-
-
+\dontrun{
 ## TUTORIAL for processing raster bricks (satellite image time series of 16-day NDVI images)
 f <- system.file("extdata/modisraster.grd", package="bfast")
 library("raster")
@@ -208,7 +205,6 @@ bfm$magnitude
 plot(bfm)
 xbfastmonitor(modisbrick[1], dates) ## helper function applied on one pixel
 
-\dontrun{
 ## apply the bfastmonitor function onto a raster brick
 library(raster)
 timeofbreak <- calc(modisbrick, fun=function(x){

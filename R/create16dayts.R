@@ -4,27 +4,24 @@
 
 #' A helper function to create time series
 #' 
-#' Time series creation
+#' A deprecated alias to bfastts.
+#' Please use \code{bfastts(type="16-day")} instead.
 #' 
-#' 
-#' @param data A vector
-#' @param dates A vector ....
+#' @param data Passed to bfastts.
+#' @param dates Passed to bfastts.
 #' @author Achim Zeileis, Jan Verbesselt
 #' @seealso \code{\link[bfast]{bfastmonitor}}
 #' @keywords ts
-#' @examples
-#' 
-#' ## set up a 16-day time series
-#' #ndvi <- create16dayts(modisraster[1],dates)
-#' #plot(ndvi)
-#' 
-#' @export create16dayts
+#' @name create16dayts-deprecated
+#' @usage create16dayts(data, dates)
+#' @seealso \code{\link{bfast-deprecated}}
+NULL
+
+#' @rdname bfast-deprecated
+#' @section \code{create16dayts}:
+#' Use \code{\link{bfastts}} with the parameter \code{type="16-day"}.
+#' @export
 create16dayts <- function(data,dates) {
-	z <- zoo(data,dates)
-	yr <- as.numeric(format(time(z), "%Y"))
-	jul <- as.numeric(format(time(z), "%j"))
-	delta <- min(unlist(tapply(jul, yr, diff))) # 16
-	zz <- aggregate(z, yr + (jul - 1) / delta / 23)
-	(tso <- as.ts(zz))
-	return(tso)  
+  .Deprecated("bfastts")
+  return(bfastts(data, dates, type="16-day"))
 }

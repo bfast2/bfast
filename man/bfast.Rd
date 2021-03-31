@@ -14,19 +14,19 @@ bfast(
   hpc = "none",
   level = 0.05,
   reg = c("lm", "rlm"),
-  decomp = c("stlplus", "stl"),
+  decomp = c("stl", "stlplus"),
   type = "OLS-MOSUM",
   ...
 )
 }
 \arguments{
 \item{Yt}{univariate time series to be analyzed. This should be an object of
-class "ts" with a frequency greater than one without NA's.}
+class "ts" with a frequency greater than one.}
 
 \item{h}{minimal segment size between potentially detected breaks in the
 trend model given as fraction relative to the sample size (i.e. the minimal
 number of observations in each segment divided by the total length of the
-timeseries.}
+timeseries).}
 
 \item{season}{the seasonal model used to fit the seasonal component and
 detect seasonal breaks (i.e. significant phenological change).  There are
@@ -53,9 +53,9 @@ the second for the seasonality}
 
 \item{reg}{"lm" or "rlm": use regular or robust linear regression}
 
-\item{decomp}{"stlplus" or "stl": use the NA-tolerant decomposition package
-or the reference package (which can make use of time series with 2-3
-observations per year)}
+\item{decomp}{"stlplus" or "stl": the function to use for decomposition.
+\code{stl} can handle sparse time series (1 < frequency < 4), \code{stlplus}
+can handle \code{NA} values in the time series.}
 
 \item{type}{character, indicating the type argument to
 \link[strucchange]{efp}}
@@ -68,11 +68,13 @@ with the following elements (for each iteration): \tabular{ll}{ \code{Tt}
 component\cr \code{Nt} \tab the noise or remainder component\cr \code{Vt}
 \tab equals the deseasonalized data \code{Yt - St} for each iteration\cr
 \code{bp.Vt} \tab output of the \code{\link[strucchange]{breakpoints}}
-function for the trend model\cr \code{ci.Vt} \tab output of the
+function for the trend model. Note that the output breakpoints are index
+numbers of \code{na.omit(as.numeric(Vt))}.\cr \code{ci.Vt} \tab output of the
 \code{\link[strucchange]{breakpoints}} confint function for the trend
 model\cr \code{Wt} \tab equals the detrended data \code{Yt - Tt} for each
 iteration\cr \code{bp.Wt} \tab output of the
-\code{\link[strucchange]{breakpoints}} function for the seasonal model\cr
+\code{\link[strucchange]{breakpoints}} function for the seasonal model.
+Note that the output breakpoints are index numbers of \code{na.omit(as.numeric(Wt))}. \cr
 \code{ci.Wt} \tab output of the \code{\link[strucchange]{breakpoints}}
 confint function for the seasonal model }} \item{nobp}{ is a list with the
 following elements: \tabular{ll}{ \code{nobp.Vt} \tab logical, TRUE if there

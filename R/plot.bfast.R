@@ -35,6 +35,7 @@
 #' @param main an overall title for the plot.
 #' @param ... further arguments passed to the \code{\link[graphics]{plot}}
 #' function.
+#' @return No return value, called for side effects.
 #' @author Jan Verbesselt, Rob Hyndman and Rogier De Jong
 #' @keywords ts
 #' @examples
@@ -140,5 +141,5 @@ plot.bfast <- function (x, type = c("components", "all", "data", "seasonal",
         if (type == "all") 
             par(opar)
     }
-    # par(opar)
+    return()
 }
