@@ -144,7 +144,7 @@
 #' @export bfast
 bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"), 
                    max.iter = 10, breaks = NULL, hpc = "none", level = 0.05,
-                   reg = c("lm", "rlm"), decomp=c("stl", "stlplus"),
+                   reg = c("lm", "rlm"), decomp = c("stl", "stlplus"),
                    type = "OLS-MOSUM", ...) 
 {
   # Error catching
@@ -156,7 +156,7 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
     warning("The stl() function cannot deal with missing values in the time series, falling back to decomp='stlplus'.")
     decomp <- "stlplus"
   }
-  if(decomp == "stlplus" && !require("stlplus",quietly = T)) {
+  if(decomp == "stlplus" && !require("stlplus", quietly = T)) {
     warning("stlplus package could not be loaded, falling back to decomp='stl'.")
     decomp <- "stl"
   }
@@ -170,7 +170,7 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
   if (f < 1)
     stop("Time series frequency needs to be more than 1")
   if (decomp == "stlplus" && f < 4) {
-    warning("Not enough seasons (frequency < 4) for using stlplus decomposition, falling back to decomp='stl'")
+    warning("Not enough seasons (frequency < 4) for using stlplus decomposition, falling back to decomp = 'stl'")
     decomp <- "stl"
   }
   output <- list()

@@ -10,4 +10,4 @@ bp = bfastlite(datats)
 # Default method of estimating breakpoints
 bp[["breakpoints"]][["breakpoints"]]
 # Custom method
-strucchangeRcpp::breakpoints(bp[["breakpoints"]], breaks=2)
+strucchangeRcpp::breakpoints(bp[["breakpoints"]], breaks = 2)
