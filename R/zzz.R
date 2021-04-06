@@ -17,7 +17,7 @@
 #' These functions set options of the bfast and strucchangeRcpp packages to enable
 #' faster computations. By default (\code{set_default_options}), these optimizations are 
 #' enabled. Notice that only some functions of the \code{bfast}
-#' package make use of these options. \code{set_fastt_options} is an alias for \code{set_default_options}.
+#' package make use of these options. \code{set_fast_options} is an alias for \code{set_default_options}.
 #' 
 #' @name setoptions
 #' @aliases set_default_options set_fallback_options set_fast_options
@@ -42,9 +42,7 @@ set_default_options <- function() {
                  bfast.use_bfastts_modifications=TRUE))
 }
 
-set_fast_options <- function() {
-  set_default_options()
-}
+set_fast_options <- set_default_options
 
 set_fallback_options <- function() {
   return(options(strucchange.use_armadillo=FALSE, 
