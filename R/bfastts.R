@@ -11,13 +11,13 @@
 #' 
 #' \code{bfastts} create a regular time series
 #' 
-#' @param data A data vector
+#' @param data A data vector or matrix where columns represent variables
 #' @param dates Optional input of dates for each measurement in the 'data'
 #' variable. In case the data is a irregular time series, a vector with 'dates'
 #' for each measurement can be supplied using this 'dates' variable. The
 #' irregular data will be linked with the dates vector to create daily regular
 #' time series with a frequency = 365. Extra days in leap years might cause
-#' problems. Please be carefull using this option as it is experimental.
+#' problems. Please be careful using this option as it is experimental.
 #' Feedback is welcome.
 #' @param type (\code{"irregular"}) indicates that the data is collected at
 #' irregular dates and as such will be converted to a daily time series.
@@ -43,12 +43,19 @@
 #' modisbrick <- brick(f)
 #' ndvi <- bfastts(as.vector(modisbrick[1]), dates, type = c("16-day")) ## data of pixel 1
 #' plot(ndvi/10000) 
+#' 
+#' modis_ts = t(as.data.frame(modisbrick))[,1:4] # time series of 4 pixels
+#' ndvi <- bfastts(modis_ts, dates, type = c("16-day")) ## data of pixel 1
+#' plot(ndvi/10000)
 #' }
 #' 
 #' @export
-bfastts <- function(data,dates, type = c("irregular", "16-day", "10-day")) {
-	
+bfastts <- function(data, dates, type = c("irregular", "16-day", "10-day")) {
   
+  if (!is.vector(data) && !is.matrix(data)) {
+    stop("data must be of type vector or matrix")
+  }
+      
   if (getOption("bfast.use_bfastts_modifications", FALSE)) {
     return(.bfastts.new (data, dates, type))
   }
@@ -96,13 +103,17 @@ bfastts <- function(data,dates, type = c("irregular", "16-day", "10-day")) {
   if (is.unsorted(dates)) {
     ord = order(dates)
     dates = dates[ord]
-    data = data[ord]
+    if (is.matrix(data)) {
+      data = data[ord,]
+    }
+    else {
+      data = data[ord]
+    }
   }
   
   if (type == "irregular") {
     idx = 1900 + as.POSIXlt(dates)$year + (yday365(dates) - 1)/365
     freq = 365
-    
   }
   else if (type == "16-day") {
     yr <- as.numeric(format(dates, "%Y"))
@@ -111,11 +122,10 @@ bfastts <- function(data,dates, type = c("irregular", "16-day", "10-day")) {
     idx = yr + (jul - 1) / delta / 23
     freq = 23
   }
-  
   else if (type == "10-day") {
     tz = as.POSIXlt(dates)
     freq = 36
-    index = 1900L + tz$year + round((tz$yday - 1L)/ 10L)/36L
+    idx = 1900L + tz$year + round((tz$yday - 1L)/ 10L)/36L
   }
   else {
     stop("no valid time series type specified.")
@@ -124,15 +134,25 @@ bfastts <- function(data,dates, type = c("irregular", "16-day", "10-day")) {
   # define target ts and fill with NAs
   start = idx[1]
   end = idx[length(idx)]
-  A = ts(start = start,end = end, frequency = freq) 
   
+  if (is.matrix(data)) {
+    A = ts(matrix(NA, ncol=ncol(data), nrow=1), start = start,end = end, frequency = freq) 
+  }
+  else {
+    A = ts(NA, start = start,end = end, frequency = freq) 
+  }
+ 
   # find closest points in the target time series for all observations
   matches = .bfast_cpp_closestfrom(idx,time(A), TRUE)
   
   # replace NAs with the observations at corresponding indexes
-  A[matches] = data
+  if (is.matrix(data)) {
+    A[matches,] = data
+  }
+  else {
+    A[matches] = data
+  }
   return(A)
-
 }
 
 
