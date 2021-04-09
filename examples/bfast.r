@@ -20,16 +20,16 @@ plot(harvest, ylab="NDVI")
 (rdist <- 10/length(harvest))
 # ratio of distance between breaks (time steps) and length of the time series
 
-fit <- bfast(harvest,h=rdist, season="harmonic", max.iter=1,breaks=2)
+fit <- bfast(harvest, h=rdist, season="harmonic", max.iter=1, breaks=2)
 plot(fit)
 ## plot anova and slope of the trend identified trend segments
 plot(fit, ANOVA=TRUE)
 ## plot the trend component and identify the break with
 ## the largest magnitude of change
-plot(fit,type="trend",largest=TRUE)
+plot(fit, type="trend", largest=TRUE)
 
 ## plot all the different available plots
-plot(fit,type="all")
+plot(fit, type="all")
 
 ## output
 niter <- length(fit$output) # nr of iterations
@@ -40,5 +40,11 @@ out <- fit$output[[niter]]
 ## running bfast on yearly data
 t <- ts(as.numeric(harvest), frequency = 1, start = 2006)
 fit <- bfast(t, h = 0.23, season = "none", max.iter = 1)
+plot(fit)
+fit
+
+## handling missing values with stlplus
+(NDVIa <- as.ts(zoo::zoo(som$NDVI.a, som$Time)))
+fit <- bfast(NDVIa, season="harmonic", max.iter=1, decomp="stlplus")
 plot(fit)
 fit
