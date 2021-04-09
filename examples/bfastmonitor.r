@@ -1,4 +1,3 @@
-#library(zoo)
 NDVIa <- as.ts(zoo::zoo(som$NDVI.a, som$Time))
 plot(NDVIa)
 ## apply the bfast monitor function on the data
