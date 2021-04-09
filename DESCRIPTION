@@ -47,4 +47,4 @@ BugReports: https://github.com/bfast2/bfast/issues
 LazyLoad: yes
 LazyData: yes
 LinkingTo: Rcpp
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1

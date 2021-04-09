@@ -2,21 +2,21 @@
 % Please edit documentation in R/zzz.R
 \name{setoptions}
 \alias{setoptions}
-\alias{set_fast_options}
 \alias{set_default_options}
+\alias{set_fallback_options}
+\alias{set_fast_options}
 \title{Set package options with regard to computation times}
 \usage{
-set_fast_options()
+set_default_options()
 }
 \value{
 A list of modified options and their new values.
 }
 \description{
-These functions set options of the bfast and strucchangeRcpp package to enable
-faster computations. The fast options should return equal results but
-require the \code{strucchangeRcpp} package, which includes
-matrix-based functions. Notice that only some functions of the \code{bfast}
-package make use of these options.
+These functions set options of the bfast and strucchangeRcpp packages to enable
+faster computations. By default (\code{set_default_options}), these optimizations are 
+enabled. Notice that only some functions of the \code{bfast}
+package make use of these options. \code{set_fastt_options} is an alias for \code{set_default_options}.
 }
 \examples{
 
@@ -25,13 +25,10 @@ package make use of these options.
 library(zoo)
 NDVIa <- as.ts(zoo(som$NDVI.a, som$Time))
 
-set_fast_options()
-system.time(replicate(100,  bfastmonitor(NDVIa, start = c(2010, 13))))
-
 set_default_options()
 system.time(replicate(100,  bfastmonitor(NDVIa, start = c(2010, 13))))
 
-}
-\author{
-Marius Appel
+set_fallback_options()
+system.time(replicate(100,  bfastmonitor(NDVIa, start = c(2010, 13))))
+
 }
