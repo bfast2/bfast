@@ -7,14 +7,14 @@
 bfastts(data, dates, type = c("irregular", "16-day", "10-day"))
 }
 \arguments{
-\item{data}{A data vector}
+\item{data}{A data vector or matrix where columns represent variables}
 
 \item{dates}{Optional input of dates for each measurement in the 'data'
 variable. In case the data is a irregular time series, a vector with 'dates'
 for each measurement can be supplied using this 'dates' variable. The
 irregular data will be linked with the dates vector to create daily regular
 time series with a frequency = 365. Extra days in leap years might cause
-problems. Please be carefull using this option as it is experimental.
+problems. Please be careful using this option as it is experimental.
 Feedback is welcome.}
 
 \item{type}{(\code{"irregular"}) indicates that the data is collected at
@@ -36,11 +36,11 @@ time (dates) information.
 }
 \examples{
 # 16-day time series (i.e. MODIS)
-timedf <- data.frame(y=som$NDVI.b, dates=dates[1:nrow(som)])
-bfastts(timedf$y, timedf$dates, type="16-day")
+timedf <- data.frame(y = som$NDVI.b, dates = dates[1:nrow(som)])
+bfastts(timedf$y, timedf$dates, type = "16-day")
 
 # Irregular
-head(bfastts(timedf$y, timedf$dates, type="irregular"), 50)
+head(bfastts(timedf$y, timedf$dates, type = "irregular"), 50)
 
 
 \dontrun{
@@ -51,6 +51,10 @@ f <- system.file("extdata/modisraster.grd", package="bfast")
 modisbrick <- brick(f)
 ndvi <- bfastts(as.vector(modisbrick[1]), dates, type = c("16-day")) ## data of pixel 1
 plot(ndvi/10000) 
+
+modis_ts = t(as.data.frame(modisbrick))[,1:4] # time series of 4 pixels
+ndvi <- bfastts(modis_ts, dates, type = c("16-day")) ## data of pixel 1
+plot(ndvi/10000)
 }
 
 }

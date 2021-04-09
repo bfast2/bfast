@@ -23,6 +23,9 @@ Changes in Version 1.6.0
   o bfastmonitor() now allows to specify the significance 'level' separately
   for the ROC and the monitoring algorithms. If only one specified, both are
   set to the same level.
+  
+  o bfastts() now officially handles matrix inputs to make use of external
+  regressors easier.
 
 Changes in Version 1.5-9
 
