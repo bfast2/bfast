@@ -73,73 +73,7 @@
 #' Time Series.  \emph{Remote Sensing of Environment}, \bold{114}(12),
 #' 2970--2980.  \url{http://dx.doi.org/10.1016/j.rse.2010.08.003}
 #' @keywords ts
-#' @examples
-#' 
-#' 
-#' \dontrun{
-#' rm(list = ls())
-#' install.packages("bfast", repos="http://R-Forge.R-project.org", type = "source")
-#' update.packages(checkBuilt=TRUE)
-#' # make sure all your package are up to date
-#' # and built correctly for your current R version
-#' }
-#' 
-#' ## Simulated Data
-#' plot(simts) # stl object containing simulated NDVI time series
-#' datats <- ts(rowSums(simts$time.series))
-#' # sum of all the components (season,abrupt,remainder)
-#' tsp(datats) <- tsp(simts$time.series) # assign correct time series attributes
-#' plot(datats)
-#' 
-#' \dontrun{
-#' if (requireNamespace("forecast", quietly = TRUE)) {
-#'       fit <- bfast(datats,h=0.15, season="dummy", max.iter=1)
-#'       plot(fit,sim=simts)
-#'       fit
-#'       # prints out whether breakpoints are detected
-#'       # in the seasonal and trend component
-#' 
-#'    } else {
-#'       ## do something else not involving forecast related functions
-#'       ## like seasonaldummy() and tsdisply()
-#'    }
-#' }
-#' 
-#' 
-#' ## Real data
-#' ## The data should be a regular ts() object without NA's
-#' ## See Fig. 8 b in reference
-#' plot(harvest, ylab="NDVI")
-#' # MODIS 16-day cleaned and interpolated NDVI time series
-#' 
-#' (rdist <- 10/length(harvest))
-#' # ratio of distance between breaks (time steps) and length of the time series
-#' \dontrun{
-#' if (requireNamespace("forecast", quietly = TRUE)) {
-#'   fit <- bfast(harvest,h=rdist, season="harmonic", max.iter=1,breaks=2)
-#'   plot(fit)
-#'   ## plot anova and slope of the trend identified trend segments
-#'   #plot(fit, ANOVA=TRUE)
-#'   ## plot the trend component and identify the break with
-#'   ## the largest magnitude of change
-#'   plot(fit,type="trend",largest=TRUE)
-#' 
-#'   ## plot all the different available plots
-#'   plot(fit,type="all")
-#' 
-#'   ## output
-#'   niter <- length(fit$output) # nr of iterations
-#'   out <- fit$output[[niter]]
-#'   # output of results of the final fitted seasonal and trend models and
-#'   ## #nr of breakpoints in both.
-#' 
-#'   ## running bfast on yearly data
-#'   t <- ts(as.numeric(harvest), frequency = 1, start = 2006)
-#'   fit <- bfast(t, h = 0.23, season = "none", max.iter = 1)
-#'   plot(fit)
-#'   fit
-#' }
-#' }
+#' @example examples/bfast.r
 #' 
 #' @export bfast
 bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"), 
