@@ -11,7 +11,7 @@ bfastpp(
   slag = NULL,
   na.action = na.omit,
   stl = c("none", "trend", "seasonal", "both"),
-  decomp = c("stlplus", "stl"),
+  decomp = c("stl", "stlplus"),
   sbins = 1
 )
 }

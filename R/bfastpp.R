@@ -70,7 +70,7 @@
 bfastpp<- function(data, order = 3,
                    lag = NULL, slag = NULL, na.action = na.omit,
                    stl = c("none", "trend", "seasonal", "both"),
-                   decomp=c("stlplus", "stl"), sbins=1)
+                   decomp=c("stl", "stlplus"), sbins=1)
 {
   decomp = match.arg(decomp)
   if (stl != "none" && decomp == "stlplus" && !require("stlplus",quietly = T))
