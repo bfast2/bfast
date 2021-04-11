@@ -37,7 +37,8 @@ Imports:
     stats,
     zoo,
     forecast,
-    Rcpp (>= 0.12.7)
+    Rcpp (>= 0.12.7),
+    Rdpack (>= 0.7)
 Suggests:
     MASS,
     sfsmisc,
@@ -50,3 +51,5 @@ LazyLoad: yes
 LazyData: yes
 LinkingTo: Rcpp
 RoxygenNote: 7.1.1
+Roxygen: list(markdown = TRUE)
+RdMacros: Rdpack

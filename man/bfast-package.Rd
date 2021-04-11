@@ -36,13 +36,22 @@ disturbance approach }
 }
 \section{Package options}{
  bfast uses the following options to modify the
-default behaviour: \itemize{ \item \code{bfast.prefer_matrix_methods}:
-logical value (default \code{FALSE}) defining whether methods should try to
+default behaviour:
+\itemize{
+\item \code{bfast.prefer_matrix_methods}:
+logical value defining whether methods should try to
 use the design matrix instead of the formula and a dataframe whenever
 possible. This can avoid expensive repeated calls of \code{model.matrix} and
 \code{model.frame} and make model fitting faster using \code{lm.fit}.
-Setting this option to TRUE requires according functions in the
-\code{strucchangeRcpp} package.}
+\item \code{bfast.use_bfastts_modifications}:
+logical value defining whether a faster version of \code{\link[=bfastts]{bfastts()}} should be used.
+\item \code{strucchange.use_armadillo}:
+logical value defining whether to use C++ optimised code paths in strucchangeRcpp.
+}
+
+By default, all three are enabled.
+See \code{\link[=set_fallback_options]{set_fallback_options()}} for a convenient interface for setting them all off
+for debugging purposes.
 }
 
 \references{
@@ -60,9 +69,5 @@ Verbesselt J, Hyndman R, Zeileis A, Culvenor D (2010).  Phenological Change
 Detection while Accounting for Abrupt and Gradual Trends in Satellite Image
 Time Series.  \emph{Remote Sensing of Environment}, \bold{114}(12),
 2970--2980.  \url{http://dx.doi.org/10.1016/j.rse.2010.08.003}
-}
-\author{
-Jan Verbesselt [aut, cre], Achim Zeileis [aut], Rob Hyndman [ctb],
-Rogier De Jong [ctb]
 }
 \keyword{ts}

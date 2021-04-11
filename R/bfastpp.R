@@ -34,10 +34,10 @@
 #' @param decomp "stlplus" or "stl": use the NA-tolerant decomposition package
 #' or the reference package (which can make use of time series with 2-3
 #' observations per year)
-#' @param sbins numeric. Controls the number of seasonal dummies. If integer
-#' > 1, sets the number of seasonal dummies to use per year.
+#' @param sbins numeric. Controls the number of seasonal dummies. If integer > 1,
+#' sets the number of seasonal dummies to use per year.
 #' If <= 1, treated as a multiplier to the number of observations per year, i.e.
-#' ndummies = nobs/year * sbins.
+#' `ndummies = nobs/year * sbins`.
 #' @return If no formula is provided, \code{bfastpp} returns a
 #' \code{"data.frame"} with the following variables (some of which may be
 #' matrices).  \item{time}{numeric vector of time stamps,}

@@ -40,10 +40,10 @@ or both from \code{\link[stats]{stl}} are removed from each column in
 or the reference package (which can make use of time series with 2-3
 observations per year)}
 
-\item{sbins}{numeric. Controls the number of seasonal dummies. If integer
-> 1, sets the number of seasonal dummies to use per year.
+\item{sbins}{numeric. Controls the number of seasonal dummies. If integer > 1,
+sets the number of seasonal dummies to use per year.
 If <= 1, treated as a multiplier to the number of observations per year, i.e.
-ndummies = nobs/year * sbins.}
+\code{ndummies = nobs/year * sbins}.}
 }
 \value{
 If no formula is provided, \code{bfastpp} returns a

@@ -34,16 +34,21 @@
 #' disturbance approach }
 #' 
 #' @section Package options: bfast uses the following options to modify the
-#' default behaviour: \itemize{ \item \code{bfast.prefer_matrix_methods}:
-#' logical value (default \code{FALSE}) defining whether methods should try to
+#' default behaviour:
+#' * `bfast.prefer_matrix_methods`:
+#' logical value defining whether methods should try to
 #' use the design matrix instead of the formula and a dataframe whenever
 #' possible. This can avoid expensive repeated calls of \code{model.matrix} and
 #' \code{model.frame} and make model fitting faster using \code{lm.fit}.
-#' Setting this option to TRUE requires according functions in the
-#' \code{strucchangeRcpp} package.}
+#' * `bfast.use_bfastts_modifications`:
+#' logical value defining whether a faster version of [bfastts()] should be used.
+#' * `strucchange.use_armadillo`:
+#' logical value defining whether to use C++ optimised code paths in strucchangeRcpp.
+#' 
+#' By default, all three are enabled.
+#' See [set_fallback_options()] for a convenient interface for setting them all off
+#' for debugging purposes.
 #' @name bfast-package
-#' @author Jan Verbesselt [aut, cre], Achim Zeileis [aut], Rob Hyndman [ctb],
-#' Rogier De Jong [ctb]
 #' @references Verbesselt J, Zeileis A, Herold M (2012).  Near real-time
 #' disturbance detection using satellite image time series.  \emph{Remote
 #' Sensing of Environment}, \bold{123}, 98--108.
@@ -61,6 +66,7 @@
 #' @keywords ts
 #' @import strucchangeRcpp zoo forecast stats
 #' @importFrom Rcpp evalCpp
+#' @importFrom Rdpack reprompt
 #' @useDynLib bfast
 NULL
 

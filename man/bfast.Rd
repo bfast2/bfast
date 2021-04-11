@@ -59,6 +59,9 @@ can handle \code{NA} values in the time series.}
 
 \item{type}{character, indicating the type argument to
 \link[strucchangeRcpp]{efp}}
+
+\item{\dots}{additional arguments passed to \code{\link[stlplus:stlplus]{stlplus::stlplus()}}, if
+its usage has been enabled, otherwise ignored.}
 }
 \value{
 An object of the class "bfast" is a list with the following

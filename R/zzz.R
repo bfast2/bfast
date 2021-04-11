@@ -35,15 +35,19 @@
 #' set_fallback_options()
 #' system.time(replicate(100,  bfastmonitor(NDVIa, start = c(2010, 13))))
 #' 
-#' @export set_fast_options set_default_options set_fallback_options
+#' @export
 set_default_options <- function() {
   return(options(strucchange.use_armadillo=TRUE, 
                  bfast.prefer_matrix_methods=TRUE,
                  bfast.use_bfastts_modifications=TRUE))
 }
 
+#' @rdname setoptions
+#' @export
 set_fast_options <- set_default_options
 
+#' @rdname setoptions
+#' @export
 set_fallback_options <- function() {
   return(options(strucchange.use_armadillo=FALSE, 
                  bfast.prefer_matrix_methods=FALSE,

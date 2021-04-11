@@ -4,3 +4,4 @@
 ^CONTRIBUTING\.md$
 ^LICENSE$
 ^examples$
+^build.Rcheck$

@@ -19,6 +19,10 @@ bfast01classify(
 
 \item{pct_stable}{threshold for segment stability, unit: percent change per
 unit time (0-100), default NULL}
+
+\item{typology}{classification legend to use: \code{standard} refers to the
+original legend as used in \insertCite{rogierbfast01;textual}{bfast},
+\code{drylands} refers to the legend used in \insertCite{paulodrylands;textual}{bfast}.}
 }
 \value{
 \code{bfast01classify} returns a data.frame with the following
@@ -54,9 +58,7 @@ bfast01classify(bf1, pct_stable = 0.25)
 
 }
 \references{
-de Jong R, Verbesselt J, Zeileis A, Schaepman M (2013).  Shifts
-in global vegetation activity trends.  \emph{Remote Sensing}, \bold{5},
-1117--1133.  \url{http://dx.doi.org/10.3390/rs5031117}
+\insertAllCited{}
 }
 \seealso{
 \code{\link[bfast]{bfast01}}

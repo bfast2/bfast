@@ -38,6 +38,8 @@
 #' can handle \code{NA} values in the time series.
 #' @param type character, indicating the type argument to
 #' \link[strucchangeRcpp]{efp}
+#' @param \dots additional arguments passed to [stlplus::stlplus()], if
+#' its usage has been enabled, otherwise ignored.
 #' @return An object of the class "bfast" is a list with the following
 #' elements: \item{Yt}{ equals the Yt used as input.} \item{output}{ is a list
 #' with the following elements (for each iteration): \tabular{ll}{ \code{Tt}

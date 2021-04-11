@@ -8,14 +8,11 @@
 #' steps:
 #' 
 #' 1. The data is preprocessed with bfastpp using the arguments
-#' order/lag/slag/na.action/stl/sbins.
-#' 
+#' `order`/`lag`/`slag`/`na.action`/`stl`/`sbins`.
 #' 2. A linear model with the given formula is fitted. By default a suitable
 #' formula is guessed based on the preprocessing parameters.
-#' 
 #' 3. The model with 1 breakpoint is estimated as well where the breakpoint is
 #' chosen to minimize the segmented residual sum of squares.
-#' 
 #' 4. A sequence of tests the null hypothesis of zero breaks is performed. Each
 #' test results in a decision for FALSE (no breaks) or TRUE (structural
 #' break(s)). The test decisions are then aggregated to a single decision (by
@@ -69,6 +66,8 @@
 #' @param slag numeric. Order of the seasonal autoregressive term, by default
 #' omitted.
 #' @param na.action arguments passed on to \code{\link[bfast]{bfastpp}}
+#' @param reg whether to use OLS regression [lm()] or
+#' robust regression [MASS::rlm()].
 #' @param stl argument passed on to \code{\link[bfast]{bfastpp}}
 #' @param sbins argument passed on to \code{\link[bfast]{bfastpp}}
 #' @return \code{bfast01} returns a list of class \code{"bfast01"} with the
@@ -82,9 +81,7 @@
 #' @author Achim Zeileis, Jan Verbesselt
 #' @seealso \code{\link[bfast]{bfastmonitor}},
 #' \code{\link[strucchangeRcpp]{breakpoints}}
-#' @references de Jong R, Verbesselt J, Zeileis A, Schaepman M (2013).  Shifts
-#' in global vegetation activity trends.  \emph{Remote Sensing}, \bold{5},
-#' 1117--1133.  \url{http://dx.doi.org/10.3390/rs5031117}
+#' @references \insertRef{rogierbfast01}{bfast}
 #' 
 #' Zeileis A (2005). A unified approach to structural change tests based on ML
 #' scores, F statistics, and OLS residuals.  \emph{Econometric Reviews},
@@ -133,11 +130,14 @@ bfast01 <- function(data, formula = NULL,
                     test = "OLS-MOSUM", level = 0.05, aggregate = all,
                     trim = NULL, bandwidth = 0.15, functional = "max",
                     order = 3, lag = NULL, slag = NULL, na.action = na.omit, 
-                    reg = "lm", stl = "none", sbins = 1)
+                    reg = c("lm", "rlm"), stl = "none", sbins = 1)
 {
-  # Error catching
-  if(!(reg %in% c("lm","rlm"))) stop("Regression method unknown. ?bfast01")
-  if(reg == "rlm") require(MASS)
+  reg <- match.arg(reg)
+  if (reg == "rlm"){
+    if (!requireNamespace("MASS"))
+      stop("reg = 'rlm' requires the MASS package")
+    reg <- MASS::rlm
+  }
   ## data preprocessing
   stl <- match.arg(stl, c("none", "trend", "seasonal", "both"))
   if (!inherits(data, "data.frame")) 

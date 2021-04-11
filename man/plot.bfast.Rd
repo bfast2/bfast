@@ -40,17 +40,17 @@ Plot methods for objects of class "bfast".
 }
 \details{
 This function creates various plots to demonstrate the results of a bfast
-decomposition.  
+decomposition.
 The type of plot shown depends on the value of \code{type}.
-\itemize{ 
-\item{components} Shows the final estimated components with breakpoints. 
-\item{all} Plots the estimated components and breakpoints from all iterations. 
+\itemize{
+\item{components} Shows the final estimated components with breakpoints.
+\item{all} Plots the estimated components and breakpoints from all iterations.
 \item{data} Just plots the original time series data.
 \item{seasonal} Shows the trend component including breakpoints.
-\item{trend} Shows the trend component including breakpoints. 
-\item{noise} Plots the noise component along with its acf and pacf. 
-} 
-If \code{sim} is not \code{NULL}, the components used in simulation are also 
+\item{trend} Shows the trend component including breakpoints.
+\item{noise} Plots the noise component along with its acf and pacf.
+}
+If \code{sim} is not \code{NULL}, the components used in simulation are also
 shown on each graph.
 }
 \examples{
