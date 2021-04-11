@@ -112,13 +112,7 @@ d3lm <- lm.fit(d3mm, d3$response)
 d3lm$coefficients
 }
 \references{
-Verbesselt J, Zeileis A, Herold M (2011).  Near Real-Time
-Disturbance Detection in Terrestrial Ecosystems Using Satellite Image Time
-Series: Drought Detection in Somalia.  Working Paper 2011-18. Working Papers
-in Economics and Statistics, Research Platform Empirical and Experimental
-Economics, Universitaet Innsbruck.
-\url{http://EconPapers.RePEc.org/RePEc:inn:wpaper:2011-18}.  Submitted to
-Remote Sensing and Environment.
+\insertRef{janbfastmonitor}{bfast}
 }
 \seealso{
 \code{\link[bfast]{bfastmonitor}}

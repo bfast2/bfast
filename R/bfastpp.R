@@ -56,13 +56,7 @@
 #' formula. Columns of \code{X} have names as decribed above.
 #' @author Achim Zeileis
 #' @seealso \code{\link[bfast]{bfastmonitor}}
-#' @references Verbesselt J, Zeileis A, Herold M (2011).  Near Real-Time
-#' Disturbance Detection in Terrestrial Ecosystems Using Satellite Image Time
-#' Series: Drought Detection in Somalia.  Working Paper 2011-18. Working Papers
-#' in Economics and Statistics, Research Platform Empirical and Experimental
-#' Economics, Universitaet Innsbruck.
-#' \url{http://EconPapers.RePEc.org/RePEc:inn:wpaper:2011-18}.  Submitted to
-#' Remote Sensing and Environment.
+#' @references \insertRef{janbfastmonitor}{bfast}
 #' @keywords ts
 #' @example examples/bfastpp.r
 #' 
@@ -73,7 +67,7 @@ bfastpp<- function(data, order = 3,
                    decomp=c("stl", "stlplus"), sbins=1)
 {
   decomp = match.arg(decomp)
-  if (stl != "none" && decomp == "stlplus" && !require("stlplus",quietly = T))
+  if (stl != "none" && decomp == "stlplus" && !requireNamespace("stlplus", quietly = TRUE))
     stop("Please install the stlplus package or set decomp = 'stl' or stl = 'none'.")
 
   ## double check what happens with 29-02 if that happens...

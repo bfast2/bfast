@@ -18,6 +18,9 @@ Changes in Version 1.6.0
   number of seasonal dummies (bins) when using 'season' in the formula.
   
   o bfast() now defaults to max.iter = 10, making the argument optional.
+  It also no longer has the argument 'reg', as it was previously unused.
+  Any additional arguments to the function now are either sent to the
+  stlplus::stlplus() function, or ignored if decomp = 'stl'.
   
   o create16dayts() is now deprecated in favour of bfastts().
 

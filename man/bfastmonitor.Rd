@@ -212,10 +212,7 @@ raster::plot(timeofbreak) ## time of break and magnitude of change
 raster::plot(timeofbreak,2) ## magnitude of change
 }
 \references{
-Verbesselt J, Zeileis A, Herold M (2012). Near real-time
-disturbance detection using satellite image time series. \emph{Remote
-Sensing Of Environment}, \bold{123}, 98--108.
-\url{http://dx.doi.org/10.1016/j.rse.2012.02.022}
+\insertRef{janbfastmonitor}{bfast}
 }
 \seealso{
 \code{\link[strucchangeRcpp]{monitor}},

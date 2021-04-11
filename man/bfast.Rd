@@ -13,7 +13,6 @@ bfast(
   breaks = NULL,
   hpc = "none",
   level = 0.05,
-  reg = c("lm", "rlm"),
   decomp = c("stl", "stlplus"),
   type = "OLS-MOSUM",
   ...
@@ -50,8 +49,6 @@ for hpc support.}
 \item{level}{numeric; threshold value for the \link[strucchangeRcpp]{sctest.efp}
 test; if a length 2 vector is passed, the first value is used for the trend,
 the second for the seasonality}
-
-\item{reg}{"lm" or "rlm": use regular or robust linear regression}
 
 \item{decomp}{"stlplus" or "stl": the function to use for decomposition.
 \code{stl} can handle sparse time series (1 < frequency < 4), \code{stlplus}
@@ -93,7 +90,12 @@ time series into trend, seasonal and remainder components with significant
 break detection in the decomposed components of the time series.
 }
 \details{
-To be completed.
+The algorithm decomposes the input time series \code{Yt} into three components:
+trend, seasonality and remainder, using the function defined by the \code{decomp}
+parameter. Then each component is checked for at least one significant
+break using \code{\link[strucchangeRcpp:efp]{strucchangeRcpp::efp()}}, and if there is one, \code{\link[strucchangeRcpp:breakpoints]{strucchangeRcpp::breakpoints()}}
+is run on the component. The result allows differentiating between breaks in
+trend and seasonality.
 }
 \examples{
 ## Simulated Data
