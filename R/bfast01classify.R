@@ -79,8 +79,8 @@ bfast01classify <- function(object, alpha=0.05, pct_stable=NULL, typology=c("sta
       if(reg == "lm"){
       segment.anova <- anova(lm((object.zoo.subset$response-object.zoo.subset$season)~time(object.zoo.subset))) 
     }else if(reg == "rlm"){
-      if ("sfsmisc" %in% installed.packages()[,"Package"]) {
-        segment.anova <- sfsmisc::f.robftest(rlm((object.zoo.subset$response-object.zoo.subset$season)~time(object.zoo.subset))) 
+      if (requireNamespace("sfsmisc", quietly = TRUE) && requireNamespace("MASS", quietly = TRUE)) {
+        segment.anova <- sfsmisc::f.robftest(MASS::rlm((object.zoo.subset$response-object.zoo.subset$season)~time(object.zoo.subset))) 
       } else {
         stop("sfsmisc package not installed, unable to estimate F statistics for rlm models")
       }

@@ -69,6 +69,8 @@
 #' @import strucchangeRcpp zoo forecast stats
 #' @importFrom Rcpp evalCpp
 #' @importFrom Rdpack reprompt
+#' @importFrom graphics abline axis box layout legend lines mtext par plot points rect text
+#' @importFrom utils head tail
 #' @useDynLib bfast
 NULL
 
