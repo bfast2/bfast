@@ -39,7 +39,7 @@
 #' @author Rogier de Jong, Jan Verbesselt
 #' @seealso \code{\link[bfast]{bfast01}}
 #' @references \insertAllCited{}
-#' @keywords ts,bfast01
+#' @keywords ts bfast01
 #' @examples
 #' 
 #' library(zoo)

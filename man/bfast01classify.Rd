@@ -66,4 +66,5 @@ bfast01classify(bf1, pct_stable = 0.25)
 \author{
 Rogier de Jong, Jan Verbesselt
 }
-\keyword{ts,bfast01}
+\keyword{bfast01}
+\keyword{ts}
