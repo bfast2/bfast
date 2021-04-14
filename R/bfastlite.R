@@ -36,7 +36,7 @@
 bfastlite <- function(data, formula=response ~ trend + harmon, order = 3,
                    lag = NULL, slag = NULL, na.action = na.omit,
                    stl = c("none", "trend", "seasonal", "both"),
-                   decomp=c("stl", "stlplus"), sbins=1, ...)
+                   decomp = c("stl", "stlplus"), sbins = 1, ...)
 {
   data_pp <- bfastpp(data, order = order,
                    lag = lag, slag = slag, na.action = na.action,

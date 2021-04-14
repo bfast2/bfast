@@ -132,7 +132,7 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
   else if (season == "dummy") {
     # Start the iterative procedure and for first iteration St=decompose result
     St <- if (decomp == "stlplus") {
-        stlplus::stlplus(Yt, t=ti, n.p = f, s.window = "periodic", ...)$data[, "seasonal"]
+        stlplus::stlplus(Yt, t = ti, n.p = f, s.window = "periodic", ...)$data[, "seasonal"]
     } else {
         stl(Yt, "periodic")$time.series[, "seasonal"]
     }
