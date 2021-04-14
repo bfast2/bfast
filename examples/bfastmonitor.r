@@ -39,7 +39,7 @@ summary(mon$model)
 AIC(mon$model)
 
 ## Example for processing raster bricks (satellite image time series of 16-day NDVI images)
-f <- system.file("extdata/modisraster.grd", package="bfast")
+f <- system.file("extdata/modisraster.grd", package = "bfast")
 library("raster")
 modisbrick <- raster::brick(f)
 data <- as.vector(modisbrick[1])
@@ -47,15 +47,15 @@ ndvi <- bfastts(data, dates, type = c("16-day"))
 plot(ndvi/10000)
 
 ## derive median NDVI of a NDVI raster brick
-medianNDVI <- raster::calc(modisbrick, fun=function(x) median(x, na.rm = TRUE))
+medianNDVI <- raster::calc(modisbrick, fun = function(x) median(x, na.rm = TRUE))
 raster::plot(medianNDVI)
 
 ## helper function to be used with the calc() function
-xbfastmonitor <- function(x, timestamps=dates) {
+xbfastmonitor <- function(x, timestamps = dates) {
 	ndvi <- bfastts(x, timestamps, type = c("16-day"))
-	ndvi <- window(ndvi,end=c(2011,14))/10000
+	ndvi <- window(ndvi, end = c(2011, 14))/10000
 	## delete end of the time to obtain a dataset similar to RSE paper (Verbesselt et al.,2012)
-	bfm <- bfastmonitor(data = ndvi, start=c(2010,12), history = c("ROC"))
+	bfm <- bfastmonitor(data = ndvi, start = c(2010, 12), history = c("ROC"))
 	return(c(breakpoint = bfm$breakpoint, magnitude = bfm$magnitude))
 }
 
@@ -63,7 +63,7 @@ xbfastmonitor <- function(x, timestamps=dates) {
 ndvi <- bfastts(as.numeric(modisbrick[1])/10000, dates, type = c("16-day"))
 plot(ndvi)
 
-bfm <- bfastmonitor(data = ndvi, start=c(2010,12), history = c("ROC"))
+bfm <- bfastmonitor(data = ndvi, start = c(2010, 12), history = c("ROC"))
 bfm$magnitude
 plot(bfm)
 xbfastmonitor(modisbrick[1], dates) ## helper function applied on one pixel

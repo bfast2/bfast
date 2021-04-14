@@ -9,7 +9,7 @@ summary(d1lm)
 # plot visually (except season, as it's a factor)
 plot(zoo::read.zoo(d1)[,-3],
   # Avoid clipping plots for pretty output
-  ylim=list(c(min(d1[,2]), max(d1[,2])),
+  ylim = list(c(min(d1[,2]), max(d1[,2])),
             c(min(d1[,3]), max(d1[,3])),
             c(-1, 1), c(-1, 1), c(-1, 1), c(-1, 1),
             c(min(d1[,6]), max(d1[,6]))
