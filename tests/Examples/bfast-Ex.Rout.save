@@ -279,7 +279,7 @@ OLS-MOSUM     supLM
 > ### Name: bfast01classify
 > ### Title: Change type analysis of the bfast01 function
 > ### Aliases: bfast01classify
-> ### Keywords: ts,bfast01
+> ### Keywords: bfast01 ts
 > 
 > ### ** Examples
 > 
@@ -570,8 +570,6 @@ F-statistic: 14.82 on 10 and 227 DF,  p-value: < 2.2e-16
 > library("raster")
 Loading required package: sp
 > modisbrick <- raster::brick(f)
-Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer_proj = prefer_proj) :
-  Discarded datum Unknown based on Clarke 1866 ellipsoid in CRS definition
 > data <- as.vector(modisbrick[1])
 > ndvi <- bfastts(data, dates, type = c("16-day"))
 > plot(ndvi/10000)
@@ -1009,7 +1007,7 @@ bibtex=TRUE)', 'toBibtex(.)', or set
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  7.326 0.135 7.495 0.001 0.002 
+Time elapsed:  6.419 0.14 7.155 0.003 0 
 > grDevices::dev.off()
 null device 
           1 
