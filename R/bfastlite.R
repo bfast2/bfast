@@ -33,7 +33,7 @@
 #'
 #' @export
 
-bfastlite <- function(data, formula=response ~ trend + harmon, order = 3,
+bfastlite <- function(data, formula = response ~ trend + harmon, order = 3,
                    lag = NULL, slag = NULL, na.action = na.omit,
                    stl = c("none", "trend", "seasonal", "both"),
                    decomp = c("stl", "stlplus"), sbins = 1, ...)
