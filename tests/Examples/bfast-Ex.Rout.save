@@ -20,18 +20,6 @@ Type 'q()' to quit R.
 > pkgname <- "bfast"
 > source(file.path(R.home("share"), "R", "examples-header.R"))
 > options(warn = 1)
-> base::assign(".ExTimings", "bfast-Ex.timings", pos = 'CheckExEnv')
-> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
-> base::assign(".format_ptime",
-+ function(x) {
-+   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
-+   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
-+   options(OutDec = '.')
-+   format(x[1L:3L], digits = 7L)
-+ },
-+ pos = 'CheckExEnv')
-> 
-> ### * </HEADER>
 > library('bfast')
 Loading required package: strucchangeRcpp
 Loading required package: zoo
@@ -52,7 +40,6 @@ Loading required package: sandwich
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: bfast
 > ### Title: Break Detection in the Seasonal and Trend Component of a
 > ###   Univariate Time Series
@@ -205,15 +192,12 @@ Corresponding to breakdates:
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("bfast", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("bfast01")
 > ### * bfast01
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: bfast01
 > ### Title: Checking for one major break in the time series
 > ### Aliases: bfast01
@@ -286,15 +270,12 @@ OLS-MOSUM     supLM
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("bfast01", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("bfast01classify")
 > ### * bfast01classify
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: bfast01classify
 > ### Title: Change type analysis of the bfast01 function
 > ### Aliases: bfast01classify
@@ -317,15 +298,12 @@ OLS-MOSUM     supLM
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("bfast01classify", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("bfastlite")
 > ### * bfastlite
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: bfastlite
 > ### Title: Detect multiple breaks in a time series
 > ### Aliases: bfastlite bfast0n
@@ -367,15 +345,12 @@ Corresponding to breakdates:
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("bfastlite", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("bfastmonitor")
 > ### * bfastmonitor
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: bfastmonitor
 > ### Title: Near Real-Time Disturbance Detection Based on BFAST-Type Models
 > ### Aliases: bfastmonitor
@@ -634,8 +609,6 @@ Warning in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer_proj = 
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("bfastmonitor", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 
 detaching ‘package:raster’, ‘package:sp’
@@ -645,7 +618,6 @@ detaching ‘package:raster’, ‘package:sp’
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: bfastpp
 > ### Title: Time Series Preprocessing for BFAST-Type Models
 > ### Aliases: bfastpp
@@ -728,15 +700,12 @@ F-statistic: 8.446 on 2 and 87 DF,  p-value: 0.0004445
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("bfastpp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("bfastts")
 > ### * bfastts
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: bfastts
 > ### Title: Create a regular time series object by combining data and date
 > ###   information
@@ -812,15 +781,12 @@ Frequency = 365
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("bfastts", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("dates")
 > ### * dates
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: dates
 > ### Title: A vector with date information (a Datum type) to be linked with
 > ###   each NDVI layer within the modis raster brick (modisraster data set)
@@ -835,15 +801,12 @@ Frequency = 365
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("dates", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("harvest")
 > ### * harvest
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: harvest
 > ### Title: 16-day NDVI time series for a Pinus radiata plantation.
 > ### Aliases: harvest
@@ -882,15 +845,12 @@ bibtex=TRUE)', 'toBibtex(.)', or set
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("harvest", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("modisraster")
 > ### * modisraster
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: modisraster
 > ### Title: A raster brick of 16-day satellite image NDVI time series for a
 > ###   small subset in south eastern Somalia.
@@ -907,15 +867,12 @@ bibtex=TRUE)', 'toBibtex(.)', or set
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("modisraster", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("ndvi")
 > ### * ndvi
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: ndvi
 > ### Title: A random NDVI time series
 > ### Aliases: ndvi
@@ -929,15 +886,12 @@ bibtex=TRUE)', 'toBibtex(.)', or set
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("ndvi", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("plot.bfast")
 > ### * plot.bfast
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: plot.bfast
 > ### Title: Methods for objects of class "bfast".
 > ### Aliases: plot.bfast
@@ -951,15 +905,12 @@ bibtex=TRUE)', 'toBibtex(.)', or set
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("plot.bfast", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("setoptions")
 > ### * setoptions
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: setoptions
 > ### Title: Set package options with regard to computation times
 > ### Aliases: setoptions set_default_options set_fallback_options
@@ -974,27 +925,24 @@ bibtex=TRUE)', 'toBibtex(.)', or set
 > NDVIa <- as.ts(zoo(som$NDVI.a, som$Time))
 > 
 > set_default_options()
-> system.time(replicate(100,  bfastmonitor(NDVIa, start = c(2010, 13))))
-   user  system elapsed 
-  0.693   0.000   0.693 
+> ## Not run: 
+> ##D system.time(replicate(100,  bfastmonitor(NDVIa, start = c(2010, 13))))
+> ## End(Not run)
 > 
 > set_fallback_options()
-> system.time(replicate(100,  bfastmonitor(NDVIa, start = c(2010, 13))))
-   user  system elapsed 
-  2.373   0.004   2.379 
+> ## Not run: 
+> ##D system.time(replicate(100,  bfastmonitor(NDVIa, start = c(2010, 13))))
+> ## End(Not run)
 > 
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("setoptions", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("simts")
 > ### * simts
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: simts
 > ### Title: Simulated seasonal 16-day NDVI time series
 > ### Aliases: simts
@@ -1033,15 +981,12 @@ bibtex=TRUE)', 'toBibtex(.)', or set
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("simts", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("som")
 > ### * som
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: som
 > ### Title: Two 16-day NDVI time series from the south of Somalia
 > ### Aliases: som
@@ -1059,14 +1004,12 @@ bibtex=TRUE)', 'toBibtex(.)', or set
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("som", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > ### * <FOOTER>
 > ###
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  9.893 0.201 10.109 0.001 0.002 
+Time elapsed:  7.326 0.135 7.495 0.001 0.002 
 > grDevices::dev.off()
 null device 
           1 
