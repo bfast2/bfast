@@ -11,7 +11,16 @@ Changes in Version 1.6.0
   
   o New bfastlite() function for running BFAST Lite (BFAST without STL).
   
+  o bfast01classify() now has an alternative typology type optimised for
+  dryland change classification (thanks to Paulo Negri Bernardino).
+  
+  o bfastpp() and bfastmonitor() now have a parameter 'sbins' that controls the
+  number of seasonal dummies (bins) when using 'season' in the formula.
+  
   o bfast() now defaults to max.iter = 10, making the argument optional.
+  It also no longer has the argument 'reg', as it was previously unused.
+  Any additional arguments to the function now are either sent to the
+  stlplus::stlplus() function, or ignored if decomp = 'stl'.
   
   o create16dayts() is now deprecated in favour of bfastts().
 

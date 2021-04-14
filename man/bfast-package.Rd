@@ -21,35 +21,47 @@ behavior. A season-trend model (with harmonic seasonal pattern) is used as a
 default in the regresssion modelling.
 }
 \details{
-The package contains: \itemize{ \item \code{\link[bfast]{bfast}}: Main
-function for iterative decomposition and break detection as described in
-Verbesselt et al (2010ab). \item \code{\link[bfast]{bfastmonitor}}:
+The package contains:
+\itemize{
+\item \code{\link[=bfast]{bfast()}}: Main function for iterative decomposition and break detection as described in
+Verbesselt et al (2010a,b).
+\item \code{\link[=bfastlite]{bfastlite()}}: lightweight and fast detection of all breaks in a time series
+using a single iteration with all components at once.
+\item \code{\link[=bfastmonitor]{bfastmonitor()}}:
 Monitoring approach for detecting disturbances in near real-time (see
-Verbesselt et al. 2011, submitted to Remote Sensing and Environment). \item
-\code{\link[bfast]{bfastpp}}: Data pre-processing for BFAST-type modeling.
-\item Functions for plotting and printing, see \code{\link[bfast]{bfast}}.
-\item \code{\link[bfast]{simts}}: Artificial example data set. \item
-\code{\link[bfast]{harvest}}: NDVI time series of a P. radiata plantation
-that is harvested. \item \code{\link[bfast]{som}}: NDVI time series of
+Verbesselt et al. 2012).
+\item \code{\link[=bfastpp]{bfastpp()}}: Data pre-processing for BFAST-type modeling.
+\item Functions for plotting and printing, see \code{\link[=bfast]{bfast()}}.
+\item \link{simts}: Artificial example data set.
+\item \link{harvest}: NDVI time series of a P. radiata plantation
+that is harvested.
+\item \link{som}: NDVI time series of
 locations in the south of Somalia to illustrate the near real-time
-disturbance approach }
+disturbance approach
+}
 }
 \section{Package options}{
  bfast uses the following options to modify the
-default behaviour: \itemize{ \item \code{bfast.prefer_matrix_methods}:
-logical value (default \code{FALSE}) defining whether methods should try to
+default behaviour:
+\itemize{
+\item \code{bfast.prefer_matrix_methods}:
+logical value defining whether methods should try to
 use the design matrix instead of the formula and a dataframe whenever
 possible. This can avoid expensive repeated calls of \code{model.matrix} and
 \code{model.frame} and make model fitting faster using \code{lm.fit}.
-Setting this option to TRUE requires according functions in the
-\code{strucchangeRcpp} package.}
+\item \code{bfast.use_bfastts_modifications}:
+logical value defining whether a faster version of \code{\link[=bfastts]{bfastts()}} should be used.
+\item \code{strucchange.use_armadillo}:
+logical value defining whether to use C++ optimised code paths in strucchangeRcpp.
+}
+
+By default, all three are enabled.
+See \code{\link[=set_fallback_options]{set_fallback_options()}} for a convenient interface for setting them all off
+for debugging purposes.
 }
 
 \references{
-Verbesselt J, Zeileis A, Herold M (2012).  Near real-time
-disturbance detection using satellite image time series.  \emph{Remote
-Sensing of Environment}, \bold{123}, 98--108.
-\url{http://dx.doi.org/10.1016/j.rse.2012.02.022}
+\insertRef{janbfastmonitor}{bfast}
 
 Verbesselt J, Hyndman R, Newnham G, Culvenor D (2010).  Detecting Trend and
 Seasonal Changes in Satellite Image Time Series.  \emph{Remote Sensing of
@@ -60,9 +72,5 @@ Verbesselt J, Hyndman R, Zeileis A, Culvenor D (2010).  Phenological Change
 Detection while Accounting for Abrupt and Gradual Trends in Satellite Image
 Time Series.  \emph{Remote Sensing of Environment}, \bold{114}(12),
 2970--2980.  \url{http://dx.doi.org/10.1016/j.rse.2010.08.003}
-}
-\author{
-Jan Verbesselt [aut, cre], Achim Zeileis [aut], Rob Hyndman [ctb],
-Rogier De Jong [ctb]
 }
 \keyword{ts}

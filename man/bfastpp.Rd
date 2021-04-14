@@ -11,7 +11,7 @@ bfastpp(
   slag = NULL,
   na.action = na.omit,
   stl = c("none", "trend", "seasonal", "both"),
-  decomp = c("stlplus", "stl"),
+  decomp = c("stl", "stlplus"),
   sbins = 1
 )
 }
@@ -40,10 +40,10 @@ or both from \code{\link[stats]{stl}} are removed from each column in
 or the reference package (which can make use of time series with 2-3
 observations per year)}
 
-\item{sbins}{numeric. Controls the number of seasonal dummies. If integer
-> 1, sets the number of seasonal dummies to use per year.
+\item{sbins}{numeric. Controls the number of seasonal dummies. If integer > 1,
+sets the number of seasonal dummies to use per year.
 If <= 1, treated as a multiplier to the number of observations per year, i.e.
-ndummies = nobs/year * sbins.}
+\code{ndummies = nobs/year * sbins}.}
 }
 \value{
 If no formula is provided, \code{bfastpp} returns a
@@ -112,13 +112,7 @@ d3lm <- lm.fit(d3mm, d3$response)
 d3lm$coefficients
 }
 \references{
-Verbesselt J, Zeileis A, Herold M (2011).  Near Real-Time
-Disturbance Detection in Terrestrial Ecosystems Using Satellite Image Time
-Series: Drought Detection in Somalia.  Working Paper 2011-18. Working Papers
-in Economics and Statistics, Research Platform Empirical and Experimental
-Economics, Universitaet Innsbruck.
-\url{http://EconPapers.RePEc.org/RePEc:inn:wpaper:2011-18}.  Submitted to
-Remote Sensing and Environment.
+\insertRef{janbfastmonitor}{bfast}
 }
 \seealso{
 \code{\link[bfast]{bfastmonitor}}

@@ -95,10 +95,7 @@
 #' @author Achim Zeileis, Jan Verbesselt
 #' @seealso \code{\link[strucchangeRcpp]{monitor}},
 #' \code{\link[strucchangeRcpp]{mefp}}, \code{\link[strucchangeRcpp]{breakpoints}}
-#' @references Verbesselt J, Zeileis A, Herold M (2012). Near real-time
-#' disturbance detection using satellite image time series. \emph{Remote
-#' Sensing Of Environment}, \bold{123}, 98--108.
-#' \url{http://dx.doi.org/10.1016/j.rse.2012.02.022}
+#' @references \insertRef{janbfastmonitor}{bfast}
 #' @keywords ts
 #' @example examples/bfastmonitor.r
 #' 

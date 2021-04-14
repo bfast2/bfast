@@ -6,7 +6,12 @@
 #' time series into trend, seasonal and remainder components with significant
 #' break detection in the decomposed components of the time series.
 #' 
-#' To be completed.
+#' The algorithm decomposes the input time series `Yt` into three components:
+#' trend, seasonality and remainder, using the function defined by the `decomp`
+#' parameter. Then each component is checked for at least one significant
+#' break using [strucchangeRcpp::efp()], and if there is one, [strucchangeRcpp::breakpoints()]
+#' is run on the component. The result allows differentiating between breaks in
+#' trend and seasonality.
 #' 
 #' @param Yt univariate time series to be analyzed. This should be an object of
 #' class "ts" with a frequency greater than one.
@@ -32,12 +37,13 @@
 #' @param level numeric; threshold value for the \link[strucchangeRcpp]{sctest.efp}
 #' test; if a length 2 vector is passed, the first value is used for the trend,
 #' the second for the seasonality
-#' @param reg "lm" or "rlm": use regular or robust linear regression
 #' @param decomp "stlplus" or "stl": the function to use for decomposition.
 #' \code{stl} can handle sparse time series (1 < frequency < 4), \code{stlplus}
 #' can handle \code{NA} values in the time series.
 #' @param type character, indicating the type argument to
 #' \link[strucchangeRcpp]{efp}
+#' @param \dots additional arguments passed to [stlplus::stlplus()], if
+#' its usage has been enabled, otherwise ignored.
 #' @return An object of the class "bfast" is a list with the following
 #' elements: \item{Yt}{ equals the Yt used as input.} \item{output}{ is a list
 #' with the following elements (for each iteration): \tabular{ll}{ \code{Tt}
@@ -78,19 +84,16 @@
 #' @export bfast
 bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"), 
                    max.iter = 10, breaks = NULL, hpc = "none", level = 0.05,
-                   reg = c("lm", "rlm"), decomp = c("stl", "stlplus"),
+                   decomp = c("stl", "stlplus"),
                    type = "OLS-MOSUM", ...) 
 {
   # Error catching
-  reg = match.arg(reg)
-  if(!(reg %in% c("lm","rlm"))) stop("Regression method unknown, use either 'lm' or 'rlm'.")
-  if(reg == "rlm") require(MASS)
   decomp = match.arg(decomp)
   if (decomp == "stl" && any(is.na(Yt))) {
     warning("The stl() function cannot deal with missing values in the time series, falling back to decomp='stlplus'.")
     decomp <- "stlplus"
   }
-  if(decomp == "stlplus" && !require("stlplus", quietly = T)) {
+  if(decomp == "stlplus" && !requireNamespace("stlplus", quietly = TRUE)) {
     warning("stlplus package could not be loaded, falling back to decomp='stl'.")
     decomp <- "stl"
   }
@@ -120,18 +123,18 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
     si3 <- sin(2 * pi * tl * w * 3)
     smod <- Wt ~ co + si + co2 + si2 + co3 + si3
     # Start the iterative procedure and for first iteration St=decompose result
-    if (decomp == "stlplus") {
-        St <- stlplus(Yt, t=ti, n.p = f, s.window = "periodic", ...)$data[, "seasonal"]
+    St <- if (decomp == "stlplus") {
+        stlplus::stlplus(Yt, t=ti, n.p = f, s.window = "periodic",   ...)$data[, "seasonal"]
     } else {
-        St <- stl    (Yt, "periodic")$time.series[, "seasonal"]
+        stl             (Yt,                           "periodic")$time.series[, "seasonal"]
     }
   }
   else if (season == "dummy") {
     # Start the iterative procedure and for first iteration St=decompose result
-    if (decomp == "stlplus") {
-        St <-  stlplus(Yt, t=ti, n.p = f, s.window = "periodic", ...)$data[, "seasonal"]
+    St <- if (decomp == "stlplus") {
+        stlplus::stlplus(Yt, t = ti, n.p = f, s.window = "periodic", ...)$data[, "seasonal"]
     } else {
-        St <- stl(Yt, "periodic")$time.series[, "seasonal"]
+        stl(Yt, "periodic")$time.series[, "seasonal"]
     }
     D <- seasonaldummy(Yt)
     D[rowSums(D) == 0, ] <- -1

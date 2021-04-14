@@ -13,7 +13,7 @@ bfastlite(
   slag = NULL,
   na.action = na.omit,
   stl = c("none", "trend", "seasonal", "both"),
-  decomp = c("stlplus", "stl"),
+  decomp = c("stl", "stlplus"),
   sbins = 1,
   ...
 )
@@ -26,7 +26,7 @@ bfast0n(
   slag = NULL,
   na.action = na.omit,
   stl = c("none", "trend", "seasonal", "both"),
-  decomp = c("stlplus", "stl"),
+  decomp = c("stl", "stlplus"),
   sbins = 1,
   ...
 )
@@ -59,10 +59,10 @@ or both from \code{\link[stats]{stl}} are removed from each column in
 or the reference package (which can make use of time series with 2-3
 observations per year)}
 
-\item{sbins}{numeric. Controls the number of seasonal dummies. If integer
-> 1, sets the number of seasonal dummies to use per year.
+\item{sbins}{numeric. Controls the number of seasonal dummies. If integer > 1,
+sets the number of seasonal dummies to use per year.
 If <= 1, treated as a multiplier to the number of observations per year, i.e.
-ndummies = nobs/year * sbins.}
+\code{ndummies = nobs/year * sbins}.}
 
 \item{...}{Additional arguments to \code{\link[strucchangeRcpp]{breakpoints}}.}
 }
@@ -92,4 +92,7 @@ bp = bfastlite(datats)
 bp[["breakpoints"]][["breakpoints"]]
 # Custom method
 strucchangeRcpp::breakpoints(bp[["breakpoints"]], breaks = 2)
+}
+\author{
+Dainius Masiliunas, Jan Verbesselt
 }

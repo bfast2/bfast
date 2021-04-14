@@ -17,7 +17,7 @@ bfast01(
   lag = NULL,
   slag = NULL,
   na.action = na.omit,
-  reg = "lm",
+  reg = c("lm", "rlm"),
   stl = "none",
   sbins = 1
 )
@@ -68,6 +68,9 @@ omitted.}
 
 \item{na.action}{arguments passed on to \code{\link[bfast]{bfastpp}}}
 
+\item{reg}{whether to use OLS regression \code{\link[=lm]{lm()}} or
+robust regression \code{\link[MASS:rlm]{MASS::rlm()}}.}
+
 \item{stl}{argument passed on to \code{\link[bfast]{bfastpp}}}
 
 \item{sbins}{argument passed on to \code{\link[bfast]{bfastpp}}}
@@ -90,20 +93,18 @@ model with 0 or with 1 breakpoint.
 \code{bfast01} tries to select a suitable model for the data by choosing
 either a model with 0 or with 1 breakpoint. It proceeds in the following
 steps:
-
-1. The data is preprocessed with bfastpp using the arguments
-order/lag/slag/na.action/stl/sbins.
-
-2. A linear model with the given formula is fitted. By default a suitable
+\enumerate{
+\item The data is preprocessed with bfastpp using the arguments
+\code{order}/\code{lag}/\code{slag}/\code{na.action}/\code{stl}/\code{sbins}.
+\item A linear model with the given formula is fitted. By default a suitable
 formula is guessed based on the preprocessing parameters.
-
-3. The model with 1 breakpoint is estimated as well where the breakpoint is
+\item The model with 1 breakpoint is estimated as well where the breakpoint is
 chosen to minimize the segmented residual sum of squares.
-
-4. A sequence of tests the null hypothesis of zero breaks is performed. Each
+\item A sequence of tests the null hypothesis of zero breaks is performed. Each
 test results in a decision for FALSE (no breaks) or TRUE (structural
 break(s)). The test decisions are then aggregated to a single decision (by
 default using all() but any() or some other function could also be used).
+}
 
 Available methods for the object returned include standard methods for
 linear models (coef, fitted, residuals, predict, AIC, BIC, logLik, deviance,
@@ -160,9 +161,7 @@ plot(bf3)
 
 }
 \references{
-de Jong R, Verbesselt J, Zeileis A, Schaepman M (2013).  Shifts
-in global vegetation activity trends.  \emph{Remote Sensing}, \bold{5},
-1117--1133.  \url{http://dx.doi.org/10.3390/rs5031117}
+\insertRef{rogierbfast01}{bfast}
 
 Zeileis A (2005). A unified approach to structural change tests based on ML
 scores, F statistics, and OLS residuals.  \emph{Econometric Reviews},

@@ -18,6 +18,9 @@
 #' @param alpha threshold for significance tests, default 0.05
 #' @param pct_stable threshold for segment stability, unit: percent change per
 #' unit time (0-100), default NULL
+#' @param typology classification legend to use: `standard` refers to the
+#' original legend as used in \insertCite{rogierbfast01;textual}{bfast},
+#' `drylands` refers to the legend used in \insertCite{paulodrylands;textual}{bfast}.
 #' @return \code{bfast01classify} returns a data.frame with the following
 #' elements: \item{flag_type}{Type of shift: (1) monotonic increase, (2)
 #' monotonic decrease, (3) monotonic increase (with positive break), (4)
@@ -35,9 +38,7 @@
 #' "p_segment2", "pct_segment1", "pct_segment2".
 #' @author Rogier de Jong, Jan Verbesselt
 #' @seealso \code{\link[bfast]{bfast01}}
-#' @references de Jong R, Verbesselt J, Zeileis A, Schaepman M (2013).  Shifts
-#' in global vegetation activity trends.  \emph{Remote Sensing}, \bold{5},
-#' 1117--1133.  \url{http://dx.doi.org/10.3390/rs5031117}
+#' @references \insertAllCited{}
 #' @keywords ts,bfast01
 #' @examples
 #' 
@@ -78,8 +79,8 @@ bfast01classify <- function(object, alpha=0.05, pct_stable=NULL, typology=c("sta
       if(reg == "lm"){
       segment.anova <- anova(lm((object.zoo.subset$response-object.zoo.subset$season)~time(object.zoo.subset))) 
     }else if(reg == "rlm"){
-      if ("sfsmisc" %in% installed.packages()[,"Package"]) {
-        segment.anova <- sfsmisc::f.robftest(rlm((object.zoo.subset$response-object.zoo.subset$season)~time(object.zoo.subset))) 
+      if (requireNamespace("sfsmisc", quietly = TRUE) && requireNamespace("MASS", quietly = TRUE)) {
+        segment.anova <- sfsmisc::f.robftest(MASS::rlm((object.zoo.subset$response-object.zoo.subset$season)~time(object.zoo.subset))) 
       } else {
         stop("sfsmisc package not installed, unable to estimate F statistics for rlm models")
       }

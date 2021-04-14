@@ -34,10 +34,10 @@
 #' @param decomp "stlplus" or "stl": use the NA-tolerant decomposition package
 #' or the reference package (which can make use of time series with 2-3
 #' observations per year)
-#' @param sbins numeric. Controls the number of seasonal dummies. If integer
-#' > 1, sets the number of seasonal dummies to use per year.
+#' @param sbins numeric. Controls the number of seasonal dummies. If integer > 1,
+#' sets the number of seasonal dummies to use per year.
 #' If <= 1, treated as a multiplier to the number of observations per year, i.e.
-#' ndummies = nobs/year * sbins.
+#' `ndummies = nobs/year * sbins`.
 #' @return If no formula is provided, \code{bfastpp} returns a
 #' \code{"data.frame"} with the following variables (some of which may be
 #' matrices).  \item{time}{numeric vector of time stamps,}
@@ -56,13 +56,7 @@
 #' formula. Columns of \code{X} have names as decribed above.
 #' @author Achim Zeileis
 #' @seealso \code{\link[bfast]{bfastmonitor}}
-#' @references Verbesselt J, Zeileis A, Herold M (2011).  Near Real-Time
-#' Disturbance Detection in Terrestrial Ecosystems Using Satellite Image Time
-#' Series: Drought Detection in Somalia.  Working Paper 2011-18. Working Papers
-#' in Economics and Statistics, Research Platform Empirical and Experimental
-#' Economics, Universitaet Innsbruck.
-#' \url{http://EconPapers.RePEc.org/RePEc:inn:wpaper:2011-18}.  Submitted to
-#' Remote Sensing and Environment.
+#' @references \insertRef{janbfastmonitor}{bfast}
 #' @keywords ts
 #' @example examples/bfastpp.r
 #' 
@@ -70,10 +64,10 @@
 bfastpp<- function(data, order = 3,
                    lag = NULL, slag = NULL, na.action = na.omit,
                    stl = c("none", "trend", "seasonal", "both"),
-                   decomp=c("stlplus", "stl"), sbins=1)
+                   decomp = c("stl", "stlplus"), sbins = 1)
 {
   decomp = match.arg(decomp)
-  if (stl != "none" && decomp == "stlplus" && !require("stlplus",quietly = T))
+  if (stl != "none" && decomp == "stlplus" && !requireNamespace("stlplus", quietly = TRUE))
     stop("Please install the stlplus package or set decomp = 'stl' or stl = 'none'.")
 
   ## double check what happens with 29-02 if that happens...

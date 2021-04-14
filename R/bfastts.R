@@ -198,7 +198,7 @@ bfastts <- function(data, dates, type = c("irregular", "16-day", "10-day")) {
   
   #  crop time series and return
   bounds = range(which(!is.na(A)))
-  return(ts(A[bounds[1]:bounds[2]], start=time(A)[bounds[1]], end=time(A)[bounds[2]], freq=freq))
+  return(window(A, start = time(A)[bounds[1]], end = time(A)[bounds[2]]))
 }
 
 
