@@ -90,8 +90,15 @@ bp = bfastlite(datats)
 
 # Default method of estimating breakpoints
 bp[["breakpoints"]][["breakpoints"]]
-# Custom method
+
+# Plot
+plot(bp)
+
+# Custom method of estimating number of breaks (request 2 breaks)
 strucchangeRcpp::breakpoints(bp[["breakpoints"]], breaks = 2)
+
+# Plot including magnitude based on RMSD for the cos1 component of harmonics
+plot(bp, magstat="RMSD", magcomp="harmoncos1", breaks=2)
 }
 \author{
 Dainius Masiliunas, Jan Verbesselt

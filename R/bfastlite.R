@@ -47,4 +47,50 @@ bfastlite <- function(data, formula=response ~ trend + harmon, order = 3,
 }
 
 #' @rdname bfastlite
+#' @export
 bfast0n <- bfastlite
+
+#' Plot the time series and results of BFAST Lite
+#' 
+#' The black line represents the original input data, the green line is the
+#' fitted model, the blue lines are the detected breaks and the whiskers
+#' deone the magnitude (if `magstat` is specified).
+#' 
+#' @param x          bfastlite object from [bfastlite()]
+#' @param breaks     number of breaks or optimal break selection method, see [strucchangeRcpp::breakpoints()]
+#' @param magstat    name of the magnitude column to plot (e.g. `RMSD`, `MAD`, `diff`), see the `Mag` component of [strucchangeRcpp::magnitude.breakpointsfull()]
+#' @param magcomp    name of the component (i.e. column in `x$data_pp`) to plot magnitudes of
+#' @param ...        other parameters to pass to [plot()]
+#' @return Nothing, called for side effects.
+#' @method plot bfastlite
+#' @export
+plot.bfastlite = function(x, breaks=NULL, magstat=NULL, magcomp="trend", ...)
+{
+    # Plot the original time series
+    plot(response~time, data=x$data_pp, type="l", ...)
+    # Plot the fitted model in green
+    lines(fitted(x$breakpoints, breaks=breaks)~x$data_pp$time, col="green")
+    
+    # Get the requested breaks
+    bpOptim <- breakpoints(x$breakpoints, breaks=breaks)
+    
+    if (length(bpOptim$breakpoints) > 0 && !all(is.na(bpOptim$breakpoints))) {
+        bpTimes <- x$data_pp[bpOptim$breakpoints, "time"]
+        abline(v=bpTimes, col="blue") # Detected breakpoints in blue
+        
+        # If magnitudes requested, plot whiskers denoting magnitude
+        if (!is.null(magstat)) {
+            Mag <- strucchangeRcpp::magnitude(x$breakpoints, breaks = breaks, component = magcomp)$Mag
+            bpMag <- Mag[,colnames(Mag) %in% magstat]
+            bpY <- x$data_pp[bpOptim$breakpoints, "response"]
+            arrows(bpTimes, bpY-bpMag, bpTimes, bpY+bpMag, length=0.05, angle=90, code=3, col="blue")
+        }
+    }
+}
+
+#' @method print bfastlite
+#' @export
+print.bfastlite <- function(x, ...)
+{
+    print(x$breakpoints)
+}
