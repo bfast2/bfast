@@ -5,11 +5,7 @@
 \alias{simts}
 \title{Simulated seasonal 16-day NDVI time series}
 \source{
-Verbesselt, J., R. Hyndman, G. Newnham, and D. Culvenor (2009).
-Detecting trend and seasonal changes in satellite image time series.
-\emph{Remote Sensing of Environment}.
-\url{http://dx.doi.org/10.1016/j.rse.2009.08.014}.  Or see
-\url{http://robjhyndman.com/papers/bfast1}.
+\insertRef{janbfast}{bfast}
 }
 \description{
 \code{simts} is an object of class "stl" and consists of seasonal, trend

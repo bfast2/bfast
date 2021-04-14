@@ -150,15 +150,8 @@ plot(fit)
 fit
 }
 \references{
-Verbesselt J, Hyndman R, Newnham G, Culvenor D (2010).
-Detecting Trend and Seasonal Changes in Satellite Image Time Series.
-\emph{Remote Sensing of Environment}, \bold{114}(1), 106--115.
-\url{http://dx.doi.org/10.1016/j.rse.2009.08.014}
-
-Verbesselt J, Hyndman R, Zeileis A, Culvenor D (2010).  Phenological Change
-Detection while Accounting for Abrupt and Gradual Trends in Satellite Image
-Time Series.  \emph{Remote Sensing of Environment}, \bold{114}(12),
-2970--2980.  \url{http://dx.doi.org/10.1016/j.rse.2010.08.003}
+\insertRef{janbfast}{bfast}
+\insertRef{janbfastpheno}{bfast}
 }
 \seealso{
 \code{\link[bfast]{plot.bfast}} for plotting of bfast() results.

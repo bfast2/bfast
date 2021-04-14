@@ -162,10 +162,7 @@ plot(bf3)
 }
 \references{
 \insertRef{rogierbfast01}{bfast}
-
-Zeileis A (2005). A unified approach to structural change tests based on ML
-scores, F statistics, and OLS residuals.  \emph{Econometric Reviews},
-\bold{24}, 445--466.  \url{http://dx.doi.org/10.1080/07474930500406053}.
+\insertRef{achimstrucchange}{bfast}
 }
 \seealso{
 \code{\link[bfast]{bfastmonitor}},
