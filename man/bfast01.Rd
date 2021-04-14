@@ -100,7 +100,7 @@ steps:
 formula is guessed based on the preprocessing parameters.
 \item The model with 1 breakpoint is estimated as well where the breakpoint is
 chosen to minimize the segmented residual sum of squares.
-\item A sequence of tests the null hypothesis of zero breaks is performed. Each
+\item A sequence of tests for the null hypothesis of zero breaks is performed. Each
 test results in a decision for FALSE (no breaks) or TRUE (structural
 break(s)). The test decisions are then aggregated to a single decision (by
 default using all() but any() or some other function could also be used).
