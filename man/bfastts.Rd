@@ -53,7 +53,8 @@ ndvi <- bfastts(as.vector(modisbrick[1]), dates, type = c("16-day")) ## data of 
 plot(ndvi/10000) 
 
 modis_ts = t(as.data.frame(modisbrick))[,1:4] # time series of 4 pixels
-ndvi <- bfastts(modis_ts, dates, type = c("16-day")) ## data of pixel 1
+# Data with multiple columns, 2-4 are external regressors
+ndvi <- bfastts(modis_ts, dates, type = c("16-day"))
 plot(ndvi/10000)
 }
 
