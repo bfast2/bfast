@@ -55,7 +55,7 @@ bfast0n <- bfastlite
 #' The black line represents the original input data,
 #' the green line is the fitted model,
 #' the blue lines are the detected breaks, and
-#' the whiskers deone the magnitude (if `magstat` is specified).
+#' the whiskers denote the magnitude (if `magstat` is specified).
 #' 
 #' @param x          bfastlite object from [bfastlite()]
 #' @param breaks     number of breaks or optimal break selection method, see [strucchangeRcpp::breakpoints()]

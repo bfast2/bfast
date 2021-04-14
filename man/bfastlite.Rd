@@ -98,7 +98,7 @@ plot(bp)
 strucchangeRcpp::breakpoints(bp[["breakpoints"]], breaks = 2)
 
 # Plot including magnitude based on RMSD for the cos1 component of harmonics
-plot(bp, magstat="RMSD", magcomp="harmoncos1", breaks=2)
+plot(bp, magstat = "RMSD", magcomp = "harmoncos1", breaks = 2)
 }
 \author{
 Dainius Masiliunas, Jan Verbesselt

@@ -21,7 +21,8 @@
 Nothing, called for side effects.
 }
 \description{
-The black line represents the original input data, the green line is the
-fitted model, the blue lines are the detected breaks and the whiskers
-deone the magnitude (if \code{magstat} is specified).
+The black line represents the original input data,
+the green line is the fitted model,
+the blue lines are the detected breaks, and
+the whiskers denote the magnitude (if \code{magstat} is specified).
 }
