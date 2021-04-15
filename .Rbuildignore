@@ -6,3 +6,4 @@
 ^LICENSE$
 ^examples$
 ^build.Rcheck$
+^revdep$

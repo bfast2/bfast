@@ -55,7 +55,9 @@
 #' for debugging purposes.
 #' @name bfast-package
 #' @references \insertRef{janbfastmonitor}{bfast}
+#'
 #' \insertRef{janbfast}{bfast}
+#'
 #' \insertRef{janbfastpheno}{bfast}
 #' @keywords ts
 #' @import strucchangeRcpp zoo forecast stats

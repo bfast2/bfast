@@ -70,6 +70,7 @@
 #' \cr \code{\link[strucchangeRcpp]{breakpoints}} for more examples and background
 #' information about estimation of breakpoints in time series.
 #' @references \insertRef{janbfast}{bfast}
+#'
 #' \insertRef{janbfastpheno}{bfast}
 #' @keywords ts
 #' @example examples/bfast.r

@@ -82,6 +82,7 @@
 #' @seealso \code{\link[bfast]{bfastmonitor}},
 #' \code{\link[strucchangeRcpp]{breakpoints}}
 #' @references \insertRef{rogierbfast01}{bfast}
+#'
 #' \insertRef{achimstrucchange}{bfast}
 #' @keywords ts
 #' @examples
