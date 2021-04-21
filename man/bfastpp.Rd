@@ -57,7 +57,7 @@ seasonal terms (of specified \code{order}),} \item{lag}{autoregressive terms
 (or orders \code{slag}, if any),} \item{xreg}{covariate regressor (all
 columns of \code{data} except the first, if any).}
 
-If a formula is given,\code{bfastpp} returns a \code{list} with components
+If a formula is given, \code{bfastpp} returns a \code{list} with components
 \code{X}, \code{y}, and \code{t}, where \code{X} is the design matrix of the
 model, \code{y} is the response vector, and \code{t} represents the time of
 observations. \code{X} will only contain variables that occur in the

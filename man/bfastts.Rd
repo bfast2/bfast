@@ -19,8 +19,11 @@ Feedback is welcome.}
 
 \item{type}{(\code{"irregular"}) indicates that the data is collected at
 irregular dates and as such will be converted to a daily time series.
-(\code{"16-day"})indicates that data is collected at a regular time interval
-(every 16-days e.g. like the MODIS 16-day data products)}
+(\code{"16-day"}) indicates that data is collected at a regular time interval
+(every 16-days e.g. like the MODIS 16-day data products). (\code{"10-day"})
+indicates that data is collected at a 10-day time interval of the SPOT VEGETATION
+(S10) product. Warning: Only use this function for the SPOT VEGETATION S10 time series,
+as for other 10-day time series a different approach might be required.}
 }
 \value{
 \code{bfastts} returns an object of class \code{"ts"}, i.e., a list
