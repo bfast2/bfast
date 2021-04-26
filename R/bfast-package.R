@@ -81,10 +81,7 @@ NULL
 #' 
 #' @name dates
 #' @docType data
-#' @source Verbesselt, J., R. Hyndman, G. Newnham, and D. Culvenor (2012).
-#' Near real-time disturbance detection using satellite image time series.
-#' \emph{Remote Sensing of Environment}.
-#' \url{http://eeecon.uibk.ac.at/wopec2/repec/inn/wpaper/2011-18.pdf}.
+#' @source \insertRef{janbfastmonitor}{bfast}
 #' @keywords datasets
 #' @examples
 #' 
