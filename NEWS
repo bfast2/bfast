@@ -2,7 +2,7 @@ Changes in Version 1.6.0
 
   o Integrated work by Marius Appel on speeding up BFAST algorithms using Rcpp.
   Whether the speedups are enabled is controlled by set_fast_options() vs
-  set_default_options(). The fast options are now default.
+  set_fallback_options(). The fast options are now default.
   
   o Integrated work by Martin Jung on allowing BFAST to operate on time series
   that have NA values by making use of the stlplus package. This is controlled
