@@ -66,7 +66,8 @@ bfastpp<- function(data, order = 3,
                    stl = c("none", "trend", "seasonal", "both"),
                    decomp = c("stl", "stlplus"), sbins = 1)
 {
-  decomp = match.arg(decomp)
+  decomp <- match.arg(decomp)
+  stl <- match.arg(stl)
   if (stl != "none" && decomp == "stlplus" && !requireNamespace("stlplus", quietly = TRUE))
     stop("Please install the stlplus package or set decomp = 'stl' or stl = 'none'.")
 

@@ -6,10 +6,7 @@
 \title{A raster brick of 16-day satellite image NDVI time series for a small subset
 in south eastern Somalia.}
 \source{
-Verbesselt, J., R. Hyndman, G. Newnham, and D. Culvenor (2012).
-Near real-time disturbance detection using satellite image time series.
-\emph{Remote Sensing of Environment}.
-\url{http://eeecon.uibk.ac.at/wopec2/repec/inn/wpaper/2011-18.pdf}.
+\insertRef{janbfastmonitor}{bfast}
 }
 \description{
 A raster brick containing 16-day NDVI satellite images (MOD13C1 product).

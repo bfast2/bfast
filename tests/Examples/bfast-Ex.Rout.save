@@ -1,0 +1,1019 @@
+
+R version 3.5.0 (2018-04-23) -- "Joy in Playing"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-suse-linux-gnu (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "bfast"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> library('bfast')
+Loading required package: strucchangeRcpp
+Loading required package: zoo
+
+Attaching package: ‘zoo’
+
+The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+Loading required package: sandwich
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("bfast")
+> ### * bfast
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: bfast
+> ### Title: Break Detection in the Seasonal and Trend Component of a
+> ###   Univariate Time Series
+> ### Aliases: bfast
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> ## Simulated Data
+> plot(simts) # stl object containing simulated NDVI time series
+> datats <- ts(rowSums(simts$time.series))
+> # sum of all the components (season,abrupt,remainder)
+> tsp(datats) <- tsp(simts$time.series) # assign correct time series attributes
+> plot(datats)
+> 
+> fit <- bfast(datats, h = 0.15, season = "dummy", max.iter = 1)
+> plot(fit, sim = simts)
+NULL
+> fit
+
+  TREND BREAKPOINTS:  None
+
+  SEASONAL BREAKPOINTS:  None
+
+> # prints out whether breakpoints are detected
+> # in the seasonal and trend component
+>  
+> ## Real data
+> ## The data should be a regular ts() object without NA's
+> ## See Fig. 8 b in reference
+> plot(harvest, ylab = "NDVI")
+> # MODIS 16-day cleaned and interpolated NDVI time series
+> 
+> (rdist <- 10/length(harvest))
+[1] 0.05025126
+> # ratio of distance between breaks (time steps) and length of the time series
+> 
+> fit <- bfast(harvest, h = rdist, season = "harmonic", max.iter = 1, breaks = 2)
+> plot(fit)
+NULL
+> ## plot anova and slope of the trend identified trend segments
+> plot(fit, ANOVA = TRUE)
+NULL
+> ## plot the trend component and identify the break with
+> ## the largest magnitude of change
+> plot(fit, type = "trend", largest = TRUE)
+NULL
+> 
+> ## plot all the different available plots
+> plot(fit, type = "all")
+NULL
+> 
+> ## output
+> niter <- length(fit$output) # nr of iterations
+> out <- fit$output[[niter]]
+> # output of results of the final fitted seasonal and trend models and
+> ## #nr of breakpoints in both.
+> 
+> ## running bfast on yearly data
+> t <- ts(as.numeric(harvest), frequency = 1, start = 2006)
+> fit <- bfast(t, h = 0.23, season = "none", max.iter = 1)
+[1] "No seasonal model will be fitted!"
+> plot(fit)
+NULL
+> fit
+
+  TREND BREAKPOINTS
+	 Confidence intervals for breakpoints
+	 of optimal 4-segment partition: 
+
+Call:
+confint.breakpointsfull(object = bp.Vt, het.err = FALSE)
+
+Breakpoints at observation number:
+  2.5 % breakpoints 97.5 %
+1    44          45     52
+2   104         105    106
+3   152         153    154
+
+Corresponding to breakdates:
+  2.5 % breakpoints 97.5 %
+1  2049        2050   2057
+2  2109        2110   2111
+3  2157        2158   2159
+
+  SEASONAL BREAKPOINTS:  None
+
+> 
+> ## handling missing values with stlplus
+> (NDVIa <- as.ts(zoo::zoo(som$NDVI.a, som$Time)))
+Time Series:
+Start = c(2000, 4) 
+End = c(2011, 13) 
+Frequency = 23 
+  [1] 0.2788 0.2703 0.2708 0.2491 0.2726 0.4306 0.5524 0.4492 0.4890 0.4246
+ [11] 0.3537 0.2452 0.2917 0.2838     NA 0.3434 0.3645 0.5081 0.4517 0.3950
+ [21] 0.3301 0.2895 0.2663 0.2589 0.2538 0.2525 0.2568 0.5142 0.5134 0.5258
+ [31]     NA 0.3918 0.4199 0.1908 0.3256 0.3025 0.2602 0.1972 0.2548 0.4156
+ [41] 0.4627 0.4054 0.3733 0.3211 0.2947 0.2677 0.2592 0.2632 0.2527 0.3695
+ [51] 0.5342 0.5324 0.6377 0.4863 0.5714 0.5055 0.3465 0.3236 0.3065 0.3858
+ [61] 0.3764 0.4244 0.5799 0.7123 0.6081 0.5384 0.4754 0.3925 0.3164 0.2907
+ [71] 0.2765 0.2853 0.3049 0.5863 0.6519 0.5028 0.6022 0.4674 0.4289 0.3544
+ [81] 0.3606 0.3099 0.2450 0.2659 0.3011 0.3420 0.5621 0.6295 0.6212 0.5884
+ [91] 0.5291 0.4323 0.3490 0.2942 0.2851 0.3293 0.5645 0.5283 0.4757 0.4915
+[101] 0.4368 0.5560 0.4593 0.4063 0.3855 0.3454 0.3002 0.2208 0.6635 0.6544
+[111] 0.6593 0.6199 0.5935 0.5242 0.4346 0.3870 0.3058 0.3009 0.5708 0.5535
+[121] 0.5885 0.5504 0.3271 0.2659 0.5375 0.3622 0.3584 0.3476 0.2614 0.2821
+[131] 0.3127 0.2862 0.5440 0.5003 0.4519 0.3825 0.3201 0.2829 0.2715 0.2695
+[141] 0.2757 0.3573 0.4852 0.5196 0.4679 0.4235 0.2588 0.3246 0.3070 0.3154
+[151] 0.3584 0.3905 0.4239 0.3755 0.5870 0.6276 0.6464 0.6066 0.5832 0.4655
+[161] 0.4123 0.3412 0.3141 0.2975 0.3225 0.5792 0.5589 0.5037 0.4691 0.4758
+[171] 0.4427 0.4172 0.4001 0.3603 0.2288 0.3218 0.3152 0.4463 0.6126 0.5415
+[181] 0.4923 0.4295 0.4417 0.3370 0.3247 0.2847 0.2817 0.2981 0.4577 0.3516
+[191] 0.4460 0.4506 0.4363 0.4436 0.3304 0.3505 0.3375 0.4707 0.3312 0.5985
+[201] 0.5207 0.5337 0.5020 0.3871 0.3544 0.2878 0.2673 0.2579 0.2539 0.2751
+[211] 0.2610 0.3771 0.4190 0.5517 0.5800 0.5305 0.4322 0.4663 0.4174 0.3603
+[221] 0.3058 0.3609 0.2232 0.6234 0.6001 0.5771 0.4982 0.4222 0.3509 0.3000
+[231] 0.2872 0.2932 0.3636 0.3738 0.5159 0.5680 0.5441 0.2797 0.3152 0.3402
+[241] 0.2821 0.3119 0.2701 0.2907 0.2661 0.2521 0.3702 0.3432 0.3112 0.2929
+[251] 0.2915 0.2771 0.2634 0.2615 0.2597 0.2639 0.2565 0.2929 0.3840 0.4246
+[261] 0.4102 0.3097 0.2353
+> fit <- bfast(NDVIa, season = "harmonic", max.iter = 1, decomp = "stlplus")
+> plot(fit)
+NULL
+> fit
+
+  TREND BREAKPOINTS
+	 Confidence intervals for breakpoints
+	 of optimal 5-segment partition: 
+
+Call:
+confint.breakpointsfull(object = bp.Vt, het.err = FALSE)
+
+Breakpoints at observation number:
+  2.5 % breakpoints 97.5 %
+1    44          47     51
+2    92         106    107
+3   147         148    151
+4   203         211    213
+
+Corresponding to breakdates:
+      2.5 % breakpoints    97.5 %
+1 0.1685824   0.1800766 0.1954023
+2 0.3524904   0.4061303 0.4099617
+3 0.5632184   0.5670498 0.5785441
+4 0.7777778   0.8084291 0.8160920
+
+  SEASONAL BREAKPOINTS:  None
+
+> 
+> 
+> 
+> cleanEx()
+> nameEx("bfast01")
+> ### * bfast01
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: bfast01
+> ### Title: Checking for one major break in the time series
+> ### Aliases: bfast01
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> 
+> library(zoo)
+> ## define a regular time series
+> ndvi <- as.ts(zoo(som$NDVI.a, som$Time))
+> 
+> ## fit variations
+> bf1 <- bfast01(ndvi)
+> bf2 <- bfast01(ndvi, test = c("BIC", "OLS-MOSUM", "supLM"), aggregate = any)
+> bf3 <- bfast01(ndvi, test = c("OLS-MOSUM", "supLM"), aggregate = any, bandwidth = 0.11) 
+> 
+> ## inspect test decisions
+> bf1$test
+OLS-MOSUM 
+     TRUE 
+> bf1$breaks
+[1] 1
+> bf2$test
+      BIC OLS-MOSUM     supLM 
+     TRUE      TRUE      TRUE 
+> bf2$breaks
+[1] 1
+> bf3$test
+OLS-MOSUM     supLM 
+     TRUE      TRUE 
+> bf3$breaks
+[1] 1
+> 
+> ## look at coefficients
+> coef(bf1)
+                   (Intercept)         trend   harmoncos1 harmoncos2 harmoncos3
+2000.130--2005.348   0.3294743  0.0013291375 -0.008039896 0.06590025 0.01214635
+2005.391--2011.522   0.4825697 -0.0004976847  0.004124914 0.02874215 0.01377650
+                     harmonsin1  harmonsin2  harmonsin3
+2000.130--2005.348  0.008451216 -0.11764614 -0.01327970
+2005.391--2011.522 -0.016626373 -0.09068255 -0.01800241
+> coef(bf1, breaks = 0)
+  (Intercept)         trend    harmoncos1    harmoncos2    harmoncos3 
+ 4.106736e-01 -9.825124e-05  1.952769e-03  4.437063e-02  1.524710e-02 
+   harmonsin1    harmonsin2    harmonsin3 
+-7.619680e-03 -1.026473e-01 -1.583753e-02 
+> coef(bf1, breaks = 1) 
+                   (Intercept)         trend   harmoncos1 harmoncos2 harmoncos3
+2000.130--2005.348   0.3294743  0.0013291375 -0.008039896 0.06590025 0.01214635
+2005.391--2011.522   0.4825697 -0.0004976847  0.004124914 0.02874215 0.01377650
+                     harmonsin1  harmonsin2  harmonsin3
+2000.130--2005.348  0.008451216 -0.11764614 -0.01327970
+2005.391--2011.522 -0.016626373 -0.09068255 -0.01800241
+> 
+> ## zoo series with all components
+> plot(as.zoo(ndvi))
+> plot(as.zoo(bf1, breaks = 1))
+> plot(as.zoo(bf2))
+> plot(as.zoo(bf3))
+> 
+> ## leveraged by plot method
+> plot(bf1, regular = TRUE)
+> plot(bf2)
+> plot(bf2, plot.type = "multiple",
++      which = c("response", "trend", "season"), screens = c(1, 1, 2))
+> plot(bf3)
+> 
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("bfast01classify")
+> ### * bfast01classify
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: bfast01classify
+> ### Title: Change type analysis of the bfast01 function
+> ### Aliases: bfast01classify
+> ### Keywords: bfast01 ts
+> 
+> ### ** Examples
+> 
+> 
+> library(zoo)
+> ## define a regular time series
+> ndvi <- as.ts(zoo(som$NDVI.a, som$Time))
+> ## fit variations
+> bf1 <- bfast01(ndvi)
+> bfast01classify(bf1, pct_stable = 0.25)
+  flag_type flag_significance   p_segment1 p_segment2 pct_segment1 pct_segment2
+1         7                 0 1.672969e-10 0.00335625      7.83364    -2.924164
+  flag_pct_stable
+1               0
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("bfastlite")
+> ### * bfastlite
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: bfastlite
+> ### Title: Detect multiple breaks in a time series
+> ### Aliases: bfastlite bfast0n
+> 
+> ### ** Examples
+> 
+> plot(simts) # stl object containing simulated NDVI time series
+> datats <- ts(rowSums(simts$time.series))
+> # sum of all the components (season,abrupt,remainder)
+> tsp(datats) <- tsp(simts$time.series) # assign correct time series attributes
+> plot(datats)
+> 
+> # Detect breaks
+> bp = bfastlite(datats)
+> 
+> # Default method of estimating breakpoints
+> bp[["breakpoints"]][["breakpoints"]]
+[1] 99
+> 
+> # Plot
+> plot(bp)
+> 
+> # Custom method of estimating number of breaks (request 2 breaks)
+> strucchangeRcpp::breakpoints(bp[["breakpoints"]], breaks = 2)
+
+	 Optimal 3-segment partition: 
+
+Call:
+breakpoints.breakpointsfull(obj = bp[["breakpoints"]], breaks = 2)
+
+Breakpoints at observation number:
+99 170 
+
+Corresponding to breakdates:
+0.4974874 0.8542714 
+> 
+> # Plot including magnitude based on RMSD for the cos1 component of harmonics
+> plot(bp, magstat = "RMSD", magcomp = "harmoncos1", breaks = 2)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("bfastmonitor")
+> ### * bfastmonitor
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: bfastmonitor
+> ### Title: Near Real-Time Disturbance Detection Based on BFAST-Type Models
+> ### Aliases: bfastmonitor
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> NDVIa <- as.ts(zoo::zoo(som$NDVI.a, som$Time))
+> plot(NDVIa)
+> ## apply the bfast monitor function on the data
+> ## start of the monitoring period is c(2010, 13)
+> ## and the ROC method is used as a method to automatically identify a stable history
+> mona <- bfastmonitor(NDVIa, start = c(2010, 13))
+> mona
+
+BFAST monitoring
+
+1. History period
+Stable period selected: 2000(4)--2010(12)
+Length (in years): 10.347826
+Model fit:
+  (Intercept)         trend    harmoncos1    harmoncos2    harmoncos3 
+ 0.3906913721  0.0001376278  0.0034256312  0.0479024139  0.0152613429 
+   harmonsin1    harmonsin2    harmonsin3 
+-0.0092576950 -0.1071534760 -0.0200069655 
+R-squared: 0.520570
+
+
+2. Monitoring period
+Monitoring period assessed: 2010(13)--2011(13)
+Length (in years): 1.000000
+Break detected at: 2011(3)
+
+> plot(mona)
+> ## fitted season-trend model in history period
+> summary(mona$model)
+
+Call:
+lm(formula = response ~ trend + harmon)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.223962 -0.052668  0.001105  0.050476  0.205938 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  3.907e-01  1.107e-02  35.281  < 2e-16 ***
+trend        1.376e-04  7.967e-05   1.727   0.0854 .  
+harmoncos1   3.426e-03  7.760e-03   0.441   0.6593    
+harmoncos2   4.790e-02  7.761e-03   6.172 3.03e-09 ***
+harmoncos3   1.526e-02  7.698e-03   1.982   0.0486 *  
+harmonsin1  -9.258e-03  7.718e-03  -1.200   0.2316    
+harmonsin2  -1.072e-01  7.718e-03 -13.883  < 2e-16 ***
+harmonsin3  -2.001e-02  7.776e-03  -2.573   0.0107 *  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.08415 on 229 degrees of freedom
+Multiple R-squared:  0.5206,	Adjusted R-squared:  0.5059 
+F-statistic: 35.52 on 7 and 229 DF,  p-value: < 2.2e-16
+
+> ## OLS-based MOSUM monitoring process
+> plot(mona$mefp, functional = NULL)
+> ## the pattern in the running mean of residuals
+> ## this illustrates the empirical fluctuation process
+> ## and the significance of the detected break.
+> 
+> NDVIb <- as.ts(zoo(som$NDVI.b, som$Time))
+> plot(NDVIb)
+> monb <- bfastmonitor(NDVIb, start = c(2010, 13))
+> monb
+
+BFAST monitoring
+
+1. History period
+Stable period selected: 2007(19)--2010(12)
+Length (in years): 2.695652
+Model fit:
+ (Intercept)        trend   harmoncos1   harmoncos2   harmoncos3   harmonsin1 
+ 0.403786818  0.000517089 -0.058053468  0.040185053 -0.007416574 -0.062640841 
+  harmonsin2   harmonsin3 
+-0.048084840  0.002732460 
+R-squared: 0.434615
+
+
+2. Monitoring period
+Monitoring period assessed: 2010(13)--2011(13)
+Length (in years): 1.000000
+Break detected at: 2010(22)
+
+> plot(monb)
+> summary(monb$model)
+
+Call:
+lm(formula = response ~ trend + harmon)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.21781 -0.04807  0.00368  0.04909  0.19732 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.4037868  0.1399886   2.884 0.005589 ** 
+trend        0.0005171  0.0006705   0.771 0.443904    
+harmoncos1  -0.0580535  0.0171895  -3.377 0.001350 ** 
+harmoncos2   0.0401851  0.0169844   2.366 0.021533 *  
+harmoncos3  -0.0074166  0.0169043  -0.439 0.662569    
+harmonsin1  -0.0626408  0.0172487  -3.632 0.000619 ***
+harmonsin2  -0.0480848  0.0170196  -2.825 0.006571 ** 
+harmonsin3   0.0027325  0.0169939   0.161 0.872848    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.09437 on 55 degrees of freedom
+Multiple R-squared:  0.4346,	Adjusted R-squared:  0.3627 
+F-statistic:  6.04 on 7 and 55 DF,  p-value: 3.007e-05
+
+> plot(monb$mefp, functional = NULL)
+> 
+> ## set the stable history period manually and use a 4th order harmonic model
+> bfastmonitor(NDVIb, start = c(2010, 13),
++   history = c(2008, 7), order = 4, plot = TRUE)
+
+BFAST monitoring
+
+1. History period
+Stable period selected: 2008(7)--2010(12)
+Length (in years): 2.217391
+Model fit:
+  (Intercept)         trend    harmoncos1    harmoncos2    harmoncos3 
+ 5.364374e-01 -8.166557e-05 -5.189379e-02  3.907679e-02 -1.265991e-02 
+   harmoncos4    harmonsin1    harmonsin2    harmonsin3    harmonsin4 
+-1.986360e-02 -6.043991e-02 -4.517956e-02  6.520623e-03  1.800916e-02 
+R-squared: 0.389227
+
+
+2. Monitoring period
+Monitoring period assessed: 2010(13)--2011(13)
+Length (in years): 1.000000
+Break detected at: 2010(22)
+
+> 
+> ## just use a 6th order harmonic model without trend
+> mon <- bfastmonitor(NDVIb, formula = response ~ harmon,
++     start = c(2010, 13), order = 6, plot = TRUE)
+> summary(mon$model)
+
+Call:
+lm(formula = response ~ harmon)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.308946 -0.058140 -0.000453  0.062612  0.284683 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.502356   0.006032  83.276  < 2e-16 ***
+harmoncos1  -0.003780   0.008542  -0.443 0.658529    
+harmoncos2   0.065239   0.008557   7.624 6.83e-13 ***
+harmoncos3  -0.001834   0.008502  -0.216 0.829434    
+harmoncos4  -0.036234   0.008540  -4.243 3.23e-05 ***
+harmoncos5  -0.018776   0.008519  -2.204 0.028534 *  
+harmoncos6   0.018059   0.008547   2.113 0.035714 *  
+harmonsin1  -0.033660   0.008520  -3.951 0.000104 ***
+harmonsin2  -0.068213   0.008505  -8.021 5.74e-14 ***
+harmonsin3  -0.016358   0.008559  -1.911 0.057255 .  
+harmonsin4   0.008842   0.008521   1.038 0.300537    
+harmonsin5  -0.001411   0.008542  -0.165 0.868980    
+harmonsin6   0.008917   0.008505   1.048 0.295542    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.09294 on 225 degrees of freedom
+Multiple R-squared:  0.4342,	Adjusted R-squared:  0.404 
+F-statistic: 14.39 on 12 and 225 DF,  p-value: < 2.2e-16
+
+> AIC(mon$model)
+[1] -440.8433
+> 
+> ## use a custom number of seasonal dummies (11/yr) instead of harmonics
+> mon <- bfastmonitor(NDVIb, formula = response ~ season,
++     start = c(2010, 13), sbins = 11, plot = TRUE)
+> summary(mon$model)
+
+Call:
+lm(formula = response ~ season)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.294758 -0.061462 -0.003898  0.063313  0.260542 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.502875   0.006245  80.531  < 2e-16 ***
+season.L     0.131014   0.020339   6.442 6.98e-10 ***
+season.Q     0.023991   0.020192   1.188   0.2360    
+season.C     0.047918   0.020405   2.348   0.0197 *  
+season^4     0.137652   0.020636   6.670 1.92e-10 ***
+season^5    -0.111478   0.020753  -5.372 1.93e-07 ***
+season^6    -0.086809   0.020889  -4.156 4.60e-05 ***
+season^7    -0.012671   0.021018  -0.603   0.5472    
+season^8    -0.061810   0.021009  -2.942   0.0036 ** 
+season^9     0.018892   0.020945   0.902   0.3680    
+season^10   -0.040136   0.020901  -1.920   0.0561 .  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.09568 on 227 degrees of freedom
+Multiple R-squared:  0.395,	Adjusted R-squared:  0.3684 
+F-statistic: 14.82 on 10 and 227 DF,  p-value: < 2.2e-16
+
+> AIC(mon$model)
+[1] -428.9029
+> 
+> ## Example for processing raster bricks (satellite image time series of 16-day NDVI images)
+> f <- system.file("extdata/modisraster.grd", package = "bfast")
+> library("raster")
+Loading required package: sp
+> modisbrick <- raster::brick(f)
+> data <- as.vector(modisbrick[1])
+> ndvi <- bfastts(data, dates, type = c("16-day"))
+> plot(ndvi/10000)
+> 
+> ## derive median NDVI of a NDVI raster brick
+> medianNDVI <- raster::calc(modisbrick, fun = function(x) median(x, na.rm = TRUE))
+> raster::plot(medianNDVI)
+> 
+> ## helper function to be used with the calc() function
+> xbfastmonitor <- function(x, timestamps = dates) {
++ 	ndvi <- bfastts(x, timestamps, type = c("16-day"))
++ 	ndvi <- window(ndvi, end = c(2011, 14))/10000
++ 	## delete end of the time to obtain a dataset similar to RSE paper (Verbesselt et al.,2012)
++ 	bfm <- bfastmonitor(data = ndvi, start = c(2010, 12), history = c("ROC"))
++ 	return(c(breakpoint = bfm$breakpoint, magnitude = bfm$magnitude))
++ }
+> 
+> ## apply on one pixel for testing
+> ndvi <- bfastts(as.numeric(modisbrick[1])/10000, dates, type = c("16-day"))
+> plot(ndvi)
+> 
+> bfm <- bfastmonitor(data = ndvi, start = c(2010, 12), history = c("ROC"))
+> bfm$magnitude
+[1] -0.08451347
+> plot(bfm)
+> xbfastmonitor(modisbrick[1], dates) ## helper function applied on one pixel
+   breakpoint     magnitude 
+2011.34782609   -0.08709291 
+> 
+> ## apply the bfastmonitor function onto a raster brick
+> timeofbreak <- raster::calc(modisbrick, fun=xbfastmonitor)
+> 
+> raster::plot(timeofbreak) ## time of break and magnitude of change
+> raster::plot(timeofbreak,2) ## magnitude of change
+> 
+> 
+> 
+> cleanEx()
+
+detaching ‘package:raster’, ‘package:sp’
+
+> nameEx("bfastpp")
+> ### * bfastpp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: bfastpp
+> ### Title: Time Series Preprocessing for BFAST-Type Models
+> ### Aliases: bfastpp
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> ## set up time series
+> ndvi <- as.ts(zoo::zoo(cbind(a = som$NDVI.a, b = som$NDVI.b), som$Time))
+> ndvi <- window(ndvi, start = c(2006, 1), end = c(2009, 23))
+> 
+> ## parametric season-trend model
+> d1 <- bfastpp(ndvi, order = 2)
+> d1lm <- lm(response ~ trend + harmon, data = d1)
+> summary(d1lm)
+
+Call:
+lm(formula = response ~ trend + harmon, data = d1)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.228691 -0.041100 -0.004046  0.055139  0.169111 
+
+Coefficients:
+              Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  4.145e-01  1.610e-02  25.748  < 2e-16 ***
+trend       -7.742e-05  3.024e-04  -0.256 0.798563    
+harmoncos1   7.279e-03  1.109e-02   0.657 0.513237    
+harmoncos2   3.868e-02  1.109e-02   3.488 0.000768 ***
+harmonsin1  -3.747e-02  1.130e-02  -3.316 0.001337 ** 
+harmonsin2  -1.041e-01  1.114e-02  -9.351 9.51e-15 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.07517 on 86 degrees of freedom
+Multiple R-squared:  0.5648,	Adjusted R-squared:  0.5395 
+F-statistic: 22.32 on 5 and 86 DF,  p-value: 2.8e-14
+
+> # plot visually (except season, as it's a factor)
+> plot(zoo::read.zoo(d1)[,-3],
++   # Avoid clipping plots for pretty output
++   ylim = list(c(min(d1[,2]), max(d1[,2])),
++             c(min(d1[,3]), max(d1[,3])),
++             c(-1, 1), c(-1, 1), c(-1, 1), c(-1, 1),
++             c(min(d1[,6]), max(d1[,6]))
++        ))
+> 
+> ## autoregressive model (after nonparametric season-trend adjustment)
+> d2 <- bfastpp(ndvi, stl = "both", lag = 1:2)
+> d2lm <- lm(response ~ lag, data = d2)
+> summary(d2lm)
+
+Call:
+lm(formula = response ~ lag, data = d2)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.153435 -0.030022 -0.001384  0.021004  0.214001 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)  
+(Intercept) 0.0003608  0.0060051   0.060   0.9522  
+lag1        0.2697747  0.1045785   2.580   0.0116 *
+lag2        0.2204984  0.1045727   2.109   0.0379 *
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 0.05696 on 87 degrees of freedom
+Multiple R-squared:  0.1626,	Adjusted R-squared:  0.1433 
+F-statistic: 8.446 on 2 and 87 DF,  p-value: 0.0004445
+
+> 
+> ## use the lower level lm.fit function
+> d3 <- bfastpp(ndvi, stl = "both", lag = 1:2)
+> d3mm <- model.matrix(response ~ lag, d3)
+> d3lm <- lm.fit(d3mm, d3$response)
+> d3lm$coefficients
+ (Intercept)         lag1         lag2 
+0.0003608327 0.2697746828 0.2204983802 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("bfastts")
+> ### * bfastts
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: bfastts
+> ### Title: Create a regular time series object by combining data and date
+> ###   information
+> ### Aliases: bfastts
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> # 16-day time series (i.e. MODIS)
+> timedf <- data.frame(y = som$NDVI.b, dates = dates[1:nrow(som)])
+> bfastts(timedf$y, timedf$dates, type = "16-day")
+Time Series:
+Start = c(2000, 4) 
+End = c(2011, 13) 
+Frequency = 23 
+  [1] 0.4104 0.3861 0.3443 0.3216 0.2728 0.3805 0.4724 0.3396 0.4925 0.4282
+ [11] 0.3343 0.3452 0.4069 0.3889     NA 0.4105 0.3984 0.6662 0.7204 0.6412
+ [21] 0.4978 0.4487 0.4194 0.3789 0.3247 0.2922 0.3098 0.5224 0.6664 0.5212
+ [31] 0.3461 0.5061 0.5543 0.5657 0.4650 0.4206 0.3480 0.3640 0.1326 0.6657
+ [41] 0.5609 0.6590 0.5397 0.4777 0.4364 0.4040 0.3775 0.3254 0.2798 0.2885
+ [51] 0.6375 0.6818 0.7509 0.6359 0.6504 0.5813 0.5009 0.5513 0.3366 0.3223
+ [61] 0.3389 0.5000 0.6807 0.7385 0.7415 0.6102 0.5838 0.5355 0.5233 0.4723
+ [71] 0.4052 0.3644 0.3851 0.5903 0.5958 0.5195 0.5698 0.6052 0.7428 0.4354
+ [81] 0.4921 0.4129 0.3783 0.3153 0.4846 0.4714 0.6924 0.6853 0.5797 0.5761
+ [91] 0.5247 0.4577 0.4316 0.3916 0.3584 0.3097 0.3969 0.4448 0.3819 0.4638
+[101] 0.6151 0.5930 0.6370 0.5526 0.5283 0.5573 0.3689 0.4245 0.6395 0.6812
+[111] 0.6895 0.6725 0.6315 0.5359 0.5892 0.5254 0.4968 0.4921 0.4854 0.4277
+[121] 0.4622 0.6184 0.5050 0.5624 0.6485 0.3794 0.5311 0.5264 0.4222 0.3656
+[131] 0.3396 0.4054 0.6663 0.5955 0.5478 0.4915 0.4889 0.4682 0.4308 0.3464
+[141] 0.3376 0.3464 0.5107 0.7017 0.5118 0.6138 0.4634 0.5249 0.4964 0.5520
+[151] 0.5440 0.5967 0.4194 0.6054 0.6972 0.7176 0.7024 0.6419 0.5911 0.5562
+[161] 0.5345 0.5024 0.4623 0.5006 0.4298 0.5917 0.7275 0.6641 0.5409 0.5329
+[171] 0.4857 0.5086 0.4589 0.5016 0.3960 0.4527 0.4907 0.4642 0.6291 0.5413
+[181] 0.4900 0.4310 0.4157 0.3794 0.3816 0.3213 0.3281 0.3335 0.3030 0.3708
+[191] 0.3682 0.5649 0.7160 0.7056 0.6249 0.6106 0.6796 0.6243 0.6879 0.5729
+[201] 0.5768 0.5208 0.4998 0.4620 0.4452 0.4618 0.4560 0.4509 0.4199 0.3990
+[211] 0.4341 0.5940 0.7190 0.7431 0.7325 0.6277 0.5912 0.5291 0.4939 0.4447
+[221] 0.3773 0.3855 0.4608 0.6687 0.7115 0.5755 0.5378 0.5116 0.4786 0.4333
+[231] 0.4096 0.3485 0.3314 0.4329 0.5595 0.5778 0.5776 0.5234 0.4181 0.6251
+[241] 0.4893 0.4821 0.4554 0.3612 0.4445 0.3803 0.3530 0.3850 0.3144 0.3120
+[251] 0.3106 0.3144 0.2887 0.2559 0.2455 0.2379 0.2289 0.1667 0.3732 0.3720
+[261] 0.3339 0.3639 0.4049
+> 
+> # Irregular
+> head(bfastts(timedf$y, timedf$dates, type = "irregular"), 50)
+Time Series:
+Start = c(2000, 49) 
+End = c(2000, 98) 
+Frequency = 365 
+ [1] 0.4104     NA     NA     NA     NA     NA     NA     NA     NA     NA
+[11]     NA     NA     NA     NA     NA 0.3861     NA     NA     NA     NA
+[21]     NA     NA     NA     NA     NA     NA     NA     NA     NA     NA
+[31]     NA 0.3443     NA     NA     NA     NA     NA     NA     NA     NA
+[41]     NA     NA     NA     NA     NA     NA     NA 0.3216     NA     NA
+> 
+> 
+> ## Not run: 
+> ##D # Example of use with a raster
+> ##D 
+> ##D library("raster")
+> ##D f <- system.file("extdata/modisraster.grd", package="bfast")
+> ##D modisbrick <- brick(f)
+> ##D ndvi <- bfastts(as.vector(modisbrick[1]), dates, type = c("16-day")) ## data of pixel 1
+> ##D plot(ndvi/10000) 
+> ##D 
+> ##D # Time series of 4 pixels
+> ##D modis_ts = t(as.data.frame(modisbrick))[,1:4]
+> ##D # Data with multiple columns, 2-4 are external regressors
+> ##D ndvi <- bfastts(modis_ts, dates, type = c("16-day"))
+> ##D plot(ndvi/10000)
+> ## End(Not run)
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("dates")
+> ### * dates
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: dates
+> ### Title: A vector with date information (a Datum type) to be linked with
+> ###   each NDVI layer within the modis raster brick (modisraster data set)
+> ### Aliases: dates
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> 
+> ## see ?bfastmonitor for examples
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("harvest")
+> ### * harvest
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: harvest
+> ### Title: 16-day NDVI time series for a Pinus radiata plantation.
+> ### Aliases: harvest
+> ### Keywords: datasets ts
+> 
+> ### ** Examples
+> 
+> 
+> plot(harvest,ylab='NDVI')
+> # References
+> citation("bfast")
+
+To cite bfast in publications use
+
+  Jan Verbesselt, Rob Hyndman, Glenn Newnham, Darius Culvenor (2010).
+  Detecting Trend and Seasonal Changes in Satellite Image Time Series.
+  Remote Sensing of Environment, 114(1), 106-115.
+  doi:10.1016/j.rse.2009.08.014
+
+  Jan Verbesselt, Rob Hyndman, Achim Zeileis, Darius Culvenor (2010).
+  Phenological Change Detection while Accounting for Abrupt and Gradual
+  Trends in Satellite Image Time Series. Remote Sensing of Environment,
+  114(12), 2970 - 2980. doi:10.1016/j.rse.2010.08.003
+
+If you use bfastmonitor() or bfastpp(), please cite:
+
+  Jan Verbesselt, Achim Zeileis, Martin Herold (2012). Near real-time
+  disturbance detection using satellite image time series. Remote
+  Sensing of Environment, 123, 98 - 108. doi:10.1016/j.rse.2012.02.022
+
+To see these entries in BibTeX format, use 'print(<citation>,
+bibtex=TRUE)', 'toBibtex(.)', or set
+'options(citation.bibtex.max=999)'.
+
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("modisraster")
+> ### * modisraster
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: modisraster
+> ### Title: A raster brick of 16-day satellite image NDVI time series for a
+> ###   small subset in south eastern Somalia.
+> ### Aliases: modisraster
+> ### Keywords: datasets ts
+> 
+> ### ** Examples
+> 
+> 
+> 
+> ## see ?bfastmonitor
+> 
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ndvi")
+> ### * ndvi
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ndvi
+> ### Title: A random NDVI time series
+> ### Aliases: ndvi
+> ### Keywords: datasets ts
+> 
+> ### ** Examples
+> 
+> 
+> plot(ndvi)
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("plot.bfast")
+> ### * plot.bfast
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: plot.bfast
+> ### Title: Methods for objects of class "bfast".
+> ### Aliases: plot.bfast
+> ### Keywords: ts
+> 
+> ### ** Examples
+> 
+> 
+> ## See \code{\link[bfast]{bfast}} for examples.
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("setoptions")
+> ### * setoptions
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: setoptions
+> ### Title: Set package options with regard to computation times
+> ### Aliases: setoptions set_default_options set_fallback_options
+> ###   set_fast_options
+> 
+> ### ** Examples
+> 
+> 
+> 
+> # run bfastmonitor with different options and compare computation times
+> library(zoo)
+> NDVIa <- as.ts(zoo(som$NDVI.a, som$Time))
+> 
+> set_default_options()
+> ## Not run: 
+> ##D system.time(replicate(100,  bfastmonitor(NDVIa, start = c(2010, 13))))
+> ## End(Not run)
+> 
+> set_fallback_options()
+> ## Not run: 
+> ##D system.time(replicate(100,  bfastmonitor(NDVIa, start = c(2010, 13))))
+> ## End(Not run)
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("simts")
+> ### * simts
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: simts
+> ### Title: Simulated seasonal 16-day NDVI time series
+> ### Aliases: simts
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> 
+> plot(simts)
+> # References
+> citation("bfast")
+
+To cite bfast in publications use
+
+  Jan Verbesselt, Rob Hyndman, Glenn Newnham, Darius Culvenor (2010).
+  Detecting Trend and Seasonal Changes in Satellite Image Time Series.
+  Remote Sensing of Environment, 114(1), 106-115.
+  doi:10.1016/j.rse.2009.08.014
+
+  Jan Verbesselt, Rob Hyndman, Achim Zeileis, Darius Culvenor (2010).
+  Phenological Change Detection while Accounting for Abrupt and Gradual
+  Trends in Satellite Image Time Series. Remote Sensing of Environment,
+  114(12), 2970 - 2980. doi:10.1016/j.rse.2010.08.003
+
+If you use bfastmonitor() or bfastpp(), please cite:
+
+  Jan Verbesselt, Achim Zeileis, Martin Herold (2012). Near real-time
+  disturbance detection using satellite image time series. Remote
+  Sensing of Environment, 123, 98 - 108. doi:10.1016/j.rse.2012.02.022
+
+To see these entries in BibTeX format, use 'print(<citation>,
+bibtex=TRUE)', 'toBibtex(.)', or set
+'options(citation.bibtex.max=999)'.
+
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("som")
+> ### * som
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: som
+> ### Title: Two 16-day NDVI time series from the south of Somalia
+> ### Aliases: som
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> 
+> ## first define the data as a regular time series (i.e. ts object)
+> library(zoo)
+> NDVI <- as.ts(zoo(som$NDVI.b,som$Time))
+> plot(NDVI)
+> 
+> 
+> 
+> 
+> 
+> ### * <FOOTER>
+> ###
+> cleanEx()
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  6.419 0.14 7.155 0.003 0 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

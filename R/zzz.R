@@ -30,10 +30,14 @@
 #' NDVIa <- as.ts(zoo(som$NDVI.a, som$Time))
 #' 
 #' set_default_options()
+#' \dontrun{
 #' system.time(replicate(100,  bfastmonitor(NDVIa, start = c(2010, 13))))
+#' }
 #' 
 #' set_fallback_options()
+#' \dontrun{
 #' system.time(replicate(100,  bfastmonitor(NDVIa, start = c(2010, 13))))
+#' }
 #' 
 #' @export
 set_default_options <- function() {

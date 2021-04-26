@@ -57,7 +57,7 @@ seasonal terms (of specified \code{order}),} \item{lag}{autoregressive terms
 (or orders \code{slag}, if any),} \item{xreg}{covariate regressor (all
 columns of \code{data} except the first, if any).}
 
-If a formula is given,\code{bfastpp} returns a \code{list} with components
+If a formula is given, \code{bfastpp} returns a \code{list} with components
 \code{X}, \code{y}, and \code{t}, where \code{X} is the design matrix of the
 model, \code{y} is the response vector, and \code{t} represents the time of
 observations. \code{X} will only contain variables that occur in the
@@ -94,7 +94,7 @@ summary(d1lm)
 # plot visually (except season, as it's a factor)
 plot(zoo::read.zoo(d1)[,-3],
   # Avoid clipping plots for pretty output
-  ylim=list(c(min(d1[,2]), max(d1[,2])),
+  ylim = list(c(min(d1[,2]), max(d1[,2])),
             c(min(d1[,3]), max(d1[,3])),
             c(-1, 1), c(-1, 1), c(-1, 1), c(-1, 1),
             c(min(d1[,6]), max(d1[,6]))

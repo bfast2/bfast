@@ -33,16 +33,19 @@
 #'
 #' @export
 
-bfastlite <- function(data, formula = response ~ trend + harmon, order = 3,
+bfastlite <- function(data, formula = response ~ trend + harmon,
+                   order = 3, breaks = "LWZ",
                    lag = NULL, slag = NULL, na.action = na.omit,
                    stl = c("none", "trend", "seasonal", "both"),
                    decomp = c("stl", "stlplus"), sbins = 1, ...)
 {
   data_pp <- bfastpp(data, order = order,
                    lag = lag, slag = slag, na.action = na.action,
-                   stl = stl, decomp=decomp, sbins=sbins)
-  breakpoints <- strucchangeRcpp::breakpoints(formula=formula, data = data_pp, ...)
-  Result <- structure(list(breakpoints=breakpoints, data_pp=data_pp), class="bfastlite")
+                   stl = stl, decomp = decomp, sbins = sbins)
+  breakpoints <- strucchangeRcpp::breakpoints(
+    formula = formula, data = data_pp, breaks = breaks, ...)
+  Result <- structure(list(breakpoints = breakpoints,
+    data_pp = data_pp), class = "bfastlite")
   return(Result)
 }
 

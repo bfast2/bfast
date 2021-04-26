@@ -2,6 +2,8 @@
 ^\.Rproj\.user$
 ^\.github$
 ^CONTRIBUTING\.md$
+^README\.md$
 ^LICENSE$
 ^examples$
 ^build.Rcheck$
+^revdep$

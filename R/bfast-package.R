@@ -55,16 +55,10 @@
 #' for debugging purposes.
 #' @name bfast-package
 #' @references \insertRef{janbfastmonitor}{bfast}
-#' 
-#' Verbesselt J, Hyndman R, Newnham G, Culvenor D (2010).  Detecting Trend and
-#' Seasonal Changes in Satellite Image Time Series.  \emph{Remote Sensing of
-#' Environment}, \bold{114}(1), 106--115.
-#' \url{http://dx.doi.org/10.1016/j.rse.2009.08.014}
-#' 
-#' Verbesselt J, Hyndman R, Zeileis A, Culvenor D (2010).  Phenological Change
-#' Detection while Accounting for Abrupt and Gradual Trends in Satellite Image
-#' Time Series.  \emph{Remote Sensing of Environment}, \bold{114}(12),
-#' 2970--2980.  \url{http://dx.doi.org/10.1016/j.rse.2010.08.003}
+#'
+#' \insertRef{janbfast}{bfast}
+#'
+#' \insertRef{janbfastpheno}{bfast}
 #' @keywords ts
 #' @import strucchangeRcpp zoo forecast stats
 #' @importFrom Rcpp evalCpp
@@ -110,11 +104,7 @@ NULL
 #' 
 #' @name harvest
 #' @docType data
-#' @source Verbesselt, J., R. Hyndman, G. Newnham, and D. Culvenor (2009).
-#' Detecting trend and seasonal changes in satellite image time series.
-#' \emph{Remote Sensing of Environment}.
-#' \url{http://dx.doi.org/10.1016/j.rse.2009.08.014}.  Or see
-#' \url{http://robjhyndman.com/papers/bfast1}.
+#' @source \insertRef{janbfast}{bfast}
 #' @keywords datasets ts
 #' @examples
 #' 
@@ -136,10 +126,7 @@ NULL
 #' 
 #' @name modisraster
 #' @docType data
-#' @source Verbesselt, J., R. Hyndman, G. Newnham, and D. Culvenor (2012).
-#' Near real-time disturbance detection using satellite image time series.
-#' \emph{Remote Sensing of Environment}.
-#' \url{http://eeecon.uibk.ac.at/wopec2/repec/inn/wpaper/2011-18.pdf}.
+#' @source \insertRef{janbfastmonitor}{bfast}
 #' @keywords datasets ts
 #' @examples
 #' 
@@ -180,11 +167,7 @@ NULL
 #' 
 #' @name simts
 #' @docType data
-#' @source Verbesselt, J., R. Hyndman, G. Newnham, and D. Culvenor (2009).
-#' Detecting trend and seasonal changes in satellite image time series.
-#' \emph{Remote Sensing of Environment}.
-#' \url{http://dx.doi.org/10.1016/j.rse.2009.08.014}.  Or see
-#' \url{http://robjhyndman.com/papers/bfast1}.
+#' @source \insertRef{janbfast}{bfast}
 #' @keywords datasets
 #' @examples
 #' 

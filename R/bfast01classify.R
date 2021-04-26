@@ -39,7 +39,7 @@
 #' @author Rogier de Jong, Jan Verbesselt
 #' @seealso \code{\link[bfast]{bfast01}}
 #' @references \insertAllCited{}
-#' @keywords ts,bfast01
+#' @keywords ts bfast01
 #' @examples
 #' 
 #' library(zoo)
@@ -51,7 +51,8 @@
 #' 
 #' @export bfast01classify
 
-bfast01classify <- function(object, alpha=0.05, pct_stable=NULL, typology=c("standard", "drylands")) { 
+bfast01classify <- function(object, alpha = 0.05, pct_stable = NULL, typology = c("standard", "drylands")) { 
+   typology <- match.arg(typology)
    ## output array 
    out <- rep(NA,8)
    names(out) <- c("flag_type","flag_significance","p_segment1","p_segment2",
