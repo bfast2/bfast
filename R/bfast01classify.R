@@ -51,7 +51,7 @@
 #' 
 #' @export bfast01classify
 
-bfast01classify <- function(object, alpha=0.05, pct_stable=NULL, typology=c("standard", "drylands")) { 
+bfast01classify <- function(object, alpha = 0.05, pct_stable = NULL, typology = c("standard", "drylands")) { 
    typology <- match.arg(typology)
    ## output array 
    out <- rep(NA,8)
