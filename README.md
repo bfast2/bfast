@@ -23,11 +23,11 @@ install_github("bfast2/bfast")
 
 ## Enabling performance optimisations
 
-By default, the package will not make use of any modifications. Two functions change the behaviour:
+By default, the package makes use of C++ paths for increased performance. Two functions change the behaviour:
 
 ```
-set_fast_options()    # use modifications
-set_default_options() # use default implementation
+set_default_options()    # use modifications, same as set_fast_options()
+set_fallback_options()   # use default implementation
 ```
 
 The example below runs the first example of the `bfastmonitor()` documentation for both settings.
@@ -38,7 +38,7 @@ library(bfast)
 NDVIa <- as.ts(zoo(som$NDVI.a, som$Time))
 f <- function() bfastmonitor(NDVIa, start = c(2010, 13)) 
 
-set_default_options()
+set_fallback_options()
 x = f() 
 system.time(replicate(100, f()))
 
@@ -90,14 +90,14 @@ Key steps:
 
 1. Create a GitHub issue in this repository with description of the work that you plan to do.
 2. Assign yourself to the GitHub issue you are working on, to inform other developers that you are working on it.
-3. Create your own working fork or branch based on the `dev` branch.
+3. Create your own working fork or branch based on the `master` branch.
 4. Make your changes in that branch.
 5. Commit your changes to your working branch as long as you are not finished with your development.
-6. Make sure that all tests pass (e.g., in Travis or Circle CI).
+6. Make sure that all tests pass (GitHub Actions).
 7. Once your work is finished, create a pull request so that another developer can review your changes before merging them with the `dev` (or `main`) branch.
 
 Additional steps for [preparing a new release](https://guide.esciencecenter.nl/best_practices/releases.html):
 
-8. Update the `NEWS.Rd` file with most notable changes.
+8. Update the `NEWS` file with most notable changes.
 9. Add new contributors to the `DESCRIPTION` file if applicable.
 10. Release the package and make it citable (add `CITATION.cff` including DOI).
