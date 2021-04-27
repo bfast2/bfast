@@ -186,7 +186,7 @@ NULL
 #' 
 #' @name som
 #' @docType data
-#' @source Needs to be added.
+#' @source \insertRef{janbfastmonitor}{bfast}
 #' @keywords datasets
 #' @examples
 #' 
