@@ -5,7 +5,7 @@
 \alias{som}
 \title{Two 16-day NDVI time series from the south of Somalia}
 \source{
-Needs to be added.
+\insertRef{janbfastmonitor}{bfast}
 }
 \description{
 \code{som} is a dataframe containing time and two NDVI time series to
