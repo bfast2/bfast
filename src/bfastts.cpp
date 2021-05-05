@@ -14,7 +14,7 @@ IntegerVector bfast_cpp_closestfrom(const NumericVector& a, const NumericVector&
   int nb = b.size();
   IntegerVector out(na);
   
-  if (na == 0 || nb == 0) {
+  if (na <= 0 || nb <= 0) {
     stop("Input vectors must have length > 0");
   }
   
