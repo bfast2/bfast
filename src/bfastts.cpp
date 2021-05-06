@@ -12,11 +12,15 @@ using namespace Rcpp;
 IntegerVector bfast_cpp_closestfrom(const NumericVector& a, const NumericVector& b, const bool twosided) {
   int na = a.size();
   int nb = b.size();
-  Rcpp::IntegerVector out(na);
+  IntegerVector out(na);
+  
+  if (na <= 0 || nb <= 0) {
+    stop("Input vectors must have length > 0");
+  }
   
   int j=1;
   for (int i = 0; i < na; i++) {
-    while(a[i] >= b[j] && j < nb) ++j; 
+    while(j < (nb-1) && a[i] >= b[j]) ++j; 
    
     // compare b[j] and b[j-1]
     if (!twosided) {
