@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/121743793.svg)](https://zenodo.org/badge/latestdoi/121743793)
+
 # bfast
 
 This fork aims to consolidate all the forks of the `bfast` package to have a unified, updated package that can be submitted back to CRAN eventually and become the new upstream. The features integrated into this fork so far are:
