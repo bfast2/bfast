@@ -1,6 +1,6 @@
 
-R version 3.5.0 (2018-04-23) -- "Joy in Playing"
-Copyright (C) 2018 The R Foundation for Statistical Computing
+R version 4.1.0 (2021-05-18) -- "Camp Pontanezen"
+Copyright (C) 2021 The R Foundation for Statistical Computing
 Platform: x86_64-suse-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -342,6 +342,20 @@ Corresponding to breakdates:
 > 
 > # Plot including magnitude based on RMSD for the cos1 component of harmonics
 > plot(bp, magstat = "RMSD", magcomp = "harmoncos1", breaks = 2)
+> 
+> # Try with a structural change test
+> bfastlite(datats, level=0.05)
+The structural change test found no breakpoints for this time series,
+therefore processing was skipped.
+> 
+> # Details of the structural change test with the type RE
+> bfastlite(datats, level=0.05, type="RE")$sctest
+
+	RE test (recursive estimates test)
+
+data:  efp(formula = formula, h = h, type = type, data = data_pp)
+RE = 6.3887, p-value < 2.2e-16
+
 > 
 > 
 > 
@@ -1007,7 +1021,7 @@ bibtex=TRUE)', 'toBibtex(.)', or set
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  6.419 0.14 7.155 0.003 0 
+Time elapsed:  3.606 0.084 3.73 0.016 0.025 
 > grDevices::dev.off()
 null device 
           1 
