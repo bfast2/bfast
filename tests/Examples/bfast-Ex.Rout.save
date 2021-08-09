@@ -353,7 +353,7 @@ therefore processing was skipped.
 
 	RE test (recursive estimates test)
 
-data:  efp(formula = formula, h = h, type = type, data = data_pp)
+data:  strucchangeRcpp::efp(formula = formula, h = h, type = type, data = data_pp)
 RE = 6.3887, p-value < 2.2e-16
 
 > 
@@ -1021,7 +1021,7 @@ bibtex=TRUE)', 'toBibtex(.)', or set
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  3.606 0.084 3.73 0.016 0.025 
+Time elapsed:  3.604 0.1 3.736 0.018 0.013 
 > grDevices::dev.off()
 null device 
           1 

@@ -54,7 +54,8 @@ bfastlite <- function(data, formula = response ~ trend + harmon,
 
   # If requested by the user, run an sctest before running anything else
   if (level > 0) {
-    sct <- sctest(efp(formula = formula, h = h, type = type, data = data_pp))
+    sct <- strucchangeRcpp::sctest(strucchangeRcpp::efp(
+      formula = formula, h = h, type = type, data = data_pp))
     if (!is.null(sct$p.value) && sct$p.value > level)
       return(structure(list(breakpoints = NA,
         data_pp = data_pp, sctest = sct), class = "bfastlite"))
