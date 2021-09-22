@@ -107,11 +107,13 @@ bfastpp<- function(data, order = 3,
   }
   
   ## data with trend and season factor
+  seasonfreq <- if (sbins > 1) sbins else frequency(y)*sbins
+  
   rval <- data.frame(
     time = as.numeric(time(y)),
     response = y,
     trend = 1:NROW(y),
-    season = cut(cycle(y), if (sbins > 1) sbins else frequency(y)*sbins, ordered_result = TRUE)
+    season = if (seasonfreq > 1) cut(cycle(y), seasonfreq, ordered_result = TRUE) else factor("no seasonality")
   )
   
   ## set up harmonic trend matrix as well
