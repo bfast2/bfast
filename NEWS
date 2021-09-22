@@ -1,3 +1,9 @@
+Changes in Version 1.7.0
+
+  o Added the option to run a structural change test before running bfastlite()
+  with two parameters: 'level' and 'type', equivalent to bfast() except that
+  anything equal to or below 0 in 'level' will skip the sctest.
+
 Changes in Version 1.6.1
 
   o Fixed a heap overflow issue in the C++ version of bfastts().
