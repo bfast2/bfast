@@ -56,3 +56,23 @@ citEntry(entry = "Article",
                "doi:10.1016/j.rse.2012.02.022"),
          header       = "If you use bfastmonitor() or bfastpp(), please cite:"
 )
+
+citEntry(entry = "Article",
+         title = "BFAST Lite: A Lightweight Break Detection Method for Time Series Analysis",
+         author = personList(as.person("Dainius Masiliūnas"),
+                             as.person("Nandin-Erdene Tsendbazar"),
+                             as.person("Martin Herold"),
+                             as.person("Jan Verbesselt")),
+         journal      = "Remote Sensing",
+         year         = "2021",
+         volume       = "13",
+         issue        = "16",
+         pages        = "3308",
+         doi          = "10.3390/rs13163308",
+         textVersion  = 
+         paste("Masiliūnas, Dainius, Nandin-Erdene Tsendbazar, Martin Herold, Jan Verbesselt (2021).", 
+               "BFAST Lite: A Lightweight Break Detection Method for Time Series Analysis.",
+               "Remote Sensing, 13 (16), 3308.",
+               "doi:10.3390/rs13163308"),
+         header       = "If you use bfastlite(), please cite:"
+)
