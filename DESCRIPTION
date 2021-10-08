@@ -54,3 +54,4 @@ LinkingTo: Rcpp
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 RdMacros: Rdpack
+Encoding: UTF-8
