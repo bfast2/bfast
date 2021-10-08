@@ -12,8 +12,8 @@ Authors@R: c(person(given = "Jan", family = "Verbesselt", role = c("aut"), email
                     comment = c(ORCID = "0000-0003-3654-2090")),
              person(given = c("Paulo", "Negri"), family = "Bernardino", role = "ctb",
                     email = "paulo.negribernardino@wur.nl"),
-             person(given = "\u51AC\u51AC", family = "\u5B54", role = "ctb", email = "kongdd@mail2.sysu.edu.cn",
-                    comment = c(pinyin="Dongdong Kong", ORCID = "0000-0003-1836-8172"))
+             person(given = "Dongdong", family = "Kong", role = "ctb", email = "kongdd@mail2.sysu.edu.cn",
+                    comment = c(ORCID = "0000-0003-1836-8172"))
              )
 Description: Decomposition of time series into
     trend, seasonal, and remainder components with methods for detecting and

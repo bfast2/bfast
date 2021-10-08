@@ -14,8 +14,6 @@ approximate number of observations per year.
 \examples{
 
 plot(harvest,ylab='NDVI')
-# References
-citation("bfast")
 
 }
 \keyword{datasets}

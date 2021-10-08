@@ -106,8 +106,6 @@ NULL
 #' @examples
 #' 
 #' plot(harvest,ylab='NDVI')
-#' # References
-#' citation("bfast")
 #' 
 NULL
 
