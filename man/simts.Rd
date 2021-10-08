@@ -15,8 +15,6 @@ remotely sensed satellite data.
 \examples{
 
 plot(simts)
-# References
-citation("bfast")
 
 }
 \keyword{datasets}

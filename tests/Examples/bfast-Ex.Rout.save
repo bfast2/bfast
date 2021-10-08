@@ -941,42 +941,6 @@ Frequency = 365
 > 
 > 
 > plot(simts)
-> # References
-> citation("bfast")
-
-To cite bfast() in publications, use:
-
-Verbesselt J, Hyndman R, Newnham G, Culvenor D (2010). “Detecting Trend
-and Seasonal Changes in Satellite Image Time Series.” _Remote Sensing
-of Environment_, *114*(1), 106-115. doi: 10.1016/j.rse.2009.08.014
-(URL: https://doi.org/10.1016/j.rse.2009.08.014).
-
-To cite bfast() in publications, use:
-
-Verbesselt J, Hyndman R, Zeileis A, Culvenor D (2010). “Phenological
-Change Detection while Accounting for Abrupt and Gradual Trends in
-Satellite Image Time Series.” _Remote Sensing of Environment_,
-*114*(12), 2970-2980. doi: 10.1016/j.rse.2010.08.003 (URL:
-https://doi.org/10.1016/j.rse.2010.08.003).
-
-If you use bfastmonitor() or bfastpp(), please cite:
-
-Verbesselt J, Zeileis A, Herold M (2012). “Near real-time disturbance
-detection using satellite image time series.” _Remote Sensing of
-Environment_, *123*, 98-108. doi: 10.1016/j.rse.2012.02.022 (URL:
-https://doi.org/10.1016/j.rse.2012.02.022).
-
-If you use bfastlite(), please cite:
-
-Masiliūnas D, Tsendbazar N, Herold M, Verbesselt J (2021). “BFAST Lite:
-A Lightweight Break Detection Method for Time Series Analysis.” _Remote
-Sensing_, *13*, 3308. doi: 10.3390/rs13163308 (URL:
-https://doi.org/10.3390/rs13163308).
-
-To see these entries in BibTeX format, use 'print(<citation>,
-bibtex=TRUE)', 'toBibtex(.)', or set
-'options(citation.bibtex.max=999)'.
-
 > 
 > 
 > 
@@ -1009,7 +973,7 @@ bibtex=TRUE)', 'toBibtex(.)', or set
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  3.756 0.115 3.905 0.012 0.023 
+Time elapsed:  3.721 0.084 3.84 0.011 0.024 
 > grDevices::dev.off()
 null device 
           1 

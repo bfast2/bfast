@@ -167,8 +167,6 @@ NULL
 #' @examples
 #' 
 #' plot(simts)
-#' # References
-#' citation("bfast")
 #' 
 NULL
 
