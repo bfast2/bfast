@@ -344,9 +344,11 @@ Corresponding to breakdates:
 > plot(bp, magstat = "RMSD", magcomp = "harmoncos1", breaks = 2)
 > 
 > # Try with a structural change test
-> bfastlite(datats, level=0.05)
+> bp <- bfastlite(datats, level=0.05)
+> print(bp)
 The structural change test found no breakpoints for this time series,
 therefore processing was skipped.
+> plot(bp)
 > 
 > # Details of the structural change test with the type RE
 > bfastlite(datats, level=0.05, type="RE")$sctest
@@ -831,23 +833,34 @@ Frequency = 365
 > # References
 > citation("bfast")
 
-To cite bfast in publications use
+To cite bfast() in publications, use:
 
-  Jan Verbesselt, Rob Hyndman, Glenn Newnham, Darius Culvenor (2010).
-  Detecting Trend and Seasonal Changes in Satellite Image Time Series.
-  Remote Sensing of Environment, 114(1), 106-115.
-  doi:10.1016/j.rse.2009.08.014
+Verbesselt J, Hyndman R, Newnham G, Culvenor D (2010). “Detecting Trend
+and Seasonal Changes in Satellite Image Time Series.” _Remote Sensing
+of Environment_, *114*(1), 106-115. doi: 10.1016/j.rse.2009.08.014
+(URL: https://doi.org/10.1016/j.rse.2009.08.014).
 
-  Jan Verbesselt, Rob Hyndman, Achim Zeileis, Darius Culvenor (2010).
-  Phenological Change Detection while Accounting for Abrupt and Gradual
-  Trends in Satellite Image Time Series. Remote Sensing of Environment,
-  114(12), 2970 - 2980. doi:10.1016/j.rse.2010.08.003
+To cite bfast() in publications, use:
+
+Verbesselt J, Hyndman R, Zeileis A, Culvenor D (2010). “Phenological
+Change Detection while Accounting for Abrupt and Gradual Trends in
+Satellite Image Time Series.” _Remote Sensing of Environment_,
+*114*(12), 2970-2980. doi: 10.1016/j.rse.2010.08.003 (URL:
+https://doi.org/10.1016/j.rse.2010.08.003).
 
 If you use bfastmonitor() or bfastpp(), please cite:
 
-  Jan Verbesselt, Achim Zeileis, Martin Herold (2012). Near real-time
-  disturbance detection using satellite image time series. Remote
-  Sensing of Environment, 123, 98 - 108. doi:10.1016/j.rse.2012.02.022
+Verbesselt J, Zeileis A, Herold M (2012). “Near real-time disturbance
+detection using satellite image time series.” _Remote Sensing of
+Environment_, *123*, 98-108. doi: 10.1016/j.rse.2012.02.022 (URL:
+https://doi.org/10.1016/j.rse.2012.02.022).
+
+If you use bfastlite(), please cite:
+
+Masiliūnas D, Tsendbazar N, Herold M, Verbesselt J (2021). “BFAST Lite:
+A Lightweight Break Detection Method for Time Series Analysis.” _Remote
+Sensing_, *13*, 3308. doi: 10.3390/rs13163308 (URL:
+https://doi.org/10.3390/rs13163308).
 
 To see these entries in BibTeX format, use 'print(<citation>,
 bibtex=TRUE)', 'toBibtex(.)', or set
@@ -967,23 +980,34 @@ bibtex=TRUE)', 'toBibtex(.)', or set
 > # References
 > citation("bfast")
 
-To cite bfast in publications use
+To cite bfast() in publications, use:
 
-  Jan Verbesselt, Rob Hyndman, Glenn Newnham, Darius Culvenor (2010).
-  Detecting Trend and Seasonal Changes in Satellite Image Time Series.
-  Remote Sensing of Environment, 114(1), 106-115.
-  doi:10.1016/j.rse.2009.08.014
+Verbesselt J, Hyndman R, Newnham G, Culvenor D (2010). “Detecting Trend
+and Seasonal Changes in Satellite Image Time Series.” _Remote Sensing
+of Environment_, *114*(1), 106-115. doi: 10.1016/j.rse.2009.08.014
+(URL: https://doi.org/10.1016/j.rse.2009.08.014).
 
-  Jan Verbesselt, Rob Hyndman, Achim Zeileis, Darius Culvenor (2010).
-  Phenological Change Detection while Accounting for Abrupt and Gradual
-  Trends in Satellite Image Time Series. Remote Sensing of Environment,
-  114(12), 2970 - 2980. doi:10.1016/j.rse.2010.08.003
+To cite bfast() in publications, use:
+
+Verbesselt J, Hyndman R, Zeileis A, Culvenor D (2010). “Phenological
+Change Detection while Accounting for Abrupt and Gradual Trends in
+Satellite Image Time Series.” _Remote Sensing of Environment_,
+*114*(12), 2970-2980. doi: 10.1016/j.rse.2010.08.003 (URL:
+https://doi.org/10.1016/j.rse.2010.08.003).
 
 If you use bfastmonitor() or bfastpp(), please cite:
 
-  Jan Verbesselt, Achim Zeileis, Martin Herold (2012). Near real-time
-  disturbance detection using satellite image time series. Remote
-  Sensing of Environment, 123, 98 - 108. doi:10.1016/j.rse.2012.02.022
+Verbesselt J, Zeileis A, Herold M (2012). “Near real-time disturbance
+detection using satellite image time series.” _Remote Sensing of
+Environment_, *123*, 98-108. doi: 10.1016/j.rse.2012.02.022 (URL:
+https://doi.org/10.1016/j.rse.2012.02.022).
+
+If you use bfastlite(), please cite:
+
+Masiliūnas D, Tsendbazar N, Herold M, Verbesselt J (2021). “BFAST Lite:
+A Lightweight Break Detection Method for Time Series Analysis.” _Remote
+Sensing_, *13*, 3308. doi: 10.3390/rs13163308 (URL:
+https://doi.org/10.3390/rs13163308).
 
 To see these entries in BibTeX format, use 'print(<citation>,
 bibtex=TRUE)', 'toBibtex(.)', or set
@@ -1021,7 +1045,7 @@ bibtex=TRUE)', 'toBibtex(.)', or set
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  3.604 0.1 3.736 0.018 0.013 
+Time elapsed:  4.269 0.071 4.366 0.02 0.005 
 > grDevices::dev.off()
 null device 
           1 
