@@ -167,7 +167,7 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
       ci.Vt <- NA
     } else {
       fm1 <- lm(Vt[which(!is.na(Yt))] ~ breakfactor(bp.Vt)/ti[which(!is.na(Yt))] )
-      ci.Vt <- confint(bp.Vt, het.err = FALSE)
+      ci.Vt <- confint(bp.Vt, het.err = FALSE, breaks = breaks)
       Vt.bp <- ci.Vt$confint[, 2]
       # Define empty copy of original time series
       Tt <- ts(data=NA,start = ti[1], end = ti[length(ti)],frequency = f)
@@ -208,7 +208,7 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
           sm1 <- lm(Wt[!is.na(Wt)] ~ (
             co[!is.na(Wt)] + si[!is.na(Wt)] + co2[!is.na(Wt)] + si2[!is.na(Wt)] + co3[!is.na(Wt)] + si3[!is.na(Wt)]
             ) %in% breakfactor(bp.Wt))
-        ci.Wt <- confint(bp.Wt, het.err = FALSE)
+        ci.Wt <- confint(bp.Wt, het.err = FALSE, breaks = breaks)
         Wt.bp <- ci.Wt$confint[, 2]
         
         # Define empty copy of original time series
