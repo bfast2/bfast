@@ -29,8 +29,10 @@
 #' time series is 1) "none" can be selected to avoid fitting a seasonal model.
 #' @param max.iter maximum amount of iterations allowed for estimation of
 #' breakpoints in seasonal and trend component.
-#' @param breaks integer specifying the maximal number of breaks to be
-#' calculated. By default the maximal number allowed by h is used.
+#' @param breaks either an integer specifying the number of breaks to compute
+#' for both components, or a string specifying a statistic with which to compute
+#' the optimal number of breakpoints (see [strucchangeRcpp::breakpoints()] for
+#' more information)
 #' @param hpc A character specifying the high performance computing support.
 #' Default is "none", can be set to "foreach". Install the "foreach" package
 #' for hpc support.
@@ -152,7 +154,7 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
     p.Vt <- sctest(efp(Vt ~ ti, h = h, type = type))
     if (p.Vt$p.value <= level[1]) {
       bp.Vt   <- breakpoints(Vt ~ ti, h = h, breaks = breaks, na.action=na.exclude,hpc = hpc)
-      nobp.Vt <- is.na(breakpoints(bp.Vt)[1])
+      nobp.Vt <- is.na(breakpoints(bp.Vt, breaks = breaks)[1])
     } else {
       nobp.Vt <- TRUE
       bp.Vt   <- NA
@@ -187,7 +189,7 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
       if (p.Wt$p.value <= level[2]) {
         bp.Wt <- breakpoints(smod, h = h, breaks = breaks, 
                              hpc = hpc)
-        nobp.Wt <- is.na(breakpoints(bp.Wt)[1])
+        nobp.Wt <- is.na(breakpoints(bp.Wt, breaks = breaks)[1])
       }
       else {
         nobp.Wt <- TRUE
