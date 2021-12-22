@@ -7,7 +7,7 @@ Changes in Version 1.7.0
   o Fixed a bug where bfastpp() would throw an error when annual data is input.
   
   o bfast() now honours a numeric number of 'breaks' also in calculating
-  confidence intervals.
+  confidence intervals and checking if any breaks have been detected.
 
 Changes in Version 1.6.1
 
