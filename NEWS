@@ -3,8 +3,10 @@ Changes in Version 1.7.0
   o Added the option to run a structural change test before running bfastlite()
   with two parameters: 'level' and 'type', equivalent to bfast() except that
   anything equal to or below 0 in 'level' will skip the sctest.
-  
+
   o Fixed a bug where bfastpp() would throw an error when annual data is input.
+
+  o Added a reference to the paper describing the BFAST Lite algorithm.
 
 Changes in Version 1.6.1
 

@@ -2,13 +2,13 @@ Package: bfast
 Version: 1.7.0
 Title: Breaks for Additive Season and Trend
 Authors@R: c(person(given = "Jan", family = "Verbesselt", role = c("aut"), email = "Jan.Verbesselt@wur.nl"),
-             person(given = "Dainius", family = "Masiliunas", role = c("aut", "cre"),
+             person(given = "Dainius", family = "Masili\u016Bnas", role = c("aut", "cre"),
              email = "pastas4@gmail.com", comment = c(ORCID = "0000-0001-5654-1277")),
              person(given = "Achim", family = "Zeileis", role = "aut", email = "Achim.Zeileis@R-project.org"),
              person(given = "Rob", family = "Hyndman", role = "ctb", email = "Rob.Hyndman@buseco.monash.edu.au"),
              person(given = "Marius", family = "Appel", role = "aut", email = "marius.appel@uni-muenster.de"),
              person(given = "Martin", family = "Jung", role = "ctb", email = "m.jung@sussex.ac.uk"),
-             person(given = "Andrei", family = "Mirt", role = "ctb", email = "andrei.mirt@wur.nl",
+             person(given = "Andrei", family = "M\u00EEr\u021B", role = "ctb", email = "andrei.mirt@wur.nl",
                     comment = c(ORCID = "0000-0003-3654-2090")),
              person(given = c("Paulo", "Negri"), family = "Bernardino", role = "ctb",
                     email = "paulo.negribernardino@wur.nl"),
@@ -54,3 +54,4 @@ LinkingTo: Rcpp
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 RdMacros: Rdpack
+Encoding: UTF-8

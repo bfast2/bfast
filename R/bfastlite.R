@@ -37,6 +37,7 @@
 #' contatining information about the likelihood of the time series
 #' having at least one break.}
 #' @author Dainius Masiliunas, Jan Verbesselt
+#' @references \insertRef{dainiusbfastlite}{bfast}
 #' @example examples/bfastlite.r
 #'
 #' @export
