@@ -29,8 +29,12 @@
 #' time series is 1) "none" can be selected to avoid fitting a seasonal model.
 #' @param max.iter maximum amount of iterations allowed for estimation of
 #' breakpoints in seasonal and trend component.
-#' @param breaks integer specifying the maximal number of breaks to be
-#' calculated. By default the maximal number allowed by h is used.
+#' @param breaks either an integer specifying the number of breaks to compute,
+#' or a string specifying a statistic with which to compute
+#' the optimal number of breakpoints (see [strucchangeRcpp::breakpoints()] for
+#' more information). If one value is given, it is used for both the trend and
+#' seasonal components, and if two are given, the first one is considered to be
+#' for the trend and the second for the seasonal component.
 #' @param hpc A character specifying the high performance computing support.
 #' Default is "none", can be set to "foreach". Install the "foreach" package
 #' for hpc support.
@@ -93,6 +97,14 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
   }
   ## Get Arguments
   season <- match.arg(season)
+  if (length(breaks) > 1)
+  {
+    breaks.Vt <- breaks[[1]]
+    breaks.Wt <- breaks[[2]]
+  } else {
+    breaks.Vt <- breaks
+    breaks.Wt <- breaks
+  }
   level  <- rep(level, length.out = 2)
   ti <- time(Yt)
   f <- frequency(Yt) # on cycle every f time points (seasonal cycle)
@@ -151,8 +163,8 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
     Vt <- Yt - St # Deasonalized Time series
     p.Vt <- sctest(efp(Vt ~ ti, h = h, type = type))
     if (p.Vt$p.value <= level[1]) {
-      bp.Vt   <- breakpoints(Vt ~ ti, h = h, breaks = breaks, na.action=na.exclude,hpc = hpc)
-      nobp.Vt <- is.na(breakpoints(bp.Vt)[1])
+      bp.Vt   <- breakpoints(Vt ~ ti, h = h, breaks = breaks.Vt, na.action=na.exclude,hpc = hpc)
+      nobp.Vt <- is.na(breakpoints(bp.Vt, breaks = breaks.Vt)[1])
     } else {
       nobp.Vt <- TRUE
       bp.Vt   <- NA
@@ -167,7 +179,7 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
       ci.Vt <- NA
     } else {
       fm1 <- lm(Vt[which(!is.na(Yt))] ~ breakfactor(bp.Vt)/ti[which(!is.na(Yt))] )
-      ci.Vt <- confint(bp.Vt, het.err = FALSE)
+      ci.Vt <- confint(bp.Vt, het.err = FALSE, breaks = breaks.Vt)
       Vt.bp <- ci.Vt$confint[, 2]
       # Define empty copy of original time series
       Tt <- ts(data=NA,start = ti[1], end = ti[length(ti)],frequency = f)
@@ -185,9 +197,9 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
       Wt <- Yt - Tt
       p.Wt <- sctest(efp(smod, h = h, type = type)) # preliminary test 
       if (p.Wt$p.value <= level[2]) {
-        bp.Wt <- breakpoints(smod, h = h, breaks = breaks, 
+        bp.Wt <- breakpoints(smod, h = h, breaks = breaks.Wt, 
                              hpc = hpc)
-        nobp.Wt <- is.na(breakpoints(bp.Wt)[1])
+        nobp.Wt <- is.na(breakpoints(bp.Wt, breaks = breaks.Wt)[1])
       }
       else {
         nobp.Wt <- TRUE
@@ -208,7 +220,7 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
           sm1 <- lm(Wt[!is.na(Wt)] ~ (
             co[!is.na(Wt)] + si[!is.na(Wt)] + co2[!is.na(Wt)] + si2[!is.na(Wt)] + co3[!is.na(Wt)] + si3[!is.na(Wt)]
             ) %in% breakfactor(bp.Wt))
-        ci.Wt <- confint(bp.Wt, het.err = FALSE)
+        ci.Wt <- confint(bp.Wt, het.err = FALSE, breaks = breaks.Wt)
         Wt.bp <- ci.Wt$confint[, 2]
         
         # Define empty copy of original time series
