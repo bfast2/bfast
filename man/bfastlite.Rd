@@ -129,10 +129,15 @@ strucchangeRcpp::breakpoints(bp[["breakpoints"]], breaks = 2)
 plot(bp, magstat = "RMSD", magcomp = "harmoncos1", breaks = 2)
 
 # Try with a structural change test
-bfastlite(datats, level=0.05)
+bp <- bfastlite(datats, level=0.05)
+print(bp)
+plot(bp)
 
 # Details of the structural change test with the type RE
 bfastlite(datats, level=0.05, type="RE")$sctest
+}
+\references{
+\insertRef{dainiusbfastlite}{bfast}
 }
 \author{
 Dainius Masiliunas, Jan Verbesselt
