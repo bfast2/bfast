@@ -73,7 +73,7 @@ NULL
 
 
 #' A vector with date information (a Datum type) to be linked with each NDVI
-#' layer within the modis raster brick (modisraster data set)
+#' layer within the modis raster datacube (modisraster data set)
 #' 
 #' \code{dates} is an object of class "Date" and contains the "Date"
 #' information to create a 16-day time series object.
@@ -113,10 +113,10 @@ NULL
 
 
 
-#' A raster brick of 16-day satellite image NDVI time series for a small subset
+#' A raster datacube of 16-day satellite image NDVI time series for a small subset
 #' in south eastern Somalia.
 #' 
-#' A raster brick containing 16-day NDVI satellite images (MOD13C1 product).
+#' A Cloud-Optimised GeoTIFF containing 16-day NDVI satellite images (MOD13C1 product).
 #' 
 #' 
 #' @name modisraster

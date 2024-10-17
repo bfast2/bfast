@@ -35,24 +35,6 @@
 #' @keywords ts
 #' 
 #' @example examples/bfastts.r
-#' @examples
-#'
-#'
-#' \dontrun{
-#' # Example of use with a raster
-#'
-#' library("raster")
-#' f <- system.file("extdata/modisraster.grd", package="bfast")
-#' modisbrick <- brick(f)
-#' ndvi <- bfastts(as.vector(modisbrick[1]), dates, type = c("16-day")) ## data of pixel 1
-#' plot(ndvi/10000) 
-#' 
-#' # Time series of 4 pixels
-#' modis_ts = t(as.data.frame(modisbrick))[,1:4]
-#' # Data with multiple columns, 2-4 are external regressors
-#' ndvi <- bfastts(modis_ts, dates, type = c("16-day"))
-#' plot(ndvi/10000)
-#' }
 #' 
 #' @export
 bfastts <- function(data, dates, type = c("irregular", "16-day", "10-day")) {
@@ -171,7 +153,7 @@ bfastts <- function(data, dates, type = c("irregular", "16-day", "10-day")) {
 # this is an alternative (faster) implementation that tries to work more precisely 
 # with leap years and arbitrary frequencies but needs more testing. 
 .bfast_construct_ts <- function(data, dates, freq=23) {
-  if (class(dates) != "Date") {
+  if (!inherits(dates, "Date")) {
     dates = as.Date(dates)
   }
   

@@ -1,7 +1,7 @@
 
-R version 4.1.0 (2021-05-18) -- "Camp Pontanezen"
-Copyright (C) 2021 The R Foundation for Statistical Computing
-Platform: x86_64-suse-linux-gnu (64-bit)
+R version 4.4.1 (2024-06-14) -- "Race for Your Life"
+Copyright (C) 2024 The R Foundation for Statistical Computing
+Platform: x86_64-suse-linux-gnu
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -111,7 +111,7 @@ NULL
 	 of optimal 4-segment partition: 
 
 Call:
-confint.breakpointsfull(object = bp.Vt, het.err = FALSE)
+confint.breakpointsfull(object = bp.Vt, breaks = breaks.Vt, het.err = FALSE)
 
 Breakpoints at observation number:
   2.5 % breakpoints 97.5 %
@@ -171,7 +171,7 @@ NULL
 	 of optimal 5-segment partition: 
 
 Call:
-confint.breakpointsfull(object = bp.Vt, het.err = FALSE)
+confint.breakpointsfull(object = bp.Vt, breaks = breaks.Vt, het.err = FALSE)
 
 Breakpoints at observation number:
   2.5 % breakpoints 97.5 %
@@ -582,19 +582,17 @@ F-statistic: 14.82 on 10 and 227 DF,  p-value: < 2.2e-16
 [1] -428.9029
 > 
 > ## Example for processing raster bricks (satellite image time series of 16-day NDVI images)
-> f <- system.file("extdata/modisraster.grd", package = "bfast")
-> library("raster")
-Loading required package: sp
-> modisbrick <- raster::brick(f)
-> data <- as.vector(modisbrick[1])
+> f <- system.file("extdata/modisraster.tif", package="bfast")
+> modisbrick <- terra::rast(f)
+> data <- unlist(modisbrick[1])
 > ndvi <- bfastts(data, dates, type = c("16-day"))
 > plot(ndvi/10000)
 > 
 > ## derive median NDVI of a NDVI raster brick
-> medianNDVI <- raster::calc(modisbrick, fun = function(x) median(x, na.rm = TRUE))
-> raster::plot(medianNDVI)
+> medianNDVI <- terra::app(modisbrick, fun = function(x) median(x, na.rm = TRUE))
+> terra::plot(medianNDVI)
 > 
-> ## helper function to be used with the calc() function
+> ## helper function to be used with the app() function
 > xbfastmonitor <- function(x, timestamps = dates) {
 + 	ndvi <- bfastts(x, timestamps, type = c("16-day"))
 + 	ndvi <- window(ndvi, end = c(2011, 14))/10000
@@ -604,29 +602,23 @@ Loading required package: sp
 + }
 > 
 > ## apply on one pixel for testing
-> ndvi <- bfastts(as.numeric(modisbrick[1])/10000, dates, type = c("16-day"))
-> plot(ndvi)
-> 
 > bfm <- bfastmonitor(data = ndvi, start = c(2010, 12), history = c("ROC"))
 > bfm$magnitude
-[1] -0.08451347
+[1] -845.1347
 > plot(bfm)
-> xbfastmonitor(modisbrick[1], dates) ## helper function applied on one pixel
+> xbfastmonitor(unlist(modisbrick[1]), dates) ## helper function applied on one pixel
    breakpoint     magnitude 
 2011.34782609   -0.08709291 
 > 
 > ## apply the bfastmonitor function onto a raster brick
-> timeofbreak <- raster::calc(modisbrick, fun=xbfastmonitor)
+> timeofbreak <- terra::app(modisbrick, fun=xbfastmonitor)
 > 
-> raster::plot(timeofbreak) ## time of break and magnitude of change
-> raster::plot(timeofbreak,2) ## magnitude of change
+> terra::plot(timeofbreak) ## time of break and magnitude of change
+> terra::plot(timeofbreak,2) ## magnitude of change
 > 
 > 
 > 
 > cleanEx()
-
-detaching ‘package:raster’, ‘package:sp’
-
 > nameEx("bfastpp")
 > ### * bfastpp
 > 
@@ -775,23 +767,17 @@ Frequency = 365
 [31]     NA 0.3443     NA     NA     NA     NA     NA     NA     NA     NA
 [41]     NA     NA     NA     NA     NA     NA     NA 0.3216     NA     NA
 > 
+> # Example of use with a raster
+> f <- system.file("extdata/modisraster.tif", package="bfast")
+> modisbrick <- terra::rast(f)
+> ndvi <- bfastts(unlist(modisbrick[1]), dates, type = c("16-day")) ## data of pixel 1
+> plot(ndvi/10000) 
 > 
-> ## Not run: 
-> ##D # Example of use with a raster
-> ##D 
-> ##D library("raster")
-> ##D f <- system.file("extdata/modisraster.grd", package="bfast")
-> ##D modisbrick <- brick(f)
-> ##D ndvi <- bfastts(as.vector(modisbrick[1]), dates, type = c("16-day")) ## data of pixel 1
-> ##D plot(ndvi/10000) 
-> ##D 
-> ##D # Time series of 4 pixels
-> ##D modis_ts = t(as.data.frame(modisbrick))[,1:4]
-> ##D # Data with multiple columns, 2-4 are external regressors
-> ##D ndvi <- bfastts(modis_ts, dates, type = c("16-day"))
-> ##D plot(ndvi/10000)
-> ## End(Not run)
-> 
+> # Time series of 4 pixels
+> modis_ts = t(modisbrick[1:4])
+> # Data with multiple columns, 2-4 are external regressors
+> ndvi <- bfastts(modis_ts, dates, type = c("16-day"))
+> plot(ndvi/10000)
 > 
 > 
 > 
@@ -803,7 +789,8 @@ Frequency = 365
 > 
 > ### Name: dates
 > ### Title: A vector with date information (a Datum type) to be linked with
-> ###   each NDVI layer within the modis raster brick (modisraster data set)
+> ###   each NDVI layer within the modis raster datacube (modisraster data
+> ###   set)
 > ### Aliases: dates
 > ### Keywords: datasets
 > 
@@ -841,8 +828,8 @@ Frequency = 365
 > flush(stderr()); flush(stdout())
 > 
 > ### Name: modisraster
-> ### Title: A raster brick of 16-day satellite image NDVI time series for a
-> ###   small subset in south eastern Somalia.
+> ### Title: A raster datacube of 16-day satellite image NDVI time series for
+> ###   a small subset in south eastern Somalia.
 > ### Aliases: modisraster
 > ### Keywords: datasets ts
 > 
@@ -973,7 +960,7 @@ Frequency = 365
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  3.721 0.084 3.84 0.011 0.024 
+Time elapsed:  12.338 0.463 12.034 0 0 
 > grDevices::dev.off()
 null device 
           1 
