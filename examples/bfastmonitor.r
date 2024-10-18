@@ -38,6 +38,7 @@ mon <- bfastmonitor(NDVIb, formula = response ~ season,
 summary(mon$model)
 AIC(mon$model)
 
+\donttest{
 ## Example for processing raster bricks (satellite image time series of 16-day NDVI images)
 f <- system.file("extdata/modisraster.tif", package="bfast")
 modisbrick <- terra::rast(f)
@@ -69,3 +70,4 @@ timeofbreak <- terra::app(modisbrick, fun=xbfastmonitor)
 
 terra::plot(timeofbreak) ## time of break and magnitude of change
 terra::plot(timeofbreak,2) ## magnitude of change
+}

@@ -175,6 +175,7 @@ mon <- bfastmonitor(NDVIb, formula = response ~ season,
 summary(mon$model)
 AIC(mon$model)
 
+\donttest{
 ## Example for processing raster bricks (satellite image time series of 16-day NDVI images)
 f <- system.file("extdata/modisraster.tif", package="bfast")
 modisbrick <- terra::rast(f)
@@ -183,7 +184,7 @@ ndvi <- bfastts(data, dates, type = c("16-day"))
 plot(ndvi/10000)
 
 ## derive median NDVI of a NDVI raster brick
-medianNDVI <- terra::app(modisbrick, fun = function(x) median(x, na.rm = TRUE))
+medianNDVI <- terra::app(modisbrick, fun = "median")
 terra::plot(medianNDVI)
 
 ## helper function to be used with the app() function
@@ -199,13 +200,14 @@ xbfastmonitor <- function(x, timestamps = dates) {
 bfm <- bfastmonitor(data = ndvi, start = c(2010, 12), history = c("ROC"))
 bfm$magnitude
 plot(bfm)
-xbfastmonitor(unlist(modisbrick[1]), dates) ## helper function applied on one pixel
+xbfastmonitor(data, dates) ## helper function applied on one pixel
 
 ## apply the bfastmonitor function onto a raster brick
 timeofbreak <- terra::app(modisbrick, fun=xbfastmonitor)
 
 terra::plot(timeofbreak) ## time of break and magnitude of change
 terra::plot(timeofbreak,2) ## magnitude of change
+}
 }
 \references{
 \insertRef{janbfastmonitor}{bfast}
