@@ -45,23 +45,19 @@ bfastts(timedf$y, timedf$dates, type = "16-day")
 # Irregular
 head(bfastts(timedf$y, timedf$dates, type = "irregular"), 50)
 
-
-\dontrun{
+\donttest{
 # Example of use with a raster
-
-library("raster")
-f <- system.file("extdata/modisraster.grd", package="bfast")
-modisbrick <- brick(f)
-ndvi <- bfastts(as.vector(modisbrick[1]), dates, type = c("16-day")) ## data of pixel 1
+f <- system.file("extdata/modisraster.tif", package="bfast")
+modisbrick <- terra::rast(f)
+ndvi <- bfastts(unlist(modisbrick[1]), dates, type = c("16-day")) ## data of pixel 1
 plot(ndvi/10000) 
 
 # Time series of 4 pixels
-modis_ts = t(as.data.frame(modisbrick))[,1:4]
+modis_ts = t(modisbrick[1:4])
 # Data with multiple columns, 2-4 are external regressors
 ndvi <- bfastts(modis_ts, dates, type = c("16-day"))
 plot(ndvi/10000)
 }
-
 }
 \seealso{
 \code{\link[strucchangeRcpp]{monitor}}, \code{\link[strucchangeRcpp]{mefp}},

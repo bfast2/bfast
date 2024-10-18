@@ -3,13 +3,13 @@
 \docType{data}
 \name{modisraster}
 \alias{modisraster}
-\title{A raster brick of 16-day satellite image NDVI time series for a small subset
+\title{A raster datacube of 16-day satellite image NDVI time series for a small subset
 in south eastern Somalia.}
 \source{
 \insertRef{janbfastmonitor}{bfast}
 }
 \description{
-A raster brick containing 16-day NDVI satellite images (MOD13C1 product).
+A Cloud-Optimised GeoTIFF containing 16-day NDVI satellite images (MOD13C1 product).
 }
 \examples{
 

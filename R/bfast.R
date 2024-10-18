@@ -108,7 +108,7 @@ bfast <- function (Yt, h = 0.15, season = c("dummy", "harmonic", "none"),
   level  <- rep(level, length.out = 2)
   ti <- time(Yt)
   f <- frequency(Yt) # on cycle every f time points (seasonal cycle)
-  if (class(Yt) != "ts")
+  if (!inherits(Yt, "ts"))
     stop("Not a time series object")
   if (f < 1)
     stop("Time series frequency needs to be more than 1")

@@ -39,8 +39,12 @@ time series is 1) "none" can be selected to avoid fitting a seasonal model.}
 \item{max.iter}{maximum amount of iterations allowed for estimation of
 breakpoints in seasonal and trend component.}
 
-\item{breaks}{integer specifying the maximal number of breaks to be
-calculated. By default the maximal number allowed by h is used.}
+\item{breaks}{either an integer specifying the number of breaks to compute,
+or a string specifying a statistic with which to compute
+the optimal number of breakpoints (see \code{\link[strucchangeRcpp:breakpoints]{strucchangeRcpp::breakpoints()}} for
+more information). If one value is given, it is used for both the trend and
+seasonal components, and if two are given, the first one is considered to be
+for the trend and the second for the seasonal component.}
 
 \item{hpc}{A character specifying the high performance computing support.
 Default is "none", can be set to "foreach". Install the "foreach" package

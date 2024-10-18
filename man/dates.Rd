@@ -4,7 +4,7 @@
 \name{dates}
 \alias{dates}
 \title{A vector with date information (a Datum type) to be linked with each NDVI
-layer within the modis raster brick (modisraster data set)}
+layer within the modis raster datacube (modisraster data set)}
 \source{
 \insertRef{janbfastmonitor}{bfast}
 }
