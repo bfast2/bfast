@@ -12,6 +12,11 @@ Changes in Version 1.7.0
 
   o Added a reference to the paper describing the BFAST Lite algorithm.
 
+  o Updated the examples, migrating from the 'raster' to the 'terra' package.
+  
+  o The 'history_roc()' generic is now consistent in parameters with the
+  'history_roc.matrix()' and 'history_roc.formula()' methods.
+
 Changes in Version 1.6.1
 
   o Fixed a heap overflow issue in the C++ version of bfastts().

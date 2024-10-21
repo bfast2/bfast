@@ -175,19 +175,19 @@ mon <- bfastmonitor(NDVIb, formula = response ~ season,
 summary(mon$model)
 AIC(mon$model)
 
+\donttest{
 ## Example for processing raster bricks (satellite image time series of 16-day NDVI images)
-f <- system.file("extdata/modisraster.grd", package = "bfast")
-library("raster")
-modisbrick <- raster::brick(f)
-data <- as.vector(modisbrick[1])
+f <- system.file("extdata/modisraster.tif", package="bfast")
+modisbrick <- terra::rast(f)
+data <- unlist(modisbrick[1])
 ndvi <- bfastts(data, dates, type = c("16-day"))
 plot(ndvi/10000)
 
 ## derive median NDVI of a NDVI raster brick
-medianNDVI <- raster::calc(modisbrick, fun = function(x) median(x, na.rm = TRUE))
-raster::plot(medianNDVI)
+medianNDVI <- terra::app(modisbrick, fun = "median")
+terra::plot(medianNDVI)
 
-## helper function to be used with the calc() function
+## helper function to be used with the app() function
 xbfastmonitor <- function(x, timestamps = dates) {
 	ndvi <- bfastts(x, timestamps, type = c("16-day"))
 	ndvi <- window(ndvi, end = c(2011, 14))/10000
@@ -197,19 +197,17 @@ xbfastmonitor <- function(x, timestamps = dates) {
 }
 
 ## apply on one pixel for testing
-ndvi <- bfastts(as.numeric(modisbrick[1])/10000, dates, type = c("16-day"))
-plot(ndvi)
-
 bfm <- bfastmonitor(data = ndvi, start = c(2010, 12), history = c("ROC"))
 bfm$magnitude
 plot(bfm)
-xbfastmonitor(modisbrick[1], dates) ## helper function applied on one pixel
+xbfastmonitor(data, dates) ## helper function applied on one pixel
 
 ## apply the bfastmonitor function onto a raster brick
-timeofbreak <- raster::calc(modisbrick, fun=xbfastmonitor)
+timeofbreak <- terra::app(modisbrick, fun=xbfastmonitor)
 
-raster::plot(timeofbreak) ## time of break and magnitude of change
-raster::plot(timeofbreak,2) ## magnitude of change
+terra::plot(timeofbreak) ## time of break and magnitude of change
+terra::plot(timeofbreak,2) ## magnitude of change
+}
 }
 \references{
 \insertRef{janbfastmonitor}{bfast}

@@ -7,12 +7,12 @@ history_roc <- function (x, ...) {
   UseMethod("history_roc", x)
 }
 
-
-history_roc.matrix <- function(X, y,time, level = 0.05) {
-  n <- nrow(X)
+#' @export
+history_roc.matrix <- function(x, y,time, level = 0.05, ...) {
+  n <- nrow(x)
   #data_rev <- data[n:1,]
   #data_rev$response <- ts(data_rev$response)
-  X_rev  <- X[n:1,]
+  X_rev  <- x[n:1,]
   y_rev <-  y[n:1]
   time_rev <-  time[n:1]
   
@@ -32,11 +32,12 @@ history_roc.matrix <- function(X, y,time, level = 0.05) {
 ## A technique to verify whether or not the historical period is stable or not
 ## reversely order sample and perform
 ## recursive CUSUM test
-history_roc.formula <- function(formula, data, level = 0.05) {
+#' @export
+history_roc.formula <- function(x, data, level = 0.05, ...) {
   n <- nrow(data)
   data_rev <- data[n:1,]
   data_rev$response <- ts(data_rev$response)
-  y_rcus <- efp(formula, data = data_rev, type = "Rec-CUSUM")
+  y_rcus <- efp(x, data = data_rev, type = "Rec-CUSUM")
 
   pval = sctest(y_rcus)$p.value
   y_start <- if(!is.na(pval) && pval < level) {

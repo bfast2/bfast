@@ -46,7 +46,7 @@ The type of plot shown depends on the value of \code{type}.
 \item{components} Shows the final estimated components with breakpoints.
 \item{all} Plots the estimated components and breakpoints from all iterations.
 \item{data} Just plots the original time series data.
-\item{seasonal} Shows the trend component including breakpoints.
+\item{seasonal} Shows the seasonal component including breakpoints.
 \item{trend} Shows the trend component including breakpoints.
 \item{noise} Plots the noise component along with its acf and pacf.
 }
