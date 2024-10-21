@@ -361,6 +361,7 @@ RE = 6.3887, p-value < 2.2e-16
 > 
 > 
 > 
+> 
 > cleanEx()
 > nameEx("bfastmonitor")
 > ### * bfastmonitor
@@ -915,7 +916,7 @@ Frequency = 365
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  1.797 0.047 1.844 0 0 
+Time elapsed:  1.761 0.067 1.827 0 0 
 > grDevices::dev.off()
 null device 
           1 
