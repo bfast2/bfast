@@ -1,5 +1,5 @@
 Package: bfast
-Version: 1.7.0.9999
+Version: 1.7.0
 Title: Breaks for Additive Season and Trend
 Authors@R: c(person(given = "Jan", family = "Verbesselt", role = c("aut"), email = "Jan.Verbesselt@wur.nl"),
              person(given = "Dainius", family = "Masili\u016Bnas", role = c("aut", "cre"),
