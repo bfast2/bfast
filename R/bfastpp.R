@@ -111,7 +111,7 @@ bfastpp<- function(data, order = 3,
   
   rval <- data.frame(
     time = as.numeric(time(y)),
-    response = y,
+    response = as.numeric(y),
     trend = 1:NROW(y),
     season = if (seasonfreq > 1) cut(cycle(y), seasonfreq, ordered_result = TRUE) else factor("no seasonality")
   )
