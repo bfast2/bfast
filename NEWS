@@ -1,3 +1,8 @@
+Changes in Version 1.7.1
+
+  o 'bfastpp()' output 'response' is now always a numeric vector. Previously
+  under certain circumstances it could have been a 'ts' object.
+
 Changes in Version 1.7.0
 
   o Added the option to run a structural change test before running bfastlite()
