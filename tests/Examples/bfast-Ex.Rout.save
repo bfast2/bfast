@@ -1,6 +1,6 @@
 
-R version 4.4.1 (2024-06-14) -- "Race for Your Life"
-Copyright (C) 2024 The R Foundation for Statistical Computing
+R version 4.5.3 (2026-03-11) -- "Reassured Reassurer"
+Copyright (C) 2026 The R Foundation for Statistical Computing
 Platform: x86_64-suse-linux-gnu
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -605,6 +605,7 @@ F-statistic: 14.82 on 10 and 227 DF,  p-value: < 2.2e-16
 > ## parametric season-trend model
 > d1 <- bfastpp(ndvi, order = 2)
 > d1lm <- lm(response ~ trend + harmon, data = d1)
+> ## IGNORE_RDIFF_BEGIN
 > summary(d1lm)
 
 Call:
@@ -629,6 +630,7 @@ Residual standard error: 0.07517 on 86 degrees of freedom
 Multiple R-squared:  0.5648,	Adjusted R-squared:  0.5395 
 F-statistic: 22.32 on 5 and 86 DF,  p-value: 2.8e-14
 
+> ## IGNORE_RDIFF_END
 > # plot visually (except season, as it's a factor)
 > plot(zoo::read.zoo(d1)[,-3],
 +   # Avoid clipping plots for pretty output
@@ -641,6 +643,7 @@ F-statistic: 22.32 on 5 and 86 DF,  p-value: 2.8e-14
 > ## autoregressive model (after nonparametric season-trend adjustment)
 > d2 <- bfastpp(ndvi, stl = "both", lag = 1:2)
 > d2lm <- lm(response ~ lag, data = d2)
+> ## IGNORE_RDIFF_BEGIN
 > summary(d2lm)
 
 Call:
@@ -662,14 +665,17 @@ Residual standard error: 0.05696 on 87 degrees of freedom
 Multiple R-squared:  0.1626,	Adjusted R-squared:  0.1433 
 F-statistic: 8.446 on 2 and 87 DF,  p-value: 0.0004445
 
+> ## IGNORE_RDIFF_END
 > 
 > ## use the lower level lm.fit function
 > d3 <- bfastpp(ndvi, stl = "both", lag = 1:2)
 > d3mm <- model.matrix(response ~ lag, d3)
 > d3lm <- lm.fit(d3mm, d3$response)
+> ## IGNORE_RDIFF_BEGIN
 > d3lm$coefficients
  (Intercept)         lag1         lag2 
 0.0003608327 0.2697746828 0.2204983802 
+> ## IGNORE_RDIFF_END
 > 
 > 
 > 
@@ -916,7 +922,7 @@ Frequency = 365
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  1.761 0.067 1.827 0 0 
+Time elapsed:  1.917 0.072 1.99 0 0 
 > grDevices::dev.off()
 null device 
           1 

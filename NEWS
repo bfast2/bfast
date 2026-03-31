@@ -1,3 +1,8 @@
+Changes in Version 1.7.2
+
+  o 'bfastpp()' examples do not test for the output of linear models any more.
+  These tests would sometimes fail due to precision differences between builds.
+
 Changes in Version 1.7.1
 
   o 'bfastpp()' output 'response' is now always a numeric vector. Previously

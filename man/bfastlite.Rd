@@ -53,7 +53,8 @@ greater than 1 is required.}
     or a string specifying the information criterion to use to automatically determine
     the optimal number of breaks (see also \code{\link{logLik}}).
     \code{"all"} means the maximal number allowed by \code{h} is used.
-    \code{NULL} is treated as the default of the \code{breakpoints} function (i.e. BIC).}
+    In \code{breakpoints.breakpointsfull}, \code{NULL} extracts the optimal number of
+    breaks as determined by the initial \code{breakpoints} call.}
 
 \item{lag}{numeric. Orders of the autoregressive term, by default omitted.}
 
